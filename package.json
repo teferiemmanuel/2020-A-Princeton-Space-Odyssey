@@ -1,9 +1,9 @@
 {
-  "name": "lower-case-dashed-name-of-project",
-  "repository": "REPOSITORY-NAME-AS-IT-APPEARS-IN-GITHUB-URL",
+  "name": "2020-princeton-space-odyssey",
+  "repository": "Graphics_Project",
   "version": "0.1.0",
-  "title": "PROJECT TITLE HERE",
-  "description": "SHORT DESCRIPTION OF PROJECT HERE. ONE TO TWO SENTENCES MAX",
+  "title": "2020: A Princeton Space Odyssey",
+  "description": "Pilot a spaceship flying through outer space as you attempt to warp home by collecting fuel charges. The primary objective will be achieved by the player collecting fuel charges as they spawn.",
   "keywords": [
     "Princeton",
     "graphics",
