@@ -39,6 +39,20 @@ module.exports = {
                     },
                 ],
             },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader'],
+                exclude: path.resolve(__dirname, './node_modules/'),
+            },
+            {
+                test: /\.(html)$/,
+                use: ['html-loader'],
+                exclude: path.resolve(__dirname, './node_modules/'),
+            },
+            { 
+                test: /\.(ttf)$/, 
+                loader: 'url-loader?limit=100000',
+            }
         ],
     },
     resolve: {
@@ -49,6 +63,9 @@ module.exports = {
         },
     },
     plugins: [
-        new HtmlWebpackPlugin({ title: pkg.title, favicon: 'src/favicon.ico' }),
+        new HtmlWebpackPlugin({ 
+          favicon: 'src/favicon.ico', 
+          template: 'src/index.html' 
+        }),
     ],
 };

@@ -1,0 +1,43 @@
+@font-face {
+    font-family: starWing;
+    src: url(starwing.ttf);
+}
+
+h1,
+h2 {
+    position: relative;
+    color: #f39f49;
+    font-family: 'starWing';
+    text-align: center;
+    margin: 0;
+}
+
+#gameTitleOne,
+#gameTitleTwo {
+    top: 10%;
+}
+
+#startButton {
+    background-color: transparent;
+    position: absolute;
+    top: 45%;
+    left: 45%;
+    padding: 0.5em 3em;
+    border: 0.16em solid;
+    font-family: starWing;
+    color: #f39f49;
+}
+
+#startButton:hover {
+    color: #ffffff;
+}
+
+#acknowledgements {
+    top: 75%;
+}
+
+#splash {
+    background-image: url('textures/starBackground.gif');
+    background-repeat: repeat;
+    height: 100vh;
+}

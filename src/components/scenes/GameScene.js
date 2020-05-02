@@ -3,14 +3,13 @@ import { Scene, Color } from 'three';
 import { Flower, Land, Fuel } from 'objects';
 import { BasicLights } from 'lights';
 
-class SeedScene extends Scene {
+class GameScene extends Scene {
     constructor() {
         // Call parent Scene() constructor
         super();
 
         // Init state
         this.state = {
-            gui: new Dat.GUI(), // Create GUI for scene
             rotationSpeed: 1,
             updateList: [],
         };
@@ -26,7 +25,6 @@ class SeedScene extends Scene {
         this.add(land, flower, lights, fuel);
 
         // Populate GUI
-        this.state.gui.add(this.state, 'rotationSpeed', -5, 5);
     }
 
     addToUpdateList(object) {
@@ -44,4 +42,4 @@ class SeedScene extends Scene {
     }
 }
 
-export default SeedScene;
+export default GameScene;

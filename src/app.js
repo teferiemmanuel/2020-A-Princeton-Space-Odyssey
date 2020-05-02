@@ -8,10 +8,11 @@
  */
 import { WebGLRenderer, PerspectiveCamera, Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { SeedScene } from 'scenes';
+import { GameScene } from 'scenes';
+import './style.css';
 
 // Initialize core ThreeJS components
-const scene = new SeedScene();
+const gameScene = new GameScene();
 const camera = new PerspectiveCamera();
 const renderer = new WebGLRenderer({ antialias: true });
 
@@ -38,8 +39,8 @@ controls.update();
 // Render loop
 const onAnimationFrameHandler = (timeStamp) => {
     controls.update();
-    renderer.render(scene, camera);
-    scene.update && scene.update(timeStamp);
+    renderer.render(gameScene, camera);
+    gameScene.update && gameScene.update(timeStamp);
     window.requestAnimationFrame(onAnimationFrameHandler);
 };
 window.requestAnimationFrame(onAnimationFrameHandler);
@@ -54,25 +55,26 @@ const windowResizeHandler = () => {
 windowResizeHandler();
 window.addEventListener('resize', windowResizeHandler, false);
 
-window.addEventListener("keydown", moveCamera, false);
+window.addEventListener('keydown', moveCamera, false);
 function moveCamera(event) {
     // Ignore keypresses typed into a text box
-    if (event.target.tagName === "INPUT") { return; }
+    if (event.target.tagName === 'INPUT') {
+        return;
+    }
 
     // The vectors tom which each key code in this handler maps.
     const keyMap = {
-        ArrowUp: new Vector3(0,  1,  0),
-        ArrowDown: new Vector3(0,  -1,  0),
-        ArrowLeft: new Vector3(-1,  0,  0),
-        ArrowRight: new Vector3(1,  0,  0),
+        ArrowUp: new Vector3(0, 1, 0),
+        ArrowDown: new Vector3(0, -1, 0),
+        ArrowLeft: new Vector3(-1, 0, 0),
+        ArrowRight: new Vector3(1, 0, 0),
     };
 
     // ----------- Our reference solution uses 8 lines of code.
     let key = event.key;
-    if (key == "ArrowUp") {
+    if (key == 'ArrowUp') {
         camera.position.multiplyScalar(0.95);
-    }
-    else if (key == "ArrowDown") {
+    } else if (key == 'ArrowDown') {
         camera.position.multiplyScalar(1.05);
     }
 }
