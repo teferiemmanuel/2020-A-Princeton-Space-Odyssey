@@ -53,3 +53,26 @@ const windowResizeHandler = () => {
 };
 windowResizeHandler();
 window.addEventListener('resize', windowResizeHandler, false);
+
+window.addEventListener("keydown", moveCamera, false);
+function moveCamera(event) {
+    // Ignore keypresses typed into a text box
+    if (event.target.tagName === "INPUT") { return; }
+
+    // The vectors tom which each key code in this handler maps.
+    const keyMap = {
+        ArrowUp: new Vector3(0,  1,  0),
+        ArrowDown: new Vector3(0,  -1,  0),
+        ArrowLeft: new Vector3(-1,  0,  0),
+        ArrowRight: new Vector3(1,  0,  0),
+    };
+
+    // ----------- Our reference solution uses 8 lines of code.
+    let key = event.key;
+    if (key == "ArrowUp") {
+        camera.position.multiplyScalar(0.95);
+    }
+    else if (key == "ArrowDown") {
+        camera.position.multiplyScalar(1.05);
+    }
+}
