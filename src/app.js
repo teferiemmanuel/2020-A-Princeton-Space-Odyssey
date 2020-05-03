@@ -9,7 +9,6 @@
 import { WebGLRenderer, PerspectiveCamera, Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GameScene } from 'scenes';
-import './style.css';
 
 // Initialize core ThreeJS components
 const gameScene = new GameScene();
@@ -20,12 +19,10 @@ const renderer = new WebGLRenderer({ antialias: true });
 camera.position.set(6, 3, -10);
 camera.lookAt(new Vector3(0, 0, 0));
 
-// Set up renderer, canvas, and minor CSS adjustments
+// Set up renderer and canvas
 renderer.setPixelRatio(window.devicePixelRatio);
 const canvas = renderer.domElement;
 canvas.style.display = 'block'; // Removes padding below canvas
-document.body.style.margin = 0; // Removes margin around page
-document.body.style.overflow = 'hidden'; // Fix scrolling
 document.body.appendChild(canvas);
 
 // Set up controls

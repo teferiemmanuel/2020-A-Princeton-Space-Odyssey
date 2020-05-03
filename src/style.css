@@ -3,6 +3,11 @@
     src: url(starwing.ttf);
 }
 
+body {
+  margin: 0;
+  overflow: 'hidden';
+}
+
 h1,
 h2 {
     position: relative;
