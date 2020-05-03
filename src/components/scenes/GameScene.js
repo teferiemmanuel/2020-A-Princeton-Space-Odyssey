@@ -10,7 +10,7 @@ class GameScene extends Scene {
 
         // Init state
         this.state = {
-            rotationSpeed: 1,
+            rotationSpeed: 0,
             updateList: [],
         };
 

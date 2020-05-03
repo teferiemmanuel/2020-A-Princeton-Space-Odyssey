@@ -7,6 +7,8 @@
  *
  */
 import { WebGLRenderer, PerspectiveCamera, Vector3 } from 'three';
+import { FlyControls } from './FlyControls.js';
+//import { FirstPersonControls } from './FirstPersonControls.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GameScene } from 'scenes';
 
@@ -26,16 +28,29 @@ canvas.style.display = 'block'; // Removes padding below canvas
 document.body.appendChild(canvas);
 
 // Set up controls
+/*
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 controls.enablePan = false;
 controls.minDistance = 4;
 controls.maxDistance = 16;
 controls.update();
+*/
+//const controls = new FirstPersonControls(camera, canvas);
+const controls = new FlyControls(camera, canvas);
+controls.autoForward = false;
+controls.movementSpeed = 0.01;
+/*
+controls.enableDamping = true;
+controls.enablePan = false;
+controls.minDistance = 4;
+controls.maxDistance = 16;
+*/
 
 // Render loop
 const onAnimationFrameHandler = (timeStamp) => {
-    controls.update();
+    //controls.update();
+    controls.update(timeStamp / 1000);
     renderer.render(gameScene, camera);
     gameScene.update && gameScene.update(timeStamp);
     window.requestAnimationFrame(onAnimationFrameHandler);
@@ -52,6 +67,7 @@ const windowResizeHandler = () => {
 windowResizeHandler();
 window.addEventListener('resize', windowResizeHandler, false);
 
+/*
 window.addEventListener('keydown', moveCamera, false);
 function moveCamera(event) {
     // Ignore keypresses typed into a text box
@@ -75,3 +91,4 @@ function moveCamera(event) {
         camera.position.multiplyScalar(1.05);
     }
 }
+*/

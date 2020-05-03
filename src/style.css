@@ -46,3 +46,8 @@ h2 {
     background-repeat: repeat;
     height: 100vh;
 }
+
+/* User won't see unloaded CSS with this */
+#loadOverlay {
+    display: none;
+}
