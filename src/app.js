@@ -7,8 +7,8 @@
  *
  */
 import { WebGLRenderer, PerspectiveCamera, Vector3 } from 'three';
-//import { FlyControls } from 'three/examples/jsm/controls/FlyControls.js';
-import { FirstPersonControls } from './FirstPersonControls.js';
+import { FlyControls } from './FlyControls.js';
+//import { FirstPersonControls } from './FirstPersonControls.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GameScene } from 'scenes';
 import './style.css';
@@ -39,7 +39,8 @@ controls.minDistance = 4;
 controls.maxDistance = 16;
 controls.update();
 */
-const controls = new FirstPersonControls(camera, canvas);
+//const controls = new FirstPersonControls(camera, canvas);
+const controls = new FlyControls(camera, canvas);
 controls.autoForward = false;
 controls.movementSpeed = 0.01;
 /*
