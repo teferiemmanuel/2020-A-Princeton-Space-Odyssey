@@ -17,6 +17,9 @@
             height: 100%;
         "
     ></div>
+    <audio id="audio" autoplay>
+        <source src="src/components/audio/2001.mp3" type="audio/mpeg">
+    </audio>
     <body>
         <div id="splash">
             <h1 id="gameTitleOne">2020</h1>
@@ -35,6 +38,9 @@
             function hideSplash() {
                 var splash = document.getElementById('splash');
                 splash.style.display = 'none';
+                var sound = document.getElementById("audio");
+                sound.pause();
+                sound.currentTime = 0;
             }
         </script>
     </body>

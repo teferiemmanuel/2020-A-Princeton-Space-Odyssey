@@ -1,6 +1,6 @@
 import { Group } from 'three';
-import { TextureLoader, MeshToonMaterial, DoubleSide, RingGeometry, CylinderGeometry, Mesh } from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { TextureLoader, MeshToonMaterial, DoubleSide, RingBufferGeometry, CylinderBufferGeometry, Mesh } from 'three';
+//import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js';
 //import MODEL from './flower.gltf';
 
@@ -40,7 +40,7 @@ class Fuel extends Group {
         });
 
         // use ring geometry
-        ring.geometry = new RingGeometry(0.69, 1, 6);
+        ring.geometry = new RingBufferGeometry(0.69, 1, 6);
 
         // create ring mesh
         ring.mesh = new Mesh(ring.geometry, ring.material);
@@ -66,7 +66,7 @@ class Fuel extends Group {
         });
 
         // use ring geometry
-        cylinder.geometry = new CylinderGeometry(0.5, 0.5, 2); // top, bottom, h
+        cylinder.geometry = new CylinderBufferGeometry(0.5, 0.5, 2); // top, bottom, h
 
         // create ring mesh
         cylinder.mesh = new Mesh(cylinder.geometry, cylinder.material);

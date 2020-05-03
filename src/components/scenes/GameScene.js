@@ -2,6 +2,11 @@ import * as Dat from 'dat.gui';
 import { Scene, Color } from 'three';
 import { Flower, Land, Fuel } from 'objects';
 import { BasicLights } from 'lights';
+import { AudioListener, Audio, AudioLoader } from 'three';
+import Corneria from '../audio/corneria_ultimate.mp3';
+import { MeshToonMaterial, DoubleSide, TetrahedronBufferGeometry, Mesh } from 'three';
+
+const introDOM = document.getElementById("splash");
 
 class GameScene extends Scene {
     constructor() {
@@ -22,6 +27,54 @@ class GameScene extends Scene {
         const flower = new Flower(this);
         const lights = new BasicLights();
         const fuel = new Fuel(this);
+
+        // add audio to scene
+        // create an AudioListener and add it to the camera?
+        // what does this do???
+        const listener = new AudioListener();
+        //camera.add( listener );
+
+        // create a global audio source
+        const music = new Audio( listener );
+
+        // load a sound and set it as the Audio object's buffer
+        const audioLoader = new AudioLoader();
+        audioLoader.load( Corneria, function( buffer ) {
+            music.setBuffer( buffer );
+            music.setLoop( false );
+            music.setVolume( 0.5 );
+            music.pause();
+        });
+
+        this.music = music;
+
+        /*
+        // add cockpit to scene
+        // cockpit - hacky way but it works??
+        // instantiate tetrahedron object
+        let tetra = {};
+
+        //let texture = new TextureLoader().load( "textures/ring.png" );
+
+        // use toon shading
+        tetra.material = new MeshToonMaterial({
+            color: 0x98d1ee,
+            side: DoubleSide,
+            transparent: false,
+            opacity: 0.2,
+        });
+
+        // use tetrahedron geometry
+        tetra.geometry = new TetrahedronBufferGeometry(10);
+        //tetra.geometry = new PlaneBufferGeometry(5, 5);
+
+        // create tetrahedron mesh
+        tetra.mesh = new Mesh(tetra.material, tetra.geometry);
+        tetra.mesh.receiveShadow = true;
+
+        this.tetra = tetra.mesh;
+        */
+
         this.add(land, flower, lights, fuel);
 
         // Populate GUI
@@ -38,6 +91,11 @@ class GameScene extends Scene {
         // Call update for each object in the updateList
         for (const obj of updateList) {
             obj.update(timeStamp);
+        }
+
+        // deals with music playing (don't want to clash with opening music)
+        if (!this.music.isPlaying && introDOM.style.display == "none") {
+            this.music.play();
         }
     }
 }

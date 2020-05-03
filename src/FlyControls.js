@@ -30,7 +30,8 @@ var FlyControls = function ( object, domElement ) {
 	// API
 
 	this.movementSpeed = 1.0;
-	this.rollSpeed = 0.005;
+	//this.rollSpeed = 0.005;
+	this.rollSpeed = 0.001;
 
 	this.dragToLook = false;
 	this.autoForward = false;
