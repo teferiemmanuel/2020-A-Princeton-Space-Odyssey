@@ -49,8 +49,8 @@ module.exports = {
                 use: ['html-loader'],
                 exclude: path.resolve(__dirname, './node_modules/'),
             },
-            { 
-                test: /\.(ttf)$/, 
+            {
+                test: /\.(ttf)$/,
                 loader: 'url-loader?limit=100000',
             }
         ],
@@ -63,9 +63,9 @@ module.exports = {
         },
     },
     plugins: [
-        new HtmlWebpackPlugin({ 
-          favicon: 'src/favicon.ico', 
-          template: 'src/index.html' 
+        new HtmlWebpackPlugin({
+          favicon: 'src/favicon.ico',
+          template: 'src/index.html'
         }),
     ],
 };

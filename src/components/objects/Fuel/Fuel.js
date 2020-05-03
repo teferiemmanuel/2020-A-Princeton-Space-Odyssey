@@ -40,7 +40,7 @@ class Fuel extends Group {
         });
 
         // use ring geometry
-        ring.geometry = new RingGeometry(0.5, 1);
+        ring.geometry = new RingGeometry(0.69, 1, 6);
 
         // create ring mesh
         ring.mesh = new Mesh(ring.geometry, ring.material);
@@ -66,7 +66,7 @@ class Fuel extends Group {
         });
 
         // use ring geometry
-        cylinder.geometry = new CylinderGeometry(1, 1, 2); // top, bottom, h
+        cylinder.geometry = new CylinderGeometry(0.5, 0.5, 2); // top, bottom, h
 
         // create ring mesh
         cylinder.mesh = new Mesh(cylinder.geometry, cylinder.material);
