@@ -4,16 +4,16 @@
 }
 
 body {
-  height: 100%;
-  margin: 0;
-  overflow: hidden;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    font-family: 'starWing';
 }
 
 h1,
 h2 {
     position: relative;
     color: #f39f49;
-    font-family: 'starWing';
     text-align: center;
     margin: 0;
 }
@@ -46,6 +46,13 @@ h2 {
     background-image: url('textures/starBackground.gif');
     background-repeat: repeat;
     height: 100vh;
+}
+
+#controls {
+    position: absolute;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
 }
 
 /* User won't see unloaded CSS with this */

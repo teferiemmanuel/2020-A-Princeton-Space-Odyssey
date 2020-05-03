@@ -4,9 +4,14 @@ import { Flower, Land, Fuel } from 'objects';
 import { BasicLights } from 'lights';
 import { AudioListener, Audio, AudioLoader } from 'three';
 import Corneria from '../audio/corneria_ultimate.mp3';
-import { MeshToonMaterial, DoubleSide, TetrahedronBufferGeometry, Mesh } from 'three';
+import {
+    MeshToonMaterial,
+    DoubleSide,
+    TetrahedronBufferGeometry,
+    Mesh,
+} from 'three';
 
-const introDOM = document.getElementById("splash");
+const introDOM = document.getElementById('splash');
 
 class GameScene extends Scene {
     constructor() {
@@ -35,14 +40,14 @@ class GameScene extends Scene {
         //camera.add( listener );
 
         // create a global audio source
-        const music = new Audio( listener );
+        const music = new Audio(listener);
 
         // load a sound and set it as the Audio object's buffer
         const audioLoader = new AudioLoader();
-        audioLoader.load( Corneria, function( buffer ) {
-            music.setBuffer( buffer );
-            music.setLoop( false );
-            music.setVolume( 0.5 );
+        audioLoader.load(Corneria, function (buffer) {
+            music.setBuffer(buffer);
+            music.setLoop(false);
+            music.setVolume(0.3);
             music.pause();
         });
 
@@ -94,7 +99,7 @@ class GameScene extends Scene {
         }
 
         // deals with music playing (don't want to clash with opening music)
-        if (!this.music.isPlaying && introDOM.style.display == "none") {
+        if (!this.music.isPlaying && introDOM.style.display == 'none') {
             this.music.play();
         }
     }
