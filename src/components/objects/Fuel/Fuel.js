@@ -1,5 +1,12 @@
 import { Group } from 'three';
-import { TextureLoader, MeshToonMaterial, DoubleSide, RingBufferGeometry, CylinderBufferGeometry, Mesh } from 'three';
+import {
+    TextureLoader,
+    MeshToonMaterial,
+    DoubleSide,
+    RingBufferGeometry,
+    CylinderBufferGeometry,
+    Mesh,
+} from 'three';
 //import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js';
 //import MODEL from './flower.gltf';
@@ -44,9 +51,10 @@ class Fuel extends Group {
 
         // create ring mesh
         ring.mesh = new Mesh(ring.geometry, ring.material);
-        ring.mesh.position.x = 0;
-        ring.mesh.position.y = 0;
-        ring.mesh.position.z = 5;
+        // Random position between -10 and 10
+        ring.mesh.position.x = Math.floor(Math.random() * 21) - 10;
+        ring.mesh.position.y = Math.floor(Math.random() * 21) - 10;
+        ring.mesh.position.z = Math.floor(Math.random() * 21) - 10;
 
         ring.mesh.receiveShadow = true;
 

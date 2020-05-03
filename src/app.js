@@ -11,7 +11,6 @@ import { FlyControls } from './FlyControls.js';
 //import { FirstPersonControls } from './FirstPersonControls.js';
 //import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GameScene } from 'scenes';
-
 //import { MeshToonMaterial, DoubleSide, TetrahedronBufferGeometry, PlaneBufferGeometry, Mesh } from 'three';
 
 // Initialize core ThreeJS components
@@ -67,3 +66,8 @@ const windowResizeHandler = () => {
 };
 windowResizeHandler();
 window.addEventListener('resize', windowResizeHandler, false);
+
+// Spawn fuel every 3s
+window.setInterval(function () {
+    gameScene.spawn();
+}, 3000);

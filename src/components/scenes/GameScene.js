@@ -103,6 +103,11 @@ class GameScene extends Scene {
             this.music.play();
         }
     }
+
+    spawn() {
+        const fuel = new Fuel(this);
+        this.add(fuel);
+    }
 }
 
 export default GameScene;
