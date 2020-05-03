@@ -68,6 +68,15 @@ windowResizeHandler();
 window.addEventListener('resize', windowResizeHandler, false);
 
 // Spawn fuel every 3s
+function checkSplash() {
+    // Check if splash screen is still displayed
+    const splash = document.getElementById('splash');
+    if (splash.style.display === 'none') {
+        window.setInterval(function () {
+            gameScene.spawn();
+        }, 3000);
+    }
+}
 window.setInterval(function () {
-    gameScene.spawn();
+    checkSplash();
 }, 3000);
