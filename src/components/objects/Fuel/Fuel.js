@@ -1,130 +1,126 @@
-import { Group } from 'three';
+import { Vector3, Group } from 'three';
 import {
-    TextureLoader,
-    MeshToonMaterial,
+    MeshBasicMaterial,
     DoubleSide,
     RingBufferGeometry,
-    CylinderBufferGeometry,
+    SphereBufferGeometry,
     Mesh,
 } from 'three';
-//import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js';
-//import MODEL from './flower.gltf';
 
 class Fuel extends Group {
-    constructor(parent) {
+    constructor(parent, color, positionVec) {
         // Call parent Group() constructor
         super();
 
-        // Init state
-        this.state = {
-            bob: true,
-            spin: this.spin.bind(this),
-            twirl: 0,
-        };
+        if (color === 'red') {
+          this.fuelColor = 0xff0000;
+        }
+        else if (color === 'green') {
+          this.fuelColor = 0x00ff22;
+        }
+        else if (color === 'yellow') {
+          this.fuelColor = 0xf6ff00;
+        }
+        else {
+          //default option is red
+          this.fuelColor = 0xff0000;
+        }
 
-        /*
-        // Load object
-        const loader = new GLTFLoader();
 
-        this.name = 'flower';
-        loader.load(MODEL, (gltf) => {
-            this.add(gltf.scene);
-        });
-        */
+        let outerRingMesh = createOuterRingMesh();
+        let innerRingMesh = createInnerRingMesh(this.fuelColor);
+        let energyOrbMesh = createEnergyOrbMesh();
 
-        // instantiate ring object
-        let ring = {};
+        outerRingMesh.position.x = positionVec.x;
+        outerRingMesh.position.y = positionVec.y;
+        outerRingMesh.position.z = positionVec.z;
+        this.add(outerRingMesh);
+        this.outerRingMesh = outerRingMesh
 
-        //let texture = new TextureLoader().load( "textures/ring.png" );
+        innerRingMesh.position.x = positionVec.x;
+        innerRingMesh.position.y = positionVec.y;
+        innerRingMesh.position.z = positionVec.z;
+        this.add(innerRingMesh);
+        this.innerRingMesh = innerRingMesh
 
-        // use toon shading
-        ring.material = new MeshToonMaterial({
-            color: 0x8f8a2a, //0xaaa424,
-            side: DoubleSide,
-            transparent: false,
-            opacity: 1.0,
-        });
-
-        // use ring geometry
-        ring.geometry = new RingBufferGeometry(0.69, 1, 6);
-
-        // create ring mesh
-        ring.mesh = new Mesh(ring.geometry, ring.material);
-        // Random position between -10 and 10
-        ring.mesh.position.x = Math.floor(Math.random() * 21) - 10;
-        ring.mesh.position.y = Math.floor(Math.random() * 21) - 10;
-        ring.mesh.position.z = Math.floor(Math.random() * 21) - 10;
-
-        ring.mesh.receiveShadow = true;
-
-        this.add(ring.mesh);
-
-        // instantiate cylinder object
-        let cylinder = {};
-
-        //let texture = new TextureLoader().load( "textures/cylinder.png" );
-
-        // use toon shading
-        cylinder.material = new MeshToonMaterial({
-            color: 0xb4b4c9, //0xa9a9a9,
-            side: DoubleSide,
-            transparent: false,
-            opacity: 1.0,
-        });
-
-        // use ring geometry
-        cylinder.geometry = new CylinderBufferGeometry(0.5, 0.5, 2); // top, bottom, h
-
-        // create ring mesh
-        cylinder.mesh = new Mesh(cylinder.geometry, cylinder.material);
-        cylinder.mesh.position.x = 5;
-        cylinder.mesh.position.y = 0;
-        cylinder.mesh.position.z = 0;
-
-        cylinder.mesh.receiveShadow = true;
-
-        this.add(cylinder.mesh);
+        energyOrbMesh.position.x = positionVec.x;
+        energyOrbMesh.position.y = positionVec.y;
+        energyOrbMesh.position.z = positionVec.z;
+        this.add(energyOrbMesh);
+        this.energyOrb = energyOrbMesh
 
         // Add self to parent's update list
         parent.addToUpdateList(this);
     }
 
-    spin() {
-        // Add a simple twirl
-        this.state.twirl += 6 * Math.PI;
-
-        // Use timing library for more precice "bounce" animation
-        // TweenJS guide: http://learningthreejs.com/blog/2011/08/17/tweenjs-for-smooth-animation/
-        // Possible easings: http://sole.github.io/tween.js/examples/03_graphs.html
-        const jumpUp = new TWEEN.Tween(this.position)
-            .to({ y: this.position.y + 1 }, 300)
-            .easing(TWEEN.Easing.Quadratic.Out);
-        const fallDown = new TWEEN.Tween(this.position)
-            .to({ y: 0 }, 300)
-            .easing(TWEEN.Easing.Quadratic.In);
-
-        // Fall down after jumping up
-        jumpUp.onComplete(() => fallDown.start());
-
-        // Start animation
-        jumpUp.start();
-    }
-
     update(timeStamp) {
-        if (this.state.bob) {
-            // Bob back and forth
-            this.rotation.z = 0.05 * Math.sin(timeStamp / 300);
-        }
-        if (this.state.twirl > 0) {
-            // Lazy implementation of twirl
-            this.state.twirl -= Math.PI / 8;
-            this.rotation.y += Math.PI / 8;
-        }
-
-        // Advance tween animations, if any exist
-        TWEEN.update();
+      this.outerRingMesh.rotation.z -= 0.005
+      this.innerRingMesh.rotation.z += 0.015;
+      this.innerRingMesh.rotation.y += 0.015;
     }
+}
+
+function createOuterRingMesh() {
+  let outerRing = {}
+
+   outerRing.material = new MeshBasicMaterial({
+     color: 0x00ffff,
+     side: DoubleSide,
+     wireframe: true
+   });
+
+  // use ring geometry
+  outerRing.geometry = new RingBufferGeometry(0.29, .53, 6);
+
+  // create ring mesh
+  outerRing.mesh = new Mesh(outerRing.geometry, outerRing.material);
+  outerRing.mesh.position.x = 0;
+  outerRing.mesh.position.y = 0;
+  outerRing.mesh.position.z = 5;
+
+  return outerRing.mesh;
+}
+
+function createInnerRingMesh(color) {
+  let innerRing = {}
+
+   innerRing.material = new MeshBasicMaterial({
+     color: color,
+     side: DoubleSide,
+     wireframe: true
+   });
+
+  // use ring geometry
+  innerRing.geometry = new RingBufferGeometry(0.39, .43, 6);
+
+  // create ring mesh
+  innerRing.mesh = new Mesh(innerRing.geometry, innerRing.material);
+  innerRing.mesh.position.x = 0;
+  innerRing.mesh.position.y = 0;
+  innerRing.mesh.position.z = 5;
+
+  return innerRing.mesh;
+}
+
+function createEnergyOrbMesh() {
+  let energyOrb = {}
+
+    energyOrb.material = new MeshBasicMaterial({
+     color: 0xffffff,
+     side: DoubleSide,
+     wireframe: true
+   });
+
+  // use orb geometry
+  energyOrb.geometry = new SphereBufferGeometry(0.11, 10, 10);
+
+  // create orb mesh
+  energyOrb.mesh = new Mesh( energyOrb.geometry,  energyOrb.material);
+  energyOrb.mesh.position.x = 0;
+  energyOrb.mesh.position.y = 0;
+  energyOrb.mesh.position.z = 5;
+
+  return energyOrb.mesh;
 }
 
 export default Fuel;

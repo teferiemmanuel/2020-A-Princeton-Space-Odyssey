@@ -1,5 +1,5 @@
 import * as Dat from 'dat.gui';
-import { Scene, Color } from 'three';
+import { Scene, Color, Vector3 } from 'three';
 import { Flower, Land, Fuel } from 'objects';
 import { BasicLights } from 'lights';
 import { AudioListener, Audio, AudioLoader } from 'three';
@@ -31,7 +31,9 @@ class GameScene extends Scene {
         const land = new Land();
         const flower = new Flower(this);
         const lights = new BasicLights();
-        const fuel = new Fuel(this);
+
+        var positionVec = new Vector3(0, 0 , 5);
+        const fuel = new Fuel(this, 'yellow', positionVec);
 
         // add audio to scene
         // create an AudioListener and add it to the camera?
@@ -104,8 +106,18 @@ class GameScene extends Scene {
         }
     }
 
-    spawn() {
-        const fuel = new Fuel(this);
+    spawnFuel() {
+        // Random position
+        var xRandom = Math.floor(Math.random() * 21) - 10;
+        var yRandom = Math.floor(Math.random() * 21) - 10;
+        var zRandom = Math.floor(Math.random() * 21) - 10;
+        var positionVec = new Vector3(xRandom, yRandom, zRandom);
+
+        // Random color
+        var colorOptions = [ "red", "green", "yellow"];
+        var colorChosen =  colorOptions[Math.floor((Math.random() * 2) + 1)];
+
+        const fuel = new Fuel(this, colorChosen, positionVec);
         this.add(fuel);
     }
 }

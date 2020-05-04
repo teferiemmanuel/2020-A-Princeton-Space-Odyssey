@@ -73,7 +73,7 @@ function checkSplash() {
     const splash = document.getElementById('splash');
     if (splash.style.display === 'none') {
         window.setInterval(function () {
-            gameScene.spawn();
+            gameScene.spawnFuel();
         }, 3000);
     }
 }
