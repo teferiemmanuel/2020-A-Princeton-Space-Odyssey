@@ -67,16 +67,16 @@ const windowResizeHandler = () => {
 windowResizeHandler();
 window.addEventListener('resize', windowResizeHandler, false);
 
-// Spawn fuel every 3s
-function checkSplash() {
+// Check if splash screen is up; If not, spawn fuel
+function checkSplashAndSpawn() {
     // Check if splash screen is still displayed
     const splash = document.getElementById('splash');
     if (splash.style.display === 'none') {
-        window.setInterval(function () {
-            gameScene.spawnFuel();
-        }, 3000);
+        gameScene.spawnFuel();
     }
 }
+
+// Wrapper to spawn fuel every 3s
 window.setInterval(function () {
-    checkSplash();
+    checkSplashAndSpawn();
 }, 3000);
