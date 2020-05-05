@@ -116,7 +116,7 @@ class GameScene extends Scene {
 
         // Random color
         var colorOptions = ['red', 'green', 'yellow'];
-        var colorChosen = colorOptions[Math.floor(Math.random() * 2)];
+        var colorChosen = colorOptions[Math.floor(Math.random() * 3)];
 
         const fuel = new Fuel(this, colorChosen, positionVec);
         this.add(fuel);
