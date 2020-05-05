@@ -71,9 +71,11 @@ window.addEventListener('resize', windowResizeHandler, false);
 function checkSplashAndSpawn() {
     // Check if splash screen is still displayed
     const splash = document.getElementById('splash');
-    if (splash.style.display === 'none') {
+    // Check if there are fewer than 10 fuel elements spawned
+    if (splash.style.display === 'none' && gameScene.numSpawnedFuels < 10) {
         gameScene.spawnFuel();
     }
+    console.log(gameScene.numSpawnedFuels);
 }
 
 // Wrapper to spawn fuel every 3s

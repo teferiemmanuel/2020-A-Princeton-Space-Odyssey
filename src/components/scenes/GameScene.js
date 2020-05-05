@@ -32,7 +32,7 @@ class GameScene extends Scene {
         const flower = new Flower(this);
         const lights = new BasicLights();
 
-        var positionVec = new Vector3(0, 0 , 5);
+        var positionVec = new Vector3(0, 0, 5);
         const fuel = new Fuel(this, 'yellow', positionVec);
 
         // add audio to scene
@@ -54,6 +54,7 @@ class GameScene extends Scene {
         });
 
         this.music = music;
+        this.numSpawnedFuels = 1;
 
         /*
         // add cockpit to scene
@@ -114,11 +115,12 @@ class GameScene extends Scene {
         var positionVec = new Vector3(xRandom, yRandom, zRandom);
 
         // Random color
-        var colorOptions = [ "red", "green", "yellow"];
-        var colorChosen =  colorOptions[Math.floor((Math.random() * 2) + 1)];
+        var colorOptions = ['red', 'green', 'yellow'];
+        var colorChosen = colorOptions[Math.floor(Math.random() * 2)];
 
         const fuel = new Fuel(this, colorChosen, positionVec);
         this.add(fuel);
+        this.numSpawnedFuels++;
     }
 }
 
