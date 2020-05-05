@@ -82,7 +82,6 @@ const onAnimationFrameHandler = (timeStamp) => {
     renderer.render(gameScene, camera);
 
     composer.render();
-    composer.reset();
 
     gameScene.update && gameScene.update(timeStamp);
     if (gameScene.hasFuelCollision()) {
