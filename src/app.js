@@ -18,8 +18,8 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 //import { MeshToonMaterial, DoubleSide, TetrahedronBufferGeometry, PlaneBufferGeometry, Mesh } from 'three';
 
 // Initialize core ThreeJS components
-const gameScene = new GameScene();
 const camera = new PerspectiveCamera();
+const gameScene = new GameScene(camera);
 const renderer = new WebGLRenderer({ antialias: true });
 
 // Set up camera

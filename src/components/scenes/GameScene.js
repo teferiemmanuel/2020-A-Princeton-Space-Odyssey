@@ -1,6 +1,6 @@
 import * as Dat from 'dat.gui';
 import { Scene, Color, Vector3 } from 'three';
-import { Flower, Land, Fuel } from 'objects';
+import { Flower, Land, Fuel, Player } from 'objects';
 import { BasicLights } from 'lights';
 import { AudioListener, Audio, AudioLoader } from 'three';
 import Corneria from '../audio/corneria_ultimate.mp3';
@@ -14,7 +14,7 @@ import {
 const introDOM = document.getElementById('splash');
 
 class GameScene extends Scene {
-    constructor() {
+    constructor(camera) {
         // Call parent Scene() constructor
         super();
 
@@ -27,6 +27,8 @@ class GameScene extends Scene {
         // Set background to a nice color
         this.background = new Color(0x000000);
 
+        this.camera = camera;
+
         // Add meshes to scene
         const land = new Land();
         const flower = new Flower(this);
@@ -34,6 +36,10 @@ class GameScene extends Scene {
 
         var positionVec = new Vector3(0, 0, 5);
         const fuel = new Fuel(this, 'yellow', positionVec);
+        const player = new Player(this, this.camera.position);
+
+        this.playerBounds = player.boundingSphere;
+
 
         // add audio to scene
         // create an AudioListener and add it to the camera?
@@ -83,7 +89,7 @@ class GameScene extends Scene {
         this.tetra = tetra.mesh;
         */
 
-        this.add(lights, fuel);
+        this.add(lights, fuel, player);
 
         // Populate GUI
     }
@@ -119,8 +125,21 @@ class GameScene extends Scene {
         var colorChosen = colorOptions[Math.floor(Math.random() * 3)];
 
         const fuel = new Fuel(this, colorChosen, positionVec);
+
         this.add(fuel);
         this.numSpawnedFuels++;
+    }
+
+    hasFuelCollision(){
+      let fuelObjs = this.getAllFuelObjects();
+      for (var i = 0; i < fuelObjs.length; i++) {
+        if(fuelObjs[i].boundingSphere.intersectsSphere(this.playerBounds)) {
+          this.fuelCollision = fuelObjs[i];
+          return true;
+        }
+      }
+      this.fuelCollision = null;
+      return false;
     }
 
     getAllFuelObjects(){
