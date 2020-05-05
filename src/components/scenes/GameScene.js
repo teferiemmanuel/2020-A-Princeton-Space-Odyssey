@@ -1,10 +1,11 @@
 import * as Dat from 'dat.gui';
-import { Scene, Color, Vector3, CubeTextureLoader, LinearFilter } from 'three';
+import { Scene, Color, Vector3, RepeatWrapping, TextureLoader, BackSide, SphereBufferGeometry } from 'three';
 import { Flower, Land, Fuel, Player } from 'objects';
 import { BasicLights } from 'lights';
 import { AudioListener, Audio, AudioLoader } from 'three';
 import Corneria from '../audio/corneria_ultimate.mp3';
 import {
+    MeshBasicMaterial,
     MeshToonMaterial,
     DoubleSide,
     TetrahedronBufferGeometry,
@@ -23,23 +24,6 @@ class GameScene extends Scene {
             rotationSpeed: 0,
             updateList: [],
         };
-
-        // set up background
-        // const loader = new CubeTextureLoader();
-        // const texture = loader.load([
-        //   'textures/starry-sky.jpg',
-        //   'textures/starry-sky.jpg',
-        //   'textures/starry-sky.jpg',
-        //   'textures/starry-sky.jpg',
-        //   'textures/starry-sky.jpg',
-        //   'textures/starry-sky.jpg',
-        //  ]);
-        //  texture.minFilter = LinearFilter;
-        //  this.background = texture;
-
-
-        // Set background to a nice color
-        //this.background = new Color(0x000000);
 
         this.camera = camera;
 
@@ -113,6 +97,8 @@ class GameScene extends Scene {
     }
 
     update(timeStamp) {
+        this.bgMesh.position.copy(this.camera.position);
+
         const { rotationSpeed, updateList } = this.state;
         this.rotation.y = (rotationSpeed * timeStamp) / 10000;
 
@@ -129,14 +115,14 @@ class GameScene extends Scene {
 
     spawnFuel() {
         // Random position
-        var xRandom = Math.floor(Math.random() * 21) - 10;
-        var yRandom = Math.floor(Math.random() * 21) - 10;
-        var zRandom = Math.floor(Math.random() * 21) - 10;
-        var positionVec = new Vector3(xRandom, yRandom, zRandom);
+        const xRandom = Math.floor(Math.random() * 21) - 10;
+        const yRandom = Math.floor(Math.random() * 21) - 10;
+        const zRandom = Math.floor(Math.random() * 21) - 10;
+        const positionVec = new Vector3(xRandom, yRandom, zRandom);
 
         // Random color
-        var colorOptions = ['red', 'green', 'yellow'];
-        var colorChosen = colorOptions[Math.floor(Math.random() * 3)];
+        const colorOptions = ['red', 'green', 'yellow'];
+        const colorChosen = colorOptions[Math.floor(Math.random() * 3)];
 
         const fuel = new Fuel(this, colorChosen, positionVec);
 
@@ -164,6 +150,32 @@ class GameScene extends Scene {
         }
       }
       return fuelObjs;
+    }
+
+    createBackgroundScene() {
+      const bgScene = new Scene();
+      let bgMesh;
+
+      const loader = new TextureLoader();
+      const texture = loader.load(
+        'textures/space2.png',
+      );
+
+      texture.wrapS = RepeatWrapping;
+      texture.wrapT = RepeatWrapping;
+      texture.repeat.set( 15, 15 );
+
+      const material = new MeshBasicMaterial({
+        map: texture,
+        side: BackSide,
+      });
+
+      const plane = new SphereBufferGeometry(100, 7, 7);
+      bgMesh = new Mesh(plane, material);
+
+      bgScene.add(bgMesh);
+      this.bgMesh = bgMesh;
+      return bgScene;
     }
 }
 
