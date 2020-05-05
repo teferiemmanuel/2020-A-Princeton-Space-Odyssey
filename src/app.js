@@ -6,7 +6,7 @@
  * handles window resizes.
  *
  */
-import { WebGLRenderer, PerspectiveCamera, Vector3, Vector2, Clock } from 'three';
+import { WebGLRenderer, PerspectiveCamera, Vector3, Vector2, Clock, Mesh, MeshBasicMaterial, LinearFilter, Scene, TextureLoader, ShaderLib, ShaderMaterial, BackSide, SphereBufferGeometry, RepeatWrapping } from 'three';
 import { FlyControls } from './FlyControls.js';
 //import { FirstPersonControls } from './FirstPersonControls.js';
 //import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
@@ -20,7 +20,9 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 // Initialize core ThreeJS components
 const camera = new PerspectiveCamera();
 const gameScene = new GameScene(camera);
+
 const renderer = new WebGLRenderer({ antialias: true });
+renderer.autoClearColor = false
 
 // Set up camera
 camera.position.set(6, 3, -10);
@@ -54,6 +56,9 @@ controls.movementSpeed = 0.02;
 
 // Bloom Pass Rendering
 var renderScene = new RenderPass(gameScene, camera);
+console.log("Width: " + window.innerWidth);
+console.log("Height: " + window.innerHeight);
+
 var bloomPass = new UnrealBloomPass( new Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85 );
 bloomPass.threshold = 0;
 bloomPass.strength = 2;
@@ -63,8 +68,40 @@ bloomPass.exposure = 1;
 
 var composer = new EffectComposer(renderer);
 composer.renderToScreen = true
+// composer.addPass(renderScene);
+// composer.addPass(bloomPass);
+
+const bgScene = new Scene();
+let bgMesh;
+{
+  const loader = new TextureLoader();
+  const texture = loader.load(
+    'textures/space2.png',
+  );
+  // texture.magFilter = LinearFilter;
+  // texture.minFilter = LinearFilter;
+  texture.wrapS = RepeatWrapping;
+  texture.wrapT = RepeatWrapping;
+  texture.repeat.set( 15, 15 );
+
+
+  const material = new MeshBasicMaterial({
+            map:         texture,
+            side: BackSide,
+
+  })
+
+  const plane = new SphereBufferGeometry(100, 7, 7);
+  bgMesh = new Mesh(plane, material);
+
+  bgScene.add(bgMesh);
+}
+
+var renderBgScene = new RenderPass(bgScene, camera);
+composer.addPass(renderBgScene);
 composer.addPass(renderScene);
 composer.addPass(bloomPass);
+
 
 
 
@@ -72,9 +109,12 @@ composer.addPass(bloomPass);
 const onAnimationFrameHandler = (timeStamp) => {
     //controls.update();
     controls.update(20); // empirically determined...what do you guys think?
+    bgMesh.position.copy(camera.position);
+    renderer.render(bgScene, camera);
     renderer.render(gameScene, camera);
 
     composer.render();
+    composer.reset();
 
     gameScene.update && gameScene.update(timeStamp);
     if (gameScene.hasFuelCollision()) {

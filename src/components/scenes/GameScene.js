@@ -1,5 +1,5 @@
 import * as Dat from 'dat.gui';
-import { Scene, Color, Vector3 } from 'three';
+import { Scene, Color, Vector3, CubeTextureLoader, LinearFilter } from 'three';
 import { Flower, Land, Fuel, Player } from 'objects';
 import { BasicLights } from 'lights';
 import { AudioListener, Audio, AudioLoader } from 'three';
@@ -24,8 +24,22 @@ class GameScene extends Scene {
             updateList: [],
         };
 
+        // set up background
+        // const loader = new CubeTextureLoader();
+        // const texture = loader.load([
+        //   'textures/starry-sky.jpg',
+        //   'textures/starry-sky.jpg',
+        //   'textures/starry-sky.jpg',
+        //   'textures/starry-sky.jpg',
+        //   'textures/starry-sky.jpg',
+        //   'textures/starry-sky.jpg',
+        //  ]);
+        //  texture.minFilter = LinearFilter;
+        //  this.background = texture;
+
+
         // Set background to a nice color
-        this.background = new Color(0x000000);
+        //this.background = new Color(0x000000);
 
         this.camera = camera;
 
