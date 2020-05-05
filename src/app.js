@@ -53,9 +53,7 @@ controls.movementSpeed = 0.02;
 
 
 // Bloom Pass Rendering
-var clock = new Clock();
 var renderScene = new RenderPass(gameScene, camera);
-
 var bloomPass = new UnrealBloomPass( new Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85 );
 bloomPass.threshold = 0;
 bloomPass.strength = 3;
@@ -76,7 +74,6 @@ const onAnimationFrameHandler = (timeStamp) => {
     controls.update(20); // empirically determined...what do you guys think?
     renderer.render(gameScene, camera);
 
-    const delta = clock.getDelta();
     composer.render();
 
     gameScene.update && gameScene.update(timeStamp);
