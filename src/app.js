@@ -56,7 +56,7 @@ controls.movementSpeed = 0.02;
 var renderScene = new RenderPass(gameScene, camera);
 var bloomPass = new UnrealBloomPass( new Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85 );
 bloomPass.threshold = 0;
-bloomPass.strength = 3;
+bloomPass.strength = 2;
 bloomPass.radius = 0.37;
 bloomPass.exposure = 1;
 
