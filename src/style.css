@@ -48,9 +48,14 @@ h2 {
     height: 100vh;
 }
 
-#controls {
+#hud {
     position: absolute;
     width: 100%;
+    display: none;
+    color: #f39f49;
+}
+
+#controls {
     padding: 10px;
     text-align: center;
 }

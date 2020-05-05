@@ -27,6 +27,12 @@ class GameScene extends Scene {
 
         this.camera = camera;
 
+        // Class constants
+        this.STARTING_SECONDS = 45;
+        this.STARTING_FUELS = 1;
+        this.STARTING_COLLECTED_FUELS = 0;
+
+
         // Add meshes to scene
         const land = new Land();
         const flower = new Flower(this);
@@ -58,7 +64,9 @@ class GameScene extends Scene {
         });
 
         this.music = music;
-        this.numSpawnedFuels = 1;
+        this.gameTimeRem = this.STARTING_SECONDS;
+        this.numSpawnedFuels = this.STARTING_FUELS;
+        this.numCollectedFuels = this.STARTING_COLLECTED_FUELS;
 
         /*
         // add cockpit to scene
