@@ -59,7 +59,7 @@ controls.maxDistance = 16;
 controls.update();
 */
 //const controls = new FirstPersonControls(camera, canvas);
-const controls = new FlyControls(camera, canvas);
+const controls = new Controls(camera, canvas);
 controls.autoForward = false;
 controls.movementSpeed = 0.02;
 
@@ -107,9 +107,8 @@ const onAnimationFrameHandler = (timeStamp) => {
 
     window.requestAnimationFrame(onAnimationFrameHandler);
 
-    // Update fuel collected HUD. This will be moved to whichever function handles collision!
-    document.getElementById('fuelCollectedVal').innerHTML =
-        gameScene.numCollectedFuels;
+    // Update HUD values
+    updateHUD();
 };
 window.requestAnimationFrame(onAnimationFrameHandler);
 
@@ -125,6 +124,16 @@ const windowResizeHandler = () => {
 windowResizeHandler();
 window.addEventListener('resize', windowResizeHandler, false);
 
+// Update HUD values
+function updateHUD() {
+    document.getElementById('fuelCollectedVal').innerHTML =
+        gameScene.numCollectedFuels;
+    document.getElementById('timeRemainingVal').innerHTML =
+        gameScene.gameTimeRem + ' seconds remaining';
+    document.getElementById('timeRemainingProg').value =
+        (gameScene.gameTimeRem / gameScene.STARTING_SECONDS) * 100;
+}
+
 // Check if splash screen is up; If not, spawn fuel
 function checkSplashAndSpawn() {
     // Check if splash screen is still displayed
@@ -135,7 +144,7 @@ function checkSplashAndSpawn() {
     }
 }
 
-// Display time remaining
+// Update time remaining
 window.setInterval(function () {
     const splash = document.getElementById('splash');
     const hud = document.getElementById('hud');
@@ -151,9 +160,6 @@ window.setInterval(function () {
         gameScene.numSpawnedFuels = gameScene.STARTING_FUELS;
         gameScene.numCollectedFuels = gameScene.STARTING_COLLECTED_FUELS;
         gameScene.children = [];
-    } else {
-        document.getElementById('timeRemainingVal').innerHTML =
-            gameScene.gameTimeRem + ' seconds remaining';
     }
     // Only decrement time if splash is gone
     if (splash.style.display === 'none') {

@@ -1,19 +1,23 @@
+// Controls.js
+// modified from FlyControls.js,
+// PointerLockControls.js, and
+// FirstPersonControls.js
+// Original authors listed below
+
 /**
  * @author James Baicoianu / http://www.baicoianu.com/
+ * @author mrdoob / http://mrdoob.com/
+ * @author Mugen87 / https://github.com/Mugen87
+ * @author alteredq / http://alteredqualia.com/
+ * @author paulirish / http://paulirish.com/
  */
 
-/*
-import {
-	Quaternion,
-	Vector3
-} from "../../../build/three.module.js";
-*/
 import { Quaternion, Vector3 } from 'three';
 
-var FlyControls = function (object, domElement) {
+var Controls = function (object, domElement) {
     if (domElement === undefined) {
         console.warn(
-            'THREE.FlyControls: The second parameter "domElement" is now mandatory.'
+            'Controls: The second parameter "domElement" is now mandatory.'
         );
         domElement = document;
     }
@@ -337,4 +341,4 @@ var FlyControls = function (object, domElement) {
     this.updateRotationVector();
 };
 
-export { FlyControls };
+export { Controls };
