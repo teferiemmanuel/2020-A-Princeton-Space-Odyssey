@@ -152,13 +152,14 @@ class GameScene extends Scene {
       return fuelObjs;
     }
 
+    // creates a space background scene that can be used by the renderer
     createBackgroundScene() {
       const bgScene = new Scene();
       let bgMesh;
 
       const loader = new TextureLoader();
       const texture = loader.load(
-        'textures/space2.png',
+        'textures/spaceGameBackground.png',
       );
 
       texture.wrapS = RepeatWrapping;
