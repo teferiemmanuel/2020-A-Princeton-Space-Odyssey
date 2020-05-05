@@ -60,6 +60,18 @@ h2 {
     text-align: center;
 }
 
+#fuelCollected {
+    display: inline-block;
+    position: absolute;
+    left: 10%;
+}
+
+#fuelBar {
+    display: inline-block;
+    position: absolute;
+    right: 10%;
+}
+
 /* User won't see unloaded CSS with this */
 #loadOverlay {
     display: none;

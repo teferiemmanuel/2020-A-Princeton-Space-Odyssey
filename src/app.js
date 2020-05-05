@@ -117,7 +117,6 @@ function checkSplashAndSpawn() {
 
 // Display time remaining
 window.setInterval(function () {
-    console.log(gameScene.STARTING_SECONDS);
     const splash = document.getElementById('splash');
     const hud = document.getElementById('hud');
 
@@ -125,6 +124,7 @@ window.setInterval(function () {
         document.getElementById('timeRemainingVal').innerHTML = 'Finished';
         splash.style.display = 'block';
         hud.style.display = 'none';
+
         // Reset the important parts of scene; Could be a better way to just clear scene?
         gameScene.gameTimeRem = gameScene.STARTING_SECONDS;
         gameScene.numSpawnedFuels = gameScene.STARTING_FUELS;
