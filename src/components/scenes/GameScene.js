@@ -186,6 +186,24 @@ class GameScene extends Scene {
       this.bgMesh = bgMesh;
       return bgScene;
     }
+
+    handleCollectedFuel(collectedFuel){
+      console.log(collectedFuel);
+      // for now, let's dispose of them
+      this.remove(collectedFuel);
+
+      collectedFuel.innerRing.geometry.dispose();
+      collectedFuel.innerRing.material.dispose();
+
+      collectedFuel.outerRing.geometry.dispose();
+      collectedFuel.outerRing.material.dispose();
+
+      collectedFuel.energyOrb.geometry.dispose();
+      collectedFuel.energyOrb.material.dispose();
+
+
+      this.fuelCollision == null;
+    }
 }
 
 export default GameScene;
