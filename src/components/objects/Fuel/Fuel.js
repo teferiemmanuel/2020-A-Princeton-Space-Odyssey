@@ -127,7 +127,7 @@ function createEnergyOrbMesh() {
 
   // create orb mesh
   energyOrb.mesh = new Mesh( energyOrb.geometry,  energyOrb.material);
-  // energyOrb.mesh.layers.set(1);
+  energyOrb.mesh.layers.set(1);
   energyOrb.isMesh = true;
 
   return energyOrb;

@@ -29,14 +29,14 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 
 // Initialize core ThreeJS components
 const camera = new PerspectiveCamera();
-const gameScene = new GameScene(camera);
-
-const renderer = new WebGLRenderer({ antialias: true });
-renderer.autoClearColor = false
-
 // Set up camera
 camera.position.set(6, 3, -10);
 camera.lookAt(new Vector3(0, 0, 0));
+camera.layers.enable(1);
+
+const gameScene = new GameScene(camera);
+
+const renderer = new WebGLRenderer({ antialias: true });
 
 /*
 camera.add(gameScene.tetra);
@@ -64,16 +64,7 @@ controls.autoForward = false;
 controls.movementSpeed = 0.02;
 
 // Bloom Pass Rendering
-var ENTIRE_SCENE = 0, BLOOM_SCENE = 1;
-var darkMaterial = new MeshBasicMaterial( { color: "black" } );
-var materials = {};
-
-var bloomLayer = new Layers();
-bloomLayer.set(BLOOM_SCENE);
-
 const renderScene = new RenderPass(gameScene, camera);
-const bgScene = gameScene.createBackgroundScene();
-const renderBgScene = new RenderPass(bgScene, camera);
 var bloomPass = new UnrealBloomPass(
     new Vector2(window.innerWidth, window.innerHeight),
     1.5,
@@ -81,48 +72,31 @@ var bloomPass = new UnrealBloomPass(
     0.85
 );
 bloomPass.threshold = 0;
-bloomPass.strength = 2;
+bloomPass.strength = 1.25;
 bloomPass.radius = 0.37;
 bloomPass.exposure = 1;
+bloomPass.renderToScreen = true;
+
 
 const composer = new EffectComposer(renderer);
-composer.renderToScreen = true;
-composer.addPass(renderBgScene);
 composer.addPass(renderScene);
 composer.addPass(bloomPass);
-
-//
-// var finalPass = new ShaderPass(
-//   new ShaderMaterial( {
-//     uniforms: {
-//       baseTexture: { value: null },
-//       bloomTexture: { value: composer.renderTarget2.texture }
-//     },
-//     vertexShader: document.getElementById( 'vertexshader' ).textContent,
-//     fragmentShader: document.getElementById( 'fragmentshader' ).textContent,
-//     defines: {}
-//   } ), "baseTexture"
-// );
-// finalPass.needsSwap = true;
-//
-// var finalComposer = new EffectComposer( renderer );
-// // finalComposer.addPass( renderBgScene );
-// finalComposer.addPass( renderScene );
-// finalComposer.addPass( finalPass );
-
-
 
 // Render loop
 const onAnimationFrameHandler = (timeStamp) => {
     //controls.update();
     controls.update(20); // empirically determined...what do you guys think?
 
-    composer.render();
-    //
-	  // gameScene.traverse(restoreMaterial);
-    // bgScene.traverse(restoreMaterial);
+    renderer.autoClear = false;
 
-    // finalComposer.render();
+    renderer.clear();
+
+    camera.layers.set(1);
+    composer.render();
+
+    renderer.clearDepth();
+    camera.layers.set(0);
+    renderer.render(gameScene, camera);
 
 
     gameScene.update && gameScene.update(timeStamp);
@@ -143,7 +117,6 @@ window.requestAnimationFrame(onAnimationFrameHandler);
 const windowResizeHandler = () => {
     const { innerHeight, innerWidth } = window;
     renderer.setSize(innerWidth, innerHeight);
-    // finalComposer.setSize(innerWidth, innerHeight);
     composer.setSize(innerWidth, innerHeight);
 
     camera.aspect = innerWidth / innerHeight;

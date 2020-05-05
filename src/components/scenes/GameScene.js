@@ -44,6 +44,8 @@ class GameScene extends Scene {
 
         this.playerBounds = player.boundingSphere;
 
+        this.createBackground();
+
 
         // add audio to scene
         // create an AudioListener and add it to the camera?
@@ -105,8 +107,6 @@ class GameScene extends Scene {
     }
 
     update(timeStamp) {
-        this.bgMesh.position.copy(this.camera.position);
-
         const { rotationSpeed, updateList } = this.state;
         this.rotation.y = (rotationSpeed * timeStamp) / 10000;
 
@@ -161,10 +161,7 @@ class GameScene extends Scene {
     }
 
     // creates a space background scene that can be used by the renderer
-    createBackgroundScene() {
-      const bgScene = new Scene();
-      let bgMesh;
-
+    createBackground() {
       const loader = new TextureLoader();
       const texture = loader.load(
         'textures/spaceGameBackground.png',
@@ -179,12 +176,17 @@ class GameScene extends Scene {
         side: BackSide,
       });
 
-      const plane = new SphereBufferGeometry(100, 7, 7);
-      bgMesh = new Mesh(plane, material);
+      const plane = new SphereBufferGeometry(500, 7, 7);
+      let bgMesh = new Mesh(plane, material);
 
-      bgScene.add(bgMesh);
+      bgMesh.position.x = this.camera.position.x;
+      bgMesh.position.y = this.camera.position.y;
+      bgMesh.position.z = this.camera.position.z;
+      bgMesh.layers.set(1);
+
       this.bgMesh = bgMesh;
-      return bgScene;
+
+      this.add(bgMesh);
     }
 
     handleCollectedFuel(collectedFuel){
