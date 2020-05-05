@@ -13,6 +13,7 @@ import { FlyControls } from './FlyControls.js';
 import { GameScene } from 'scenes';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import { BloomPass } from 'three/examples/jsm/postprocessing/BloomPass.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 //import { MeshToonMaterial, DoubleSide, TetrahedronBufferGeometry, PlaneBufferGeometry, Mesh } from 'three';
 
@@ -57,8 +58,9 @@ var renderScene = new RenderPass(gameScene, camera);
 
 var bloomPass = new UnrealBloomPass( new Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85 );
 bloomPass.threshold = 0;
-bloomPass.strength = .01;
-bloomPass.radius = 0.1;
+bloomPass.strength = 3;
+bloomPass.radius = 0.37;
+bloomPass.exposure = 1;
 
 
 var composer = new EffectComposer(renderer);
@@ -86,7 +88,7 @@ window.requestAnimationFrame(onAnimationFrameHandler);
 const windowResizeHandler = () => {
     const { innerHeight, innerWidth } = window;
     renderer.setSize(innerWidth, innerHeight);
-    // composer.setSize(innerWidth, innerHeight);
+    composer.setSize(innerWidth, innerHeight);
 
     camera.aspect = innerWidth / innerHeight;
     camera.updateProjectionMatrix();
