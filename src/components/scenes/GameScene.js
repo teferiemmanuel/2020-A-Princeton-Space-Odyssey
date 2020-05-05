@@ -25,7 +25,7 @@ class GameScene extends Scene {
         };
 
         // Set background to a nice color
-        this.background = new Color(0x7ec0ee);
+        this.background = new Color(0x000000);
 
         // Add meshes to scene
         const land = new Land();
@@ -83,7 +83,7 @@ class GameScene extends Scene {
         this.tetra = tetra.mesh;
         */
 
-        this.add(land, flower, lights, fuel);
+        this.add(lights, fuel);
 
         // Populate GUI
     }

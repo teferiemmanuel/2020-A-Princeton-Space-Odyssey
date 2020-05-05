@@ -26,7 +26,6 @@ class Fuel extends Group {
           this.fuelColor = 0xff0000;
         }
 
-
         let outerRingMesh = createOuterRingMesh();
         let innerRingMesh = createInnerRingMesh(this.fuelColor);
         let energyOrbMesh = createEnergyOrbMesh();

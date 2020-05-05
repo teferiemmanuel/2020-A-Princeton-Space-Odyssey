@@ -6,11 +6,14 @@
  * handles window resizes.
  *
  */
-import { WebGLRenderer, PerspectiveCamera, Vector3 } from 'three';
+import { WebGLRenderer, PerspectiveCamera, Vector3, Vector2, Clock } from 'three';
 import { FlyControls } from './FlyControls.js';
 //import { FirstPersonControls } from './FirstPersonControls.js';
 //import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GameScene } from 'scenes';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 //import { MeshToonMaterial, DoubleSide, TetrahedronBufferGeometry, PlaneBufferGeometry, Mesh } from 'three';
 
 // Initialize core ThreeJS components
@@ -47,11 +50,33 @@ const controls = new FlyControls(camera, canvas);
 controls.autoForward = false;
 controls.movementSpeed = 0.02;
 
+
+// Bloom Pass Rendering
+var clock = new Clock();
+var renderScene = new RenderPass(gameScene, camera);
+
+var bloomPass = new UnrealBloomPass( new Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85 );
+bloomPass.threshold = 0;
+bloomPass.strength = .01;
+bloomPass.radius = 0.1;
+
+
+var composer = new EffectComposer(renderer);
+composer.renderToScreen = true
+composer.addPass(renderScene);
+composer.addPass(bloomPass);
+
+
+
 // Render loop
 const onAnimationFrameHandler = (timeStamp) => {
     //controls.update();
-    controls.update(10); // empirically determined...what do you guys think?
+    controls.update(20); // empirically determined...what do you guys think?
     renderer.render(gameScene, camera);
+
+    const delta = clock.getDelta();
+    composer.render();
+
     gameScene.update && gameScene.update(timeStamp);
     window.requestAnimationFrame(onAnimationFrameHandler);
 };
@@ -61,6 +86,8 @@ window.requestAnimationFrame(onAnimationFrameHandler);
 const windowResizeHandler = () => {
     const { innerHeight, innerWidth } = window;
     renderer.setSize(innerWidth, innerHeight);
+    // composer.setSize(innerWidth, innerHeight);
+
     camera.aspect = innerWidth / innerHeight;
     camera.updateProjectionMatrix();
 };
