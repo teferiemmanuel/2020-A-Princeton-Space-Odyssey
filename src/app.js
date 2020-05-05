@@ -10,7 +10,10 @@ import {
     WebGLRenderer,
     PerspectiveCamera,
     Vector3,
-    Vector2
+    Vector2,
+    Layers,
+    ShaderMaterial,
+    MeshBasicMaterial
 } from 'three';
 import { FlyControls } from './FlyControls.js';
 //import { FirstPersonControls } from './FirstPersonControls.js';
@@ -18,6 +21,7 @@ import { FlyControls } from './FlyControls.js';
 import { GameScene } from 'scenes';
 import { BasicLights } from 'lights';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { BloomPass } from 'three/examples/jsm/postprocessing/BloomPass.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
@@ -60,6 +64,13 @@ controls.autoForward = false;
 controls.movementSpeed = 0.02;
 
 // Bloom Pass Rendering
+var ENTIRE_SCENE = 0, BLOOM_SCENE = 1;
+var darkMaterial = new MeshBasicMaterial( { color: "black" } );
+var materials = {};
+
+var bloomLayer = new Layers();
+bloomLayer.set(BLOOM_SCENE);
+
 const renderScene = new RenderPass(gameScene, camera);
 const bgScene = gameScene.createBackgroundScene();
 const renderBgScene = new RenderPass(bgScene, camera);
@@ -75,11 +86,29 @@ bloomPass.radius = 0.37;
 bloomPass.exposure = 1;
 
 const composer = new EffectComposer(renderer);
-composer.renderToScreen = true
+composer.renderToScreen = true;
 composer.addPass(renderBgScene);
 composer.addPass(renderScene);
 composer.addPass(bloomPass);
 
+//
+// var finalPass = new ShaderPass(
+//   new ShaderMaterial( {
+//     uniforms: {
+//       baseTexture: { value: null },
+//       bloomTexture: { value: composer.renderTarget2.texture }
+//     },
+//     vertexShader: document.getElementById( 'vertexshader' ).textContent,
+//     fragmentShader: document.getElementById( 'fragmentshader' ).textContent,
+//     defines: {}
+//   } ), "baseTexture"
+// );
+// finalPass.needsSwap = true;
+//
+// var finalComposer = new EffectComposer( renderer );
+// // finalComposer.addPass( renderBgScene );
+// finalComposer.addPass( renderScene );
+// finalComposer.addPass( finalPass );
 
 
 
@@ -87,10 +116,14 @@ composer.addPass(bloomPass);
 const onAnimationFrameHandler = (timeStamp) => {
     //controls.update();
     controls.update(20); // empirically determined...what do you guys think?
-    renderer.render(bgScene, camera);
-    renderer.render(gameScene, camera);
 
     composer.render();
+    //
+	  // gameScene.traverse(restoreMaterial);
+    // bgScene.traverse(restoreMaterial);
+
+    // finalComposer.render();
+
 
     gameScene.update && gameScene.update(timeStamp);
     if (gameScene.hasFuelCollision()) {
@@ -110,6 +143,7 @@ window.requestAnimationFrame(onAnimationFrameHandler);
 const windowResizeHandler = () => {
     const { innerHeight, innerWidth } = window;
     renderer.setSize(innerWidth, innerHeight);
+    // finalComposer.setSize(innerWidth, innerHeight);
     composer.setSize(innerWidth, innerHeight);
 
     camera.aspect = innerWidth / innerHeight;
@@ -135,8 +169,9 @@ window.setInterval(function () {
 
     if (gameScene.gameTimeRem <= 0) {
         document.getElementById('timeRemainingVal').innerHTML = 'Finished';
-        splash.style.display = 'block';
-        hud.style.display = 'none';
+        // commenting out for development purposes
+        // splash.style.display = 'block';
+        // hud.style.display = 'none';
 
         // Reset the important parts of scene; Could be a better way to just clear scene?
         gameScene.gameTimeRem = gameScene.STARTING_SECONDS;
@@ -157,3 +192,17 @@ window.setInterval(function () {
 window.setInterval(function () {
     checkSplashAndSpawn();
 }, 3000);
+
+function darkenNonBloomed( obj ) {
+	if ( obj.isMesh && bloomLayer.test(obj.layers) === false ) {
+		materials[ obj.uuid ] = obj.material;
+		obj.material = darkMaterial;
+	}
+}
+
+function restoreMaterial( obj ) {
+	if ( materials[ obj.uuid ] ) {
+		obj.material = materials[ obj.uuid ];
+		delete materials[ obj.uuid ];
+	}
+}

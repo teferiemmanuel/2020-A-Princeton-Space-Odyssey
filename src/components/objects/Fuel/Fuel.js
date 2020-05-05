@@ -12,6 +12,8 @@ class Fuel extends Group {
         // Call parent Group() constructor
         super();
 
+        // this.layers.set(1);
+
         if (color === 'red') {
           this.fuelColor = 0xff0000;
         }
@@ -83,6 +85,9 @@ function createOuterRingMesh() {
 
   // create ring mesh
   outerRing.mesh = new Mesh(outerRing.geometry, outerRing.material);
+  outerRing.mesh.layers.set(1);
+  outerRing.isMesh = true;
+
 
   return outerRing;
 }
@@ -101,6 +106,9 @@ function createInnerRingMesh(color) {
 
   // create ring mesh
   innerRing.mesh = new Mesh(innerRing.geometry, innerRing.material);
+  innerRing.mesh.layers.set(1);
+  innerRing.isMesh = true;
+
 
   return innerRing;
 }
@@ -119,6 +127,8 @@ function createEnergyOrbMesh() {
 
   // create orb mesh
   energyOrb.mesh = new Mesh( energyOrb.geometry,  energyOrb.material);
+  // energyOrb.mesh.layers.set(1);
+  energyOrb.isMesh = true;
 
   return energyOrb;
 }
