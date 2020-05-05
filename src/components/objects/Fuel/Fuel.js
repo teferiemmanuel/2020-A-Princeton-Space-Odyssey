@@ -26,9 +26,9 @@ class Fuel extends Group {
           this.fuelColor = 0xff0000;
         }
 
-        let outerRingMesh = createOuterRingMesh();
-        let innerRingMesh = createInnerRingMesh(this.fuelColor);
-        let energyOrbMesh = createEnergyOrbMesh();
+        let outerRing = createOuterRingMesh();
+        let innerRing = createInnerRingMesh(this.fuelColor);
+        let energyOrb = createEnergyOrbMesh();
 
         let boundingSphere = createBoundingSphere();
 
@@ -38,23 +38,23 @@ class Fuel extends Group {
 
         this.boundingSphere = boundingSphere;
 
-        outerRingMesh.position.x = positionVec.x;
-        outerRingMesh.position.y = positionVec.y;
-        outerRingMesh.position.z = positionVec.z;
-        this.add(outerRingMesh);
-        this.outerRingMesh = outerRingMesh
+        outerRing.mesh.position.x = positionVec.x;
+        outerRing.mesh.position.y = positionVec.y;
+        outerRing.mesh.position.z = positionVec.z;
+        this.add(outerRing.mesh);
+        this.outerRing = outerRing
 
-        innerRingMesh.position.x = positionVec.x;
-        innerRingMesh.position.y = positionVec.y;
-        innerRingMesh.position.z = positionVec.z;
-        this.add(innerRingMesh);
-        this.innerRingMesh = innerRingMesh
+        innerRing.mesh.position.x = positionVec.x;
+        innerRing.mesh.position.y = positionVec.y;
+        innerRing.mesh.position.z = positionVec.z;
+        this.add(innerRing.mesh);
+        this.innerRing = innerRing
 
-        energyOrbMesh.position.x = positionVec.x;
-        energyOrbMesh.position.y = positionVec.y;
-        energyOrbMesh.position.z = positionVec.z;
-        this.add(energyOrbMesh);
-        this.energyOrb = energyOrbMesh
+        energyOrb.mesh.position.x = positionVec.x;
+        energyOrb.mesh.position.y = positionVec.y;
+        energyOrb.mesh.position.z = positionVec.z;
+        this.add(energyOrb.mesh);
+        this.energyOrb = energyOrb.mesh
 
         // Add self to parent's update list
         parent.addToUpdateList(this);
@@ -63,9 +63,9 @@ class Fuel extends Group {
     update(timeStamp) {
       // if this starts moving, be sure add code to update the bounding Sphere location
 
-      this.outerRingMesh.rotation.z -= 0.005
-      this.innerRingMesh.rotation.z += 0.015;
-      this.innerRingMesh.rotation.y += 0.015;
+      this.outerRing.mesh.rotation.z -= 0.005
+      this.innerRing.mesh.rotation.z += 0.015;
+      this.innerRing.mesh.rotation.y += 0.015;
     }
 }
 
@@ -84,7 +84,7 @@ function createOuterRingMesh() {
   // create ring mesh
   outerRing.mesh = new Mesh(outerRing.geometry, outerRing.material);
 
-  return outerRing.mesh;
+  return outerRing;
 }
 
 function createInnerRingMesh(color) {
@@ -102,7 +102,7 @@ function createInnerRingMesh(color) {
   // create ring mesh
   innerRing.mesh = new Mesh(innerRing.geometry, innerRing.material);
 
-  return innerRing.mesh;
+  return innerRing;
 }
 
 function createEnergyOrbMesh() {
@@ -120,7 +120,7 @@ function createEnergyOrbMesh() {
   // create orb mesh
   energyOrb.mesh = new Mesh( energyOrb.geometry,  energyOrb.material);
 
-  return energyOrb.mesh;
+  return energyOrb;
 }
 
 function createBoundingSphere() {

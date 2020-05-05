@@ -86,7 +86,8 @@ const onAnimationFrameHandler = (timeStamp) => {
 
     gameScene.update && gameScene.update(timeStamp);
     if (gameScene.hasFuelCollision()) {
-        // TODO: perform some action
+      gameScene.numCollectedFuels++;
+      gameScene.handleCollectedFuel(gameScene.fuelCollision);
     }
 
     window.requestAnimationFrame(onAnimationFrameHandler);
