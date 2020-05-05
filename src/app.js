@@ -10,8 +10,7 @@ import {
     WebGLRenderer,
     PerspectiveCamera,
     Vector3,
-    Vector2,
-    Clock,
+    Vector2
 } from 'three';
 import { FlyControls } from './FlyControls.js';
 //import { FirstPersonControls } from './FirstPersonControls.js';
@@ -25,9 +24,11 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 //import { MeshToonMaterial, DoubleSide, TetrahedronBufferGeometry, PlaneBufferGeometry, Mesh } from 'three';
 
 // Initialize core ThreeJS components
-const gameScene = new GameScene();
 const camera = new PerspectiveCamera();
+const gameScene = new GameScene(camera);
+
 const renderer = new WebGLRenderer({ antialias: true });
+renderer.autoClearColor = false
 
 // Set up camera
 camera.position.set(6, 3, -10);
@@ -59,7 +60,9 @@ controls.autoForward = false;
 controls.movementSpeed = 0.02;
 
 // Bloom Pass Rendering
-var renderScene = new RenderPass(gameScene, camera);
+const renderScene = new RenderPass(gameScene, camera);
+const bgScene = gameScene.createBackgroundScene();
+const renderBgScene = new RenderPass(bgScene, camera);
 var bloomPass = new UnrealBloomPass(
     new Vector2(window.innerWidth, window.innerHeight),
     1.5,
@@ -71,20 +74,29 @@ bloomPass.strength = 2;
 bloomPass.radius = 0.37;
 bloomPass.exposure = 1;
 
-var composer = new EffectComposer(renderer);
-composer.renderToScreen = true;
+const composer = new EffectComposer(renderer);
+composer.renderToScreen = true
+composer.addPass(renderBgScene);
 composer.addPass(renderScene);
 composer.addPass(bloomPass);
+
+
+
 
 // Render loop
 const onAnimationFrameHandler = (timeStamp) => {
     //controls.update();
     controls.update(20); // empirically determined...what do you guys think?
+    renderer.render(bgScene, camera);
     renderer.render(gameScene, camera);
 
     composer.render();
 
     gameScene.update && gameScene.update(timeStamp);
+    if (gameScene.hasFuelCollision()) {
+      // TODO: perform some action
+    }
+
     window.requestAnimationFrame(onAnimationFrameHandler);
 
     // Update fuel collected HUD. This will be moved to whichever function handles collision!

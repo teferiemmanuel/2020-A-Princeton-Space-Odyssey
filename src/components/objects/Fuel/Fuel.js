@@ -1,4 +1,4 @@
-import { Vector3, Group } from 'three';
+import { Vector3, Group, Sphere } from 'three';
 import {
     MeshBasicMaterial,
     DoubleSide,
@@ -30,6 +30,14 @@ class Fuel extends Group {
         let innerRingMesh = createInnerRingMesh(this.fuelColor);
         let energyOrbMesh = createEnergyOrbMesh();
 
+        let boundingSphere = createBoundingSphere();
+
+        boundingSphere.center.x = positionVec.x;
+        boundingSphere.center.y = positionVec.y;
+        boundingSphere.center.z = positionVec.z;
+
+        this.boundingSphere = boundingSphere;
+
         outerRingMesh.position.x = positionVec.x;
         outerRingMesh.position.y = positionVec.y;
         outerRingMesh.position.z = positionVec.z;
@@ -53,6 +61,8 @@ class Fuel extends Group {
     }
 
     update(timeStamp) {
+      // if this starts moving, be sure add code to update the bounding Sphere location
+
       this.outerRingMesh.rotation.z -= 0.005
       this.innerRingMesh.rotation.z += 0.015;
       this.innerRingMesh.rotation.y += 0.015;
@@ -73,9 +83,6 @@ function createOuterRingMesh() {
 
   // create ring mesh
   outerRing.mesh = new Mesh(outerRing.geometry, outerRing.material);
-  outerRing.mesh.position.x = 0;
-  outerRing.mesh.position.y = 0;
-  outerRing.mesh.position.z = 5;
 
   return outerRing.mesh;
 }
@@ -94,9 +101,6 @@ function createInnerRingMesh(color) {
 
   // create ring mesh
   innerRing.mesh = new Mesh(innerRing.geometry, innerRing.material);
-  innerRing.mesh.position.x = 0;
-  innerRing.mesh.position.y = 0;
-  innerRing.mesh.position.z = 5;
 
   return innerRing.mesh;
 }
@@ -115,11 +119,17 @@ function createEnergyOrbMesh() {
 
   // create orb mesh
   energyOrb.mesh = new Mesh( energyOrb.geometry,  energyOrb.material);
-  energyOrb.mesh.position.x = 0;
-  energyOrb.mesh.position.y = 0;
-  energyOrb.mesh.position.z = 5;
 
   return energyOrb.mesh;
+}
+
+function createBoundingSphere() {
+
+  let boundingSphere = {}
+
+  boundingSphere = new Sphere(new Vector3(), 0.35);
+
+  return boundingSphere;
 }
 
 export default Fuel;

@@ -1,10 +1,11 @@
 import * as Dat from 'dat.gui';
-import { Scene, Color, Vector3 } from 'three';
-import { Flower, Land, Fuel } from 'objects';
+import { Scene, Color, Vector3, RepeatWrapping, TextureLoader, BackSide, SphereBufferGeometry } from 'three';
+import { Flower, Land, Fuel, Player } from 'objects';
 import { BasicLights } from 'lights';
 import { AudioListener, Audio, AudioLoader } from 'three';
 import Corneria from '../audio/corneria_ultimate.mp3';
 import {
+    MeshBasicMaterial,
     MeshToonMaterial,
     DoubleSide,
     TetrahedronBufferGeometry,
@@ -14,7 +15,7 @@ import {
 const introDOM = document.getElementById('splash');
 
 class GameScene extends Scene {
-    constructor() {
+    constructor(camera) {
         // Call parent Scene() constructor
         super();
 
@@ -24,13 +25,13 @@ class GameScene extends Scene {
             updateList: [],
         };
 
+        this.camera = camera;
+
         // Class constants
         this.STARTING_SECONDS = 45;
         this.STARTING_FUELS = 1;
         this.STARTING_COLLECTED_FUELS = 0;
 
-        // Set background to a nice color
-        this.background = new Color(0x000000);
 
         // Add meshes to scene
         const land = new Land();
@@ -39,6 +40,10 @@ class GameScene extends Scene {
 
         var positionVec = new Vector3(0, 0, 5);
         const fuel = new Fuel(this, 'yellow', positionVec);
+        const player = new Player(this, this.camera.position);
+
+        this.playerBounds = player.boundingSphere;
+
 
         // add audio to scene
         // create an AudioListener and add it to the camera?
@@ -90,7 +95,7 @@ class GameScene extends Scene {
         this.tetra = tetra.mesh;
         */
 
-        this.add(lights, fuel);
+        this.add(lights, fuel, player);
 
         // Populate GUI
     }
@@ -100,6 +105,8 @@ class GameScene extends Scene {
     }
 
     update(timeStamp) {
+        this.bgMesh.position.copy(this.camera.position);
+
         const { rotationSpeed, updateList } = this.state;
         this.rotation.y = (rotationSpeed * timeStamp) / 10000;
 
@@ -116,18 +123,68 @@ class GameScene extends Scene {
 
     spawnFuel() {
         // Random position
-        var xRandom = Math.floor(Math.random() * 21) - 10;
-        var yRandom = Math.floor(Math.random() * 21) - 10;
-        var zRandom = Math.floor(Math.random() * 21) - 10;
-        var positionVec = new Vector3(xRandom, yRandom, zRandom);
+        const xRandom = Math.floor(Math.random() * 21) - 10;
+        const yRandom = Math.floor(Math.random() * 21) - 10;
+        const zRandom = Math.floor(Math.random() * 21) - 10;
+        const positionVec = new Vector3(xRandom, yRandom, zRandom);
 
         // Random color
-        var colorOptions = ['red', 'green', 'yellow'];
-        var colorChosen = colorOptions[Math.floor(Math.random() * 3)];
+        const colorOptions = ['red', 'green', 'yellow'];
+        const colorChosen = colorOptions[Math.floor(Math.random() * 3)];
 
         const fuel = new Fuel(this, colorChosen, positionVec);
+
         this.add(fuel);
         this.numSpawnedFuels++;
+    }
+
+    hasFuelCollision(){
+      let fuelObjs = this.getAllFuelObjects();
+      for (var i = 0; i < fuelObjs.length; i++) {
+        if(fuelObjs[i].boundingSphere.intersectsSphere(this.playerBounds)) {
+          this.fuelCollision = fuelObjs[i];
+          return true;
+        }
+      }
+      this.fuelCollision = null;
+      return false;
+    }
+
+    getAllFuelObjects(){
+      let fuelObjs = [];
+      for (var i = 0; i < this.children.length; i++) {
+        if(this.children[i] instanceof Fuel) {
+          fuelObjs.push(this.children[i]);
+        }
+      }
+      return fuelObjs;
+    }
+
+    // creates a space background scene that can be used by the renderer
+    createBackgroundScene() {
+      const bgScene = new Scene();
+      let bgMesh;
+
+      const loader = new TextureLoader();
+      const texture = loader.load(
+        'textures/spaceGameBackground.png',
+      );
+
+      texture.wrapS = RepeatWrapping;
+      texture.wrapT = RepeatWrapping;
+      texture.repeat.set( 15, 15 );
+
+      const material = new MeshBasicMaterial({
+        map: texture,
+        side: BackSide,
+      });
+
+      const plane = new SphereBufferGeometry(100, 7, 7);
+      bgMesh = new Mesh(plane, material);
+
+      bgScene.add(bgMesh);
+      this.bgMesh = bgMesh;
+      return bgScene;
     }
 }
 
