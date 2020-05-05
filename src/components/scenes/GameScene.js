@@ -122,6 +122,16 @@ class GameScene extends Scene {
         this.add(fuel);
         this.numSpawnedFuels++;
     }
+
+    getAllFuelObjects(){
+      let fuelObjs = [];
+      for (var i = 0; i < this.children.length; i++) {
+        if(this.children[i] instanceof Fuel) {
+          fuelObjs.push(this.children[i]);
+        }
+      }
+      return fuelObjs;
+    }
 }
 
 export default GameScene;
