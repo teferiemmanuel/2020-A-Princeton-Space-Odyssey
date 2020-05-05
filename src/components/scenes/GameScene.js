@@ -24,6 +24,11 @@ class GameScene extends Scene {
             updateList: [],
         };
 
+        // Class constants
+        this.STARTING_SECONDS = 45;
+        this.STARTING_FUELS = 1;
+        this.STARTING_COLLECTED_FUELS = 0;
+
         // Set background to a nice color
         this.background = new Color(0x000000);
 
@@ -54,7 +59,9 @@ class GameScene extends Scene {
         });
 
         this.music = music;
-        this.numSpawnedFuels = 1;
+        this.gameTimeRem = this.STARTING_SECONDS;
+        this.numSpawnedFuels = this.STARTING_FUELS;
+        this.numCollectedFuels = this.STARTING_COLLECTED_FUELS;
 
         /*
         // add cockpit to scene

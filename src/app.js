@@ -6,11 +6,18 @@
  * handles window resizes.
  *
  */
-import { WebGLRenderer, PerspectiveCamera, Vector3, Vector2, Clock } from 'three';
+import {
+    WebGLRenderer,
+    PerspectiveCamera,
+    Vector3,
+    Vector2,
+    Clock,
+} from 'three';
 import { FlyControls } from './FlyControls.js';
 //import { FirstPersonControls } from './FirstPersonControls.js';
 //import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GameScene } from 'scenes';
+import { BasicLights } from 'lights';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { BloomPass } from 'three/examples/jsm/postprocessing/BloomPass.js';
@@ -51,22 +58,23 @@ const controls = new FlyControls(camera, canvas);
 controls.autoForward = false;
 controls.movementSpeed = 0.02;
 
-
 // Bloom Pass Rendering
 var renderScene = new RenderPass(gameScene, camera);
-var bloomPass = new UnrealBloomPass( new Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85 );
+var bloomPass = new UnrealBloomPass(
+    new Vector2(window.innerWidth, window.innerHeight),
+    1.5,
+    0.4,
+    0.85
+);
 bloomPass.threshold = 0;
 bloomPass.strength = 2;
 bloomPass.radius = 0.37;
 bloomPass.exposure = 1;
 
-
 var composer = new EffectComposer(renderer);
-composer.renderToScreen = true
+composer.renderToScreen = true;
 composer.addPass(renderScene);
 composer.addPass(bloomPass);
-
-
 
 // Render loop
 const onAnimationFrameHandler = (timeStamp) => {
@@ -78,6 +86,10 @@ const onAnimationFrameHandler = (timeStamp) => {
 
     gameScene.update && gameScene.update(timeStamp);
     window.requestAnimationFrame(onAnimationFrameHandler);
+
+    // Update fuel collected HUD. This will be moved to whichever function handles collision!
+    document.getElementById('fuelCollectedVal').innerHTML =
+        gameScene.numCollectedFuels;
 };
 window.requestAnimationFrame(onAnimationFrameHandler);
 
@@ -101,8 +113,32 @@ function checkSplashAndSpawn() {
     if (splash.style.display === 'none' && gameScene.numSpawnedFuels < 10) {
         gameScene.spawnFuel();
     }
-    console.log(gameScene.numSpawnedFuels);
 }
+
+// Display time remaining
+window.setInterval(function () {
+    console.log(gameScene.STARTING_SECONDS);
+    const splash = document.getElementById('splash');
+    const hud = document.getElementById('hud');
+
+    if (gameScene.gameTimeRem <= 0) {
+        document.getElementById('timeRemainingVal').innerHTML = 'Finished';
+        splash.style.display = 'block';
+        hud.style.display = 'none';
+        // Reset the important parts of scene; Could be a better way to just clear scene?
+        gameScene.gameTimeRem = gameScene.STARTING_SECONDS;
+        gameScene.numSpawnedFuels = gameScene.STARTING_FUELS;
+        gameScene.numCollectedFuels = gameScene.STARTING_COLLECTED_FUELS;
+        gameScene.children = [];
+    } else {
+        document.getElementById('timeRemainingVal').innerHTML =
+            gameScene.gameTimeRem + ' seconds remaining';
+    }
+    // Only decrement time if splash is gone
+    if (splash.style.display === 'none') {
+        gameScene.gameTimeRem -= 1;
+    }
+}, 1000);
 
 // Wrapper to spawn fuel every 3s
 window.setInterval(function () {

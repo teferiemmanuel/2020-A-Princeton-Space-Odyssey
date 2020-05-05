@@ -9,7 +9,18 @@
         <!-- In-game HUD -->
         <div id="hud">
             <div id="controls">
-                WASD Move, R | F Up | Down, Q | E Roll, ↑ | ↓ Pitch, ← | → Yaw
+                <h3>
+                    WASD Move, R | F Up | Down, Q | E Roll, ↑ | ↓ Pitch, ← | →
+                    Yaw
+                </h3>
+            </div>
+            <!-- Fuel charges collected -->
+            <div id="fuelCollected">
+                <h3>Fuel Collected: <span id="fuelCollectedVal"></span> / 5</h3>
+            </div>
+            <!-- A 45s timer reflected on screen -->
+            <div id="fuelBar">
+                <h3><span id="timeRemainingVal"></span></h3>
             </div>
         </div>
         <!-- User won't see unloaded CSS with this -->
@@ -44,9 +55,12 @@
             <!-- Hide Start Splash -->
             <script>
                 function hideSplash() {
-                    var splash = document.getElementById('splash');
+                    const splash = document.getElementById('splash');
+                    const hud = document.getElementById('hud');
                     splash.style.display = 'none';
-                    var sound = document.getElementById('audio');
+                    hud.style.display = 'block';
+
+                    const sound = document.getElementById('audio');
                     sound.pause();
                     sound.currentTime = 0;
                 }
