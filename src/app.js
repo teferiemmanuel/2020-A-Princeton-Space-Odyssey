@@ -15,7 +15,7 @@ import {
     ShaderMaterial,
     MeshBasicMaterial
 } from 'three';
-import { FlyControls } from './FlyControls.js';
+import { Controls } from './Controls.js';
 //import { FirstPersonControls } from './FirstPersonControls.js';
 //import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GameScene } from 'scenes';
@@ -151,9 +151,8 @@ window.setInterval(function () {
 
     if (gameScene.gameTimeRem <= 0) {
         document.getElementById('timeRemainingVal').innerHTML = 'Finished';
-        // commenting out for development purposes
-        // splash.style.display = 'block';
-        // hud.style.display = 'none';
+        splash.style.display = 'block';
+        hud.style.display = 'none';
 
         // Reset the important parts of scene; Could be a better way to just clear scene?
         gameScene.gameTimeRem = gameScene.STARTING_SECONDS;
