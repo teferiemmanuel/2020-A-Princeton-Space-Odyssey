@@ -77,6 +77,10 @@ const onAnimationFrameHandler = (timeStamp) => {
     composer.render();
 
     gameScene.update && gameScene.update(timeStamp);
+    if (gameScene.hasFuelCollision()) {
+      // TODO: perform some action
+    }
+
     window.requestAnimationFrame(onAnimationFrameHandler);
 };
 window.requestAnimationFrame(onAnimationFrameHandler);
