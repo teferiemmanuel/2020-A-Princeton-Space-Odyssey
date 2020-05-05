@@ -53,6 +53,7 @@ h2 {
     width: 100%;
     display: none;
     color: #f39f49;
+    text-align: center;
 }
 
 #controls {
@@ -70,6 +71,26 @@ h2 {
     display: inline-block;
     position: absolute;
     right: 10%;
+}
+
+progress {
+    /* Reset the default appearance */
+    -webkit-appearance: none;
+    appearance: none;
+    width: 265px;
+    height: 20px;
+}
+
+progress::-webkit-progress-value {
+    background-image: -webkit-linear-gradient(
+            top,
+            rgba(255, 255, 255, 0.25),
+            rgba(0, 0, 0, 0.25)
+        ),
+        -webkit-linear-gradient(left, red, yellow, green, blue);
+
+    border-radius: 2px;
+    background-size: 35px 20px, 100% 100%, 100% 100%;
 }
 
 /* User won't see unloaded CSS with this */

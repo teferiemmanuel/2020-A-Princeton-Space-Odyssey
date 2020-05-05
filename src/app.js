@@ -6,12 +6,7 @@
  * handles window resizes.
  *
  */
-import {
-    WebGLRenderer,
-    PerspectiveCamera,
-    Vector3,
-    Vector2
-} from 'three';
+import { WebGLRenderer, PerspectiveCamera, Vector3, Vector2 } from 'three';
 import { FlyControls } from './FlyControls.js';
 //import { FirstPersonControls } from './FirstPersonControls.js';
 //import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
@@ -28,7 +23,7 @@ const camera = new PerspectiveCamera();
 const gameScene = new GameScene(camera);
 
 const renderer = new WebGLRenderer({ antialias: true });
-renderer.autoClearColor = false
+renderer.autoClearColor = false;
 
 // Set up camera
 camera.position.set(6, 3, -10);
@@ -75,13 +70,10 @@ bloomPass.radius = 0.37;
 bloomPass.exposure = 1;
 
 const composer = new EffectComposer(renderer);
-composer.renderToScreen = true
+composer.renderToScreen = true;
 composer.addPass(renderBgScene);
 composer.addPass(renderScene);
 composer.addPass(bloomPass);
-
-
-
 
 // Render loop
 const onAnimationFrameHandler = (timeStamp) => {
@@ -94,14 +86,13 @@ const onAnimationFrameHandler = (timeStamp) => {
 
     gameScene.update && gameScene.update(timeStamp);
     if (gameScene.hasFuelCollision()) {
-      // TODO: perform some action
+        // TODO: perform some action
     }
 
     window.requestAnimationFrame(onAnimationFrameHandler);
 
-    // Update fuel collected HUD. This will be moved to whichever function handles collision!
-    document.getElementById('fuelCollectedVal').innerHTML =
-        gameScene.numCollectedFuels;
+    // Update HUD values
+    updateHUD();
 };
 window.requestAnimationFrame(onAnimationFrameHandler);
 
@@ -117,6 +108,16 @@ const windowResizeHandler = () => {
 windowResizeHandler();
 window.addEventListener('resize', windowResizeHandler, false);
 
+// Update HUD values
+function updateHUD() {
+    document.getElementById('fuelCollectedVal').innerHTML =
+        gameScene.numCollectedFuels;
+    document.getElementById('timeRemainingVal').innerHTML =
+        gameScene.gameTimeRem + ' seconds remaining';
+    document.getElementById('timeRemainingProg').value =
+        (gameScene.gameTimeRem / gameScene.STARTING_SECONDS) * 100;
+}
+
 // Check if splash screen is up; If not, spawn fuel
 function checkSplashAndSpawn() {
     // Check if splash screen is still displayed
@@ -127,7 +128,7 @@ function checkSplashAndSpawn() {
     }
 }
 
-// Display time remaining
+// Update time remaining
 window.setInterval(function () {
     const splash = document.getElementById('splash');
     const hud = document.getElementById('hud');
@@ -142,9 +143,6 @@ window.setInterval(function () {
         gameScene.numSpawnedFuels = gameScene.STARTING_FUELS;
         gameScene.numCollectedFuels = gameScene.STARTING_COLLECTED_FUELS;
         gameScene.children = [];
-    } else {
-        document.getElementById('timeRemainingVal').innerHTML =
-            gameScene.gameTimeRem + ' seconds remaining';
     }
     // Only decrement time if splash is gone
     if (splash.style.display === 'none') {
