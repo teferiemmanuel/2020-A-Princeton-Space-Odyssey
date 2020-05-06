@@ -87,5 +87,11 @@ module.exports = {
                 to: 'starwing.ttf',
             },
         ]),
+        new CopyPlugin([
+            {
+                from: './src/components/audio/2001.mp3',
+                to: '2001.mp3',
+            },
+        ]),
     ],
 };
