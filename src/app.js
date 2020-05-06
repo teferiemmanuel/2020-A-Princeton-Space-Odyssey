@@ -153,15 +153,17 @@ window.setInterval(function () {
     const hud = document.getElementById('hud');
 
     if (gameScene.gameTimeRem <= 0) {
-        document.getElementById('timeRemainingVal').innerHTML = 'Finished';
-        splash.style.display = 'block';
-        hud.style.display = 'none';
+        // Commenting out for development purposes
+        
+        // document.getElementById('timeRemainingVal').innerHTML = 'Finished';
+        // splash.style.display = 'block';
+        // hud.style.display = 'none';
 
         // Reset the important parts of scene; Could be a better way to just clear scene?
-        gameScene.gameTimeRem = gameScene.STARTING_SECONDS;
-        gameScene.numSpawnedFuels = gameScene.STARTING_FUELS;
-        gameScene.numCollectedFuels = gameScene.STARTING_COLLECTED_FUELS;
-        gameScene.children = [];
+        // gameScene.gameTimeRem = gameScene.STARTING_SECONDS;
+        // gameScene.numSpawnedFuels = gameScene.STARTING_FUELS;
+        // gameScene.numCollectedFuels = gameScene.STARTING_COLLECTED_FUELS;
+        // gameScene.children = [];
     }
     // Only decrement time if splash is gone
     if (splash.style.display === 'none') {
