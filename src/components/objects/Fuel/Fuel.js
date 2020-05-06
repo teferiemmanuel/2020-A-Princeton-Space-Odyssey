@@ -85,7 +85,7 @@ function createOuterRingMesh() {
 
   // create ring mesh
   outerRing.mesh = new Mesh(outerRing.geometry, outerRing.material);
-  outerRing.mesh.layers.set(1);
+  outerRing.mesh.layers.enable(1);
   outerRing.isMesh = true;
 
 
@@ -106,7 +106,7 @@ function createInnerRingMesh(color) {
 
   // create ring mesh
   innerRing.mesh = new Mesh(innerRing.geometry, innerRing.material);
-  innerRing.mesh.layers.set(1);
+  innerRing.mesh.layers.enable(1);
   innerRing.isMesh = true;
 
 
@@ -127,7 +127,7 @@ function createEnergyOrbMesh() {
 
   // create orb mesh
   energyOrb.mesh = new Mesh( energyOrb.geometry,  energyOrb.material);
-  energyOrb.mesh.layers.set(1);
+  energyOrb.mesh.layers.enable(1);
   energyOrb.isMesh = true;
 
   return energyOrb;

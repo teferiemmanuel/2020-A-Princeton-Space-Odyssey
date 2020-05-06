@@ -138,9 +138,11 @@ window.setInterval(function () {
     const hud = document.getElementById('hud');
 
     if (gameScene.gameTimeRem <= 0) {
-        document.getElementById('timeRemainingVal').innerHTML = 'Finished';
-        splash.style.display = 'block';
-        hud.style.display = 'none';
+        // Commenting out for development purposes
+
+        // document.getElementById('timeRemainingVal').innerHTML = 'Finished';
+        // splash.style.display = 'block';
+        // hud.style.display = 'none';
 
         // Reset the important parts of scene
         gameScene.resetScene();
