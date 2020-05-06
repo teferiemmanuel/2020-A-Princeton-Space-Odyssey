@@ -1,18 +1,24 @@
-import * as Dat from 'dat.gui';
-import { Scene, Color, Vector3, RepeatWrapping, TextureLoader, BackSide, SphereBufferGeometry } from 'three';
-import { Flower, Land, Fuel, Player, Asteroid } from 'objects';
-import { BasicLights } from 'lights';
-import { AudioListener, Audio, AudioLoader } from 'three';
-import Corneria from '../audio/corneria_ultimate.mp3';
 import {
+    AudioListener,
+    Audio,
+    AudioLoader,
+    Scene,
+    Vector3,
+    RepeatWrapping,
+    TextureLoader,
+    BackSide,
+    SphereBufferGeometry,
     MeshBasicMaterial,
-    MeshToonMaterial,
-    DoubleSide,
-    TetrahedronBufferGeometry,
     Mesh,
 } from 'three';
+import { Fuel, Player, Asteroid } from 'objects';
+import { BasicLights } from 'lights';
+import Corneria from '../audio/corneria_ultimate.mp3';
 
 const introDOM = document.getElementById('splash');
+const STARTING_SECONDS = 45;
+const STARTING_FUELS = 1;
+const STARTING_COLLECTED_FUELS = 0;
 
 class GameScene extends Scene {
     constructor(camera) {
@@ -27,37 +33,18 @@ class GameScene extends Scene {
 
         this.camera = camera;
 
-        // Class constants
-        this.STARTING_SECONDS = 45;
-        this.STARTING_FUELS = 1;
-        this.STARTING_COLLECTED_FUELS = 0;
-
-
         // Add meshes to scene
-        const land = new Land();
-        const flower = new Flower(this);
         const lights = new BasicLights();
-
         const asteroid = new Asteroid(this);
-
-        var positionVec = new Vector3(0, 0, 5);
-        const fuel = new Fuel(this, 'yellow', positionVec);
+        const fuel = new Fuel(this, 'yellow', new Vector3(0, 0, 5));
         const player = new Player(this, this.camera.position);
-
         this.playerBounds = player.boundingSphere;
-
         this.createBackground();
 
-
         // add audio to scene
-        // create an AudioListener and add it to the camera?
-        // what does this do???
         const listener = new AudioListener();
-        //camera.add( listener );
-
         // create a global audio source
         const music = new Audio(listener);
-
         // load a sound and set it as the Audio object's buffer
         const audioLoader = new AudioLoader();
         audioLoader.load(Corneria, function (buffer) {
@@ -68,36 +55,10 @@ class GameScene extends Scene {
         });
 
         this.music = music;
-        this.gameTimeRem = this.STARTING_SECONDS;
-        this.numSpawnedFuels = this.STARTING_FUELS;
-        this.numCollectedFuels = this.STARTING_COLLECTED_FUELS;
-
-        /*
-        // add cockpit to scene
-        // cockpit - hacky way but it works??
-        // instantiate tetrahedron object
-        let tetra = {};
-
-        //let texture = new TextureLoader().load( "textures/ring.png" );
-
-        // use toon shading
-        tetra.material = new MeshToonMaterial({
-            color: 0x98d1ee,
-            side: DoubleSide,
-            transparent: false,
-            opacity: 0.2,
-        });
-
-        // use tetrahedron geometry
-        tetra.geometry = new TetrahedronBufferGeometry(10);
-        //tetra.geometry = new PlaneBufferGeometry(5, 5);
-
-        // create tetrahedron mesh
-        tetra.mesh = new Mesh(tetra.material, tetra.geometry);
-        tetra.mesh.receiveShadow = true;
-
-        this.tetra = tetra.mesh;
-        */
+        // Set scene info for HUD
+        this.gameTimeRem = STARTING_SECONDS;
+        this.numSpawnedFuels = STARTING_FUELS;
+        this.numCollectedFuels = STARTING_COLLECTED_FUELS;
 
         // asteroid
         asteroid.position.x = 0;
@@ -105,8 +66,6 @@ class GameScene extends Scene {
         asteroid.position.z = 0;
 
         this.add(lights, fuel, player, asteroid);
-
-        // Populate GUI
     }
 
     addToUpdateList(object) {
@@ -128,6 +87,7 @@ class GameScene extends Scene {
         }
     }
 
+    // Randomly spawn fuel in bounded area
     spawnFuel() {
         // Random position
         const xRandom = Math.floor(Math.random() * 21) - 10;
@@ -145,73 +105,85 @@ class GameScene extends Scene {
         this.numSpawnedFuels++;
     }
 
-    hasFuelCollision(){
-      let fuelObjs = this.getAllFuelObjects();
-      for (var i = 0; i < fuelObjs.length; i++) {
-        if(fuelObjs[i].boundingSphere.intersectsSphere(this.playerBounds)) {
-          this.fuelCollision = fuelObjs[i];
-          return true;
+    hasFuelCollision() {
+        let fuelObjs = this.getAllFuelObjects();
+        for (var i = 0; i < fuelObjs.length; i++) {
+            if (
+                fuelObjs[i].boundingSphere.intersectsSphere(this.playerBounds)
+            ) {
+                this.fuelCollision = fuelObjs[i];
+                return true;
+            }
         }
-      }
-      this.fuelCollision = null;
-      return false;
+        this.fuelCollision = null;
+        return false;
     }
 
-    getAllFuelObjects(){
-      let fuelObjs = [];
-      for (var i = 0; i < this.children.length; i++) {
-        if(this.children[i] instanceof Fuel) {
-          fuelObjs.push(this.children[i]);
+    getAllFuelObjects() {
+        let fuelObjs = [];
+        for (var i = 0; i < this.children.length; i++) {
+            if (this.children[i] instanceof Fuel) {
+                fuelObjs.push(this.children[i]);
+            }
         }
-      }
-      return fuelObjs;
+        return fuelObjs;
     }
 
     // creates a space background scene that can be used by the renderer
     createBackground() {
-      const loader = new TextureLoader();
-      const texture = loader.load(
-        'textures/spaceGameBackground.png',
-      );
+        const loader = new TextureLoader();
+        const texture = loader.load('textures/spaceGameBackground.png');
 
-      texture.wrapS = RepeatWrapping;
-      texture.wrapT = RepeatWrapping;
-      texture.repeat.set( 15, 15 );
+        texture.wrapS = RepeatWrapping;
+        texture.wrapT = RepeatWrapping;
+        texture.repeat.set(15, 15);
 
-      const material = new MeshBasicMaterial({
-        map: texture,
-        side: BackSide,
-      });
+        const material = new MeshBasicMaterial({
+            map: texture,
+            side: BackSide,
+        });
 
-      const plane = new SphereBufferGeometry(500, 7, 7);
-      let bgMesh = new Mesh(plane, material);
+        const plane = new SphereBufferGeometry(500, 7, 7);
+        let bgMesh = new Mesh(plane, material);
 
-      bgMesh.position.x = this.camera.position.x;
-      bgMesh.position.y = this.camera.position.y;
-      bgMesh.position.z = this.camera.position.z;
-      bgMesh.layers.set(1);
+        bgMesh.position.x = this.camera.position.x;
+        bgMesh.position.y = this.camera.position.y;
+        bgMesh.position.z = this.camera.position.z;
+        bgMesh.layers.set(1);
 
-      this.bgMesh = bgMesh;
+        this.bgMesh = bgMesh;
 
-      this.add(bgMesh);
+        this.add(bgMesh);
     }
 
-    handleCollectedFuel(collectedFuel){
-      console.log(collectedFuel);
-      // for now, let's dispose of them
-      this.remove(collectedFuel);
+    handleCollectedFuel(collectedFuel) {
+        console.log(collectedFuel);
+        // for now, let's dispose of them
+        this.remove(collectedFuel);
 
-      collectedFuel.innerRing.geometry.dispose();
-      collectedFuel.innerRing.material.dispose();
+        collectedFuel.innerRing.geometry.dispose();
+        collectedFuel.innerRing.material.dispose();
 
-      collectedFuel.outerRing.geometry.dispose();
-      collectedFuel.outerRing.material.dispose();
+        collectedFuel.outerRing.geometry.dispose();
+        collectedFuel.outerRing.material.dispose();
 
-      collectedFuel.energyOrb.geometry.dispose();
-      collectedFuel.energyOrb.material.dispose();
+        collectedFuel.energyOrb.geometry.dispose();
+        collectedFuel.energyOrb.material.dispose();
 
+        this.fuelCollision == null;
+    }
 
-      this.fuelCollision == null;
+    // Reset objects in scene for new game
+    resetScene() {
+        // Reset objects
+        this.gameTimeRem = STARTING_SECONDS;
+        this.numSpawnedFuels = STARTING_FUELS;
+        this.numCollectedFuels = STARTING_COLLECTED_FUELS;
+        this.children = [];
+
+        // Re-add essential objects
+        this.add(new BasicLights());
+        this.createBackground();
     }
 }
 
