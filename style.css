@@ -1,0 +1,107 @@
+@font-face {
+    font-family: starWing;
+    src: url(starwing.ttf);
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    font-family: 'starWing';
+}
+
+h1,
+h2 {
+    position: relative;
+    color: #f39f49;
+    text-align: center;
+    margin: 0;
+}
+
+#gameTitleOne,
+#gameTitleTwo {
+    top: 10%;
+}
+
+#startButton {
+    background-color: transparent;
+    position: absolute;
+    top: 45%;
+    left: 45%;
+    padding: 0.5em 3em;
+    border: 0.16em solid;
+    font-family: starWing;
+    color: #f39f49;
+}
+
+#startButton:hover {
+    color: #ffffff;
+}
+
+#acknowledgements {
+    top: 75%;
+}
+
+#splash {
+    background-image: url('textures/starBackground.gif');
+    background-repeat: repeat;
+    height: 100vh;
+}
+
+#hud {
+    position: absolute;
+    width: 100%;
+    display: none;
+    color: #f39f49;
+    text-align: center;
+}
+
+#controls {
+    display: inline-block;
+    padding: 10px;
+    text-align: center;
+}
+
+#fuelCollected {
+    display: inline-block;
+    position: absolute;
+    left: 10%;
+    top: 40%;
+}
+
+#fuelBar {
+    display: inline-block;
+    position: absolute;
+    right: 10%;
+    top: 40%;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+progress {
+    /* Reset the default appearance */
+    -webkit-appearance: none;
+    appearance: none;
+    width: 265px;
+    height: 20px;
+}
+
+progress::-webkit-progress-value {
+    background-image: -webkit-linear-gradient(
+            top,
+            rgba(255, 255, 255, 0.25),
+            rgba(0, 0, 0, 0.25)
+        ),
+        -webkit-linear-gradient(left, red, yellow, green, blue);
+
+    border-radius: 2px;
+    background-size: 35px 20px, 100% 100%, 100% 100%;
+}
+
+/* User won't see unloaded CSS with this */
+#loadOverlay {
+    display: none;
+}
