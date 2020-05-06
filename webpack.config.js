@@ -74,20 +74,14 @@ module.exports = {
                 from: './src/styling/style.css',
                 to: 'style.css',
             },
-        ]),
-        new CopyPlugin([
             {
                 from: './src/textures',
                 to: 'textures',
             },
-        ]),
-        new CopyPlugin([
             {
                 from: './src/styling/starwing.ttf',
                 to: 'starwing.ttf',
             },
-        ]),
-        new CopyPlugin([
             {
                 from: './src/components/audio/2001.mp3',
                 to: '2001.mp3',
