@@ -24,7 +24,7 @@
                 <progress id="timeRemainingProg" max="100"> </progress>
             </div>
             <!-- Cockpit view overlay -->
-            <img src="src/cockpit/cockpit.png" />
+            <img src="src/textures/cockpit.png" />
         </div>
         <!-- User won't see unloaded CSS with this -->
         <div id="startScreen">
@@ -70,24 +70,24 @@
             </script>
         </div>
         <script type="x-shader/x-vertex" id="vertexshader">
-  			varying vec2 vUv;
-  			void main() {
-  				vUv = uv;
-  				gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-  			}
-  		 </script>
+            varying vec2 vUv;
+            void main() {
+            	vUv = uv;
+            	gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+            }
+        </script>
 
-  		 <script type="x-shader/x-fragment" id="fragmentshader">
-  			uniform sampler2D baseTexture;
-  			uniform sampler2D bloomTexture;
-  			varying vec2 vUv;
-  			vec4 getTexture( sampler2D texelToLinearTexture ) {
-  				return mapTexelToLinear( texture2D( texelToLinearTexture , vUv ) );
-  			}
+        <script type="x-shader/x-fragment" id="fragmentshader">
+            uniform sampler2D baseTexture;
+            uniform sampler2D bloomTexture;
+            varying vec2 vUv;
+            vec4 getTexture( sampler2D texelToLinearTexture ) {
+            	return mapTexelToLinear( texture2D( texelToLinearTexture , vUv ) );
+            }
 
-  			void main() {
-  				gl_FragColor = ( getTexture( baseTexture ) + vec4( 1.0 ) * getTexture( bloomTexture ) );
-  			}
-  		</script>
+            void main() {
+            	gl_FragColor = ( getTexture( baseTexture ) + vec4( 1.0 ) * getTexture( bloomTexture ) );
+            }
+        </script>
     </body>
 </html>

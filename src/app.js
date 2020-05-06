@@ -6,27 +6,20 @@
  * handles window resizes.
  *
  */
-import {
-    WebGLRenderer,
-    PerspectiveCamera,
-    Vector3,
-    Vector2,
-    Layers,
-    ShaderMaterial,
-    MeshBasicMaterial
-} from 'three';
+import { WebGLRenderer, PerspectiveCamera, Vector3, Vector2 } from 'three';
 import { Controls } from './Controls.js';
 import { FlyControls } from './FlyControls.js';
 import { FirstPersonControls } from './FirstPersonControls.js';
 //import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GameScene } from 'scenes';
-import { BasicLights } from 'lights';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { BloomPass } from 'three/examples/jsm/postprocessing/BloomPass.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-//import { MeshToonMaterial, DoubleSide, TetrahedronBufferGeometry, PlaneBufferGeometry, Mesh } from 'three';
+
+// Constants
+const STARTING_SECONDS = 45;
 
 // Initialize core ThreeJS components
 const camera = new PerspectiveCamera();
@@ -36,13 +29,7 @@ camera.lookAt(new Vector3(0, 0, 0));
 camera.layers.enable(1);
 
 const gameScene = new GameScene(camera);
-
 const renderer = new WebGLRenderer({ antialias: true });
-
-/*
-camera.add(gameScene.tetra);
-gameScene.tetra.position.set(0, 0, 0);
-*/
 
 // Set up renderer and canvas
 renderer.setPixelRatio(window.devicePixelRatio);
@@ -80,7 +67,6 @@ bloomPass.radius = 0.37;
 bloomPass.exposure = 1;
 bloomPass.renderToScreen = true;
 
-
 const composer = new EffectComposer(renderer);
 composer.addPass(renderScene);
 composer.addPass(bloomPass);
@@ -101,11 +87,10 @@ const onAnimationFrameHandler = (timeStamp) => {
     camera.layers.set(0);
     renderer.render(gameScene, camera);
 
-
     gameScene.update && gameScene.update(timeStamp);
     if (gameScene.hasFuelCollision()) {
-      gameScene.numCollectedFuels++;
-      gameScene.handleCollectedFuel(gameScene.fuelCollision);
+        gameScene.numCollectedFuels++;
+        gameScene.handleCollectedFuel(gameScene.fuelCollision);
     }
 
     window.requestAnimationFrame(onAnimationFrameHandler);
@@ -134,7 +119,7 @@ function updateHUD() {
     document.getElementById('timeRemainingVal').innerHTML =
         gameScene.gameTimeRem + ' seconds remaining';
     document.getElementById('timeRemainingProg').value =
-        (gameScene.gameTimeRem / gameScene.STARTING_SECONDS) * 100;
+        (gameScene.gameTimeRem / STARTING_SECONDS) * 100;
 }
 
 // Check if splash screen is up; If not, spawn fuel
@@ -157,11 +142,8 @@ window.setInterval(function () {
         splash.style.display = 'block';
         hud.style.display = 'none';
 
-        // Reset the important parts of scene; Could be a better way to just clear scene?
-        gameScene.gameTimeRem = gameScene.STARTING_SECONDS;
-        gameScene.numSpawnedFuels = gameScene.STARTING_FUELS;
-        gameScene.numCollectedFuels = gameScene.STARTING_COLLECTED_FUELS;
-        gameScene.children = [];
+        // Reset the important parts of scene
+        gameScene.resetScene();
     }
     // Only decrement time if splash is gone
     if (splash.style.display === 'none') {
@@ -174,16 +156,16 @@ window.setInterval(function () {
     checkSplashAndSpawn();
 }, 3000);
 
-function darkenNonBloomed( obj ) {
-	if ( obj.isMesh && bloomLayer.test(obj.layers) === false ) {
-		materials[ obj.uuid ] = obj.material;
-		obj.material = darkMaterial;
-	}
+function darkenNonBloomed(obj) {
+    if (obj.isMesh && bloomLayer.test(obj.layers) === false) {
+        materials[obj.uuid] = obj.material;
+        obj.material = darkMaterial;
+    }
 }
 
-function restoreMaterial( obj ) {
-	if ( materials[ obj.uuid ] ) {
-		obj.material = materials[ obj.uuid ];
-		delete materials[ obj.uuid ];
-	}
+function restoreMaterial(obj) {
+    if (materials[obj.uuid]) {
+        obj.material = materials[obj.uuid];
+        delete materials[obj.uuid];
+    }
 }
