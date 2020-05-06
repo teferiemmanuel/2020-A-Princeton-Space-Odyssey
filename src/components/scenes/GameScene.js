@@ -1,6 +1,6 @@
 import * as Dat from 'dat.gui';
 import { Scene, Color, Vector3, RepeatWrapping, TextureLoader, BackSide, SphereBufferGeometry } from 'three';
-import { Flower, Land, Fuel, Player } from 'objects';
+import { Flower, Land, Fuel, Player, Asteroid } from 'objects';
 import { BasicLights } from 'lights';
 import { AudioListener, Audio, AudioLoader } from 'three';
 import Corneria from '../audio/corneria_ultimate.mp3';
@@ -37,6 +37,8 @@ class GameScene extends Scene {
         const land = new Land();
         const flower = new Flower(this);
         const lights = new BasicLights();
+
+        const asteroid = new Asteroid(this);
 
         var positionVec = new Vector3(0, 0, 5);
         const fuel = new Fuel(this, 'yellow', positionVec);
@@ -97,7 +99,12 @@ class GameScene extends Scene {
         this.tetra = tetra.mesh;
         */
 
-        this.add(lights, fuel, player);
+        // asteroid
+        asteroid.position.x = 0;
+        asteroid.position.y = 0;
+        asteroid.position.z = 0;
+
+        this.add(lights, fuel, player, asteroid);
 
         // Populate GUI
     }

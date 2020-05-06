@@ -60,9 +60,10 @@ controls.maxDistance = 16;
 controls.update();
 */
 //const controls = new FirstPersonControls(camera, canvas);
-const controls = new Controls(camera, document.body);
+//const controls = new Controls(camera, document.body);
+const controls = new Controls(camera, canvas);
 controls.autoForward = false;
-controls.movementSpeed = 0.02;
+controls.movementSpeed = 0.01;
 controls.rollSpeed = 0.001;
 
 // Bloom Pass Rendering

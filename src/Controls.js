@@ -119,9 +119,8 @@ var Controls = function (object, domElement) {
 		scope.dispatchEvent( changeEvent );
 
 	}
+
 /*
-
-
     this.onMouseMove = function (event) {
         if (!this.dragToLook || this.mouseStatus > 0) {
             var container = this.getContainerDimensions();
