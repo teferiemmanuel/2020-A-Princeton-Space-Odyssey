@@ -35,7 +35,7 @@ class GameScene extends Scene {
 
         // Add meshes to scene
         const lights = new BasicLights();
-        const asteroid = new Asteroid(this);
+        const asteroid = new Asteroid(this, new Vector3(0, 0, 15));
         const fuel = new Fuel(this, 'yellow', new Vector3(0, 0, 5));
         const player = new Player(this, this.camera.position);
         this.playerBounds = player.boundingSphere;

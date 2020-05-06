@@ -5,91 +5,53 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js';
-/*
-import MODEL from './Stone.obj';
-import MAT from './Stone.mtl';
-*/
+import { MeshLambertMaterial } from 'three';
 import MODEL from './out.glb';
 
 class Asteroid extends Group {
-    constructor(parent) {
+    constructor(parent, positionVec) {
         // Call parent Group() constructor
         super();
-
-        // Init state
-        this.state = {
-            /*
-            bob: true,
-            spin: this.spin.bind(this),
-            twirl: 0,
-            */
-        };
-
-        // Load object
 
         const loader = new GLTFLoader();
 
         this.name = 'asteroid';
         loader.load(MODEL, (gltf) => {
-            this.add(gltf.scene);
-        });
+            var obj = gltf.scene.children[0].children[0].children[0].children[0];
 
-        // Load object
-        /*
-        const loader = new OBJLoader();
-        const mtlLoader = new MTLLoader();
-        this.name = 'asteroid';
-        //mtlLoader.setResourcePath('src/components/objects/Asteroid/');
-        mtlLoader.load(MAT, (material) => {
-            material.preload();
-            loader.setMaterials(material).load(MODEL, (obj) => {
-                this.add(obj);
+            obj.material = new MeshLambertMaterial({
+              color: 0x906F24,
+              wireframe: false,
             });
+
+            // obj.positon.x = positionVec.x;
+            // obj.positon.y = positionVec.y;
+            // obj.positon.z = positionVec.z;
+            //
+
+            this.rockSurface = obj;
+            this.add(obj);
+
+            var outline = obj.clone();
+            outline.material = new MeshLambertMaterial({
+              color: 0x000000,
+              wireframe: true,
+            });
+
+            this.rockOutline = outline;
+            this.add(outline);
         });
-        */
+        this.position.x = positionVec.x;
+        this.position.y = positionVec.y;
+        this.position.z = positionVec.z;
+
 
         // Add self to parent's update list
         parent.addToUpdateList(this);
     }
 
-    /*
-    spin() {
-        // Add a simple twirl
-        this.state.twirl += 6 * Math.PI;
-
-        // Use timing library for more precice "bounce" animation
-        // TweenJS guide: http://learningthreejs.com/blog/2011/08/17/tweenjs-for-smooth-animation/
-        // Possible easings: http://sole.github.io/tween.js/examples/03_graphs.html
-        const jumpUp = new TWEEN.Tween(this.position)
-            .to({ y: this.position.y + 1 }, 300)
-            .easing(TWEEN.Easing.Quadratic.Out);
-        const fallDown = new TWEEN.Tween(this.position)
-            .to({ y: 0 }, 300)
-            .easing(TWEEN.Easing.Quadratic.In);
-
-        // Fall down after jumping up
-        jumpUp.onComplete(() => fallDown.start());
-
-        // Start animation
-        jumpUp.start();
-    }
-    */
-
     update(timeStamp) {
-        /*
-        if (this.state.bob) {
-            // Bob back and forth
-            this.rotation.z = 0.05 * Math.sin(timeStamp / 300);
-        }
-        if (this.state.twirl > 0) {
-            // Lazy implementation of twirl
-            this.state.twirl -= Math.PI / 8;
-            this.rotation.y += Math.PI / 8;
-        }
 
-        // Advance tween animations, if any exist
-        TWEEN.update();
-        */
     }
 }
 
