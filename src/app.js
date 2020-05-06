@@ -20,6 +20,7 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 
 // Constants
 const STARTING_SECONDS = 45;
+const FUELS_TO_WIN = 5;
 
 // Initialize core ThreeJS components
 const camera = new PerspectiveCamera();
@@ -149,8 +150,10 @@ function restoreMaterial(obj) {
 // Update time remaining
 window.setInterval(function () {
     const splash = document.getElementById('splash');
+    const success = document.getElementById('successScreen');
     const hud = document.getElementById('hud');
 
+    // Reset to start screen if time runs out
     if (gameScene.gameTimeRem <= 0) {
         // Commenting out for development purposes
 
@@ -161,8 +164,17 @@ window.setInterval(function () {
         // Reset the important parts of scene
         gameScene.resetScene();
     }
-    // Only decrement time if splash is gone
-    if (splash.style.display === 'none') {
+
+    // Success screen if player collects all fuels
+    if (gameScene.numCollectedFuels >= FUELS_TO_WIN) {
+        success.style.display = 'block';
+        hud.style.display = 'none';
+
+        gameScene.resetScene();
+    }
+
+    // Only decrement time if HUD is up; indicates gameScene is active
+    if (hud.style.display === 'block') {
         gameScene.gameTimeRem -= 1;
     }
 }, 1000);

@@ -183,6 +183,7 @@ class GameScene extends Scene {
 
         // Re-add essential objects
         this.add(new BasicLights());
+        this.add(new Asteroid(this));
         this.createBackground();
     }
 }
