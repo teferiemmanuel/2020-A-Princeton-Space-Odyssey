@@ -4,7 +4,7 @@ The year is 2020, and you are stranded in outer space, far far away from home. T
 
 Pilot a spaceship flying through outer space as you attempt to warp home by collecting fuel charges. The primary objective will be achieved by the player collecting fuel charges as they spawn. To complete a level, the player must gather enough fuel charges within a time limit.
 
-[Online Demo](https://reillybova.github.io/three-seed/)
+[Online Demo](https://teferiemmanuel.github.io/Graphics_Project/)
 
 ## Installation
 
