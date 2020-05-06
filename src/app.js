@@ -132,6 +132,20 @@ function checkSplashAndSpawn() {
     }
 }
 
+function darkenNonBloomed(obj) {
+    if (obj.isMesh && bloomLayer.test(obj.layers) === false) {
+        materials[obj.uuid] = obj.material;
+        obj.material = darkMaterial;
+    }
+}
+
+function restoreMaterial(obj) {
+    if (materials[obj.uuid]) {
+        obj.material = materials[obj.uuid];
+        delete materials[obj.uuid];
+    }
+}
+
 // Update time remaining
 window.setInterval(function () {
     const splash = document.getElementById('splash');
@@ -158,16 +172,11 @@ window.setInterval(function () {
     checkSplashAndSpawn();
 }, 3000);
 
-function darkenNonBloomed(obj) {
-    if (obj.isMesh && bloomLayer.test(obj.layers) === false) {
-        materials[obj.uuid] = obj.material;
-        obj.material = darkMaterial;
-    }
-}
-
-function restoreMaterial(obj) {
-    if (materials[obj.uuid]) {
-        obj.material = materials[obj.uuid];
-        delete materials[obj.uuid];
-    }
-}
+// Disable right click; right-click leads to weird control errors
+document.addEventListener(
+    'contextmenu',
+    function (e) {
+        e.preventDefault();
+    },
+    false
+);

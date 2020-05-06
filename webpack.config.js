@@ -54,7 +54,7 @@ module.exports = {
             {
                 test: /\.(ttf)$/,
                 loader: 'url-loader?limit=100000',
-            }
+            },
         ],
     },
     resolve: {
@@ -66,17 +66,26 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-          favicon: 'src/favicon.ico',
-          template: 'src/index.ejs'
+            favicon: 'src/styling/favicon.ico',
+            template: 'src/index.ejs',
         }),
-        new CopyPlugin([{
-          from: "./src/style.css",
-          to: "style.css" }]),
-        new CopyPlugin([{
-          from: "./src/textures",
-          to: "textures" }]),
-        new CopyPlugin([{
-          from: "./src/starwing.ttf",
-          to: "starwing.ttf" }])
+        new CopyPlugin([
+            {
+                from: './src/styling/style.css',
+                to: 'style.css',
+            },
+        ]),
+        new CopyPlugin([
+            {
+                from: './src/textures',
+                to: 'textures',
+            },
+        ]),
+        new CopyPlugin([
+            {
+                from: './src/styling/starwing.ttf',
+                to: 'starwing.ttf',
+            },
+        ]),
     ],
 };

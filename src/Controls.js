@@ -13,18 +13,9 @@
  * @author paulirish / http://paulirish.com/ - FirstPersonControls.js
  */
 
-import {
-    Euler,
-    EventDispatcher,
-    Quaternion,
-    Vector3
-} from 'three';
+import { Euler, EventDispatcher, Quaternion, Vector3 } from 'three';
 
-import {
-    AudioListener,
-    Audio,
-    AudioLoader
-} from 'three';
+import { AudioListener, Audio, AudioLoader } from 'three';
 
 // DO A BARREL ROLL
 import Barrel_roll from './components/audio/barrel_roll.mp3';
@@ -88,39 +79,38 @@ var Controls = function (object, domElement) {
     this.isLocked = true;
     var scope = this;
     var changeEvent = { type: 'change' };
-	var lockEvent = { type: 'lock' };
-	var unlockEvent = { type: 'unlock' };
+    var lockEvent = { type: 'lock' };
+    var unlockEvent = { type: 'unlock' };
 
-    var euler = new Euler( 0, 0, 0, 'YXZ' );
+    var euler = new Euler(0, 0, 0, 'YXZ');
 
     var PI_2 = Math.PI / 2;
 
-	var vec = new Vector3();
+    var vec = new Vector3();
 
+    this.onMouseMove = function (event) {
+        if (scope.isLocked === false) return;
 
-    this.onMouseMove = function ( event ) {
+        var movementX =
+            event.movementX || event.mozMovementX || event.webkitMovementX || 0;
+        var movementY =
+            event.movementY || event.mozMovementY || event.webkitMovementY || 0;
 
-		if ( scope.isLocked === false ) return;
+        euler.setFromQuaternion(this.object.quaternion);
 
-		var movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
-		var movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
+        euler.y -= movementX * 0.002;
+        euler.x -= movementY * 0.002;
 
-		euler.setFromQuaternion( this.object.quaternion );
+        euler.x = Math.max(-PI_2, Math.min(PI_2, euler.x));
 
-		euler.y -= movementX * 0.002;
-		euler.x -= movementY * 0.002;
-
-		euler.x = Math.max( - PI_2, Math.min( PI_2, euler.x ) );
-
-		this.object.quaternion.setFromEuler( euler );
+        this.object.quaternion.setFromEuler(euler);
 
         //this.object.rotation.setFromQuaternion( this.object.quaternion, this.object.rotation.order );
 
-		scope.dispatchEvent( changeEvent );
+        scope.dispatchEvent(changeEvent);
+    };
 
-	}
-
-/*
+    /*
     this.onMouseMove = function (event) {
         if (!this.dragToLook || this.mouseStatus > 0) {
             var container = this.getContainerDimensions();
@@ -138,95 +128,91 @@ var Controls = function (object, domElement) {
 */
 
     this.connect = function () {
+        this.domElement.addEventListener('mousemove', this.onMouseMove, false);
+        this.domElement.addEventListener(
+            'pointerlockchange',
+            onPointerlockChange,
+            false
+        );
+        this.domElement.addEventListener(
+            'pointerlockerror',
+            onPointerlockError,
+            false
+        );
+    };
 
-		this.domElement.addEventListener( 'mousemove', this.onMouseMove, false );
-		this.domElement.addEventListener( 'pointerlockchange', onPointerlockChange, false );
-		this.domElement.addEventListener( 'pointerlockerror', onPointerlockError, false );
+    this.disconnect = function () {
+        this.domElement.removeEventListener(
+            'mousemove',
+            this.onMouseMove,
+            false
+        );
+        this.domElement.removeEventListener(
+            'pointerlockchange',
+            onPointerlockChange,
+            false
+        );
+        this.domElement.removeEventListener(
+            'pointerlockerror',
+            onPointerlockError,
+            false
+        );
+    };
 
-	};
+    function onPointerlockChange() {
+        if (this.domElement.pointerLockElement === scope.domElement) {
+            scope.dispatchEvent(lockEvent);
 
-	this.disconnect = function () {
+            scope.isLocked = true;
+        } else {
+            scope.dispatchEvent(unlockEvent);
 
-		this.domElement.removeEventListener( 'mousemove', this.onMouseMove, false );
-		this.domElement.removeEventListener( 'pointerlockchange', onPointerlockChange, false );
-		this.domElement.removeEventListener( 'pointerlockerror', onPointerlockError, false );
+            scope.isLocked = false;
+        }
+    }
 
-	};
-
-	function onPointerlockChange() {
-
-		if ( this.domElement.pointerLockElement === scope.domElement ) {
-
-			scope.dispatchEvent( lockEvent );
-
-			scope.isLocked = true;
-
-		} else {
-
-			scope.dispatchEvent( unlockEvent );
-
-			scope.isLocked = false;
-
-		}
-
-	}
-
-	function onPointerlockError() {
-
-		console.error( 'Controls: Unable to use Pointer Lock API' );
-
-	}
+    function onPointerlockError() {
+        console.error('Controls: Unable to use Pointer Lock API');
+    }
 
     this.lock = function () {
+        this.domElement.requestPointerLock();
+    };
 
-		this.domElement.requestPointerLock();
+    this.unlock = function () {
+        this.domElement.exitPointerLock();
+    };
 
-	};
+    this.getObject = function () {
+        // retaining this method for backward compatibility
 
-	this.unlock = function () {
+        return this.object;
+    };
 
-		this.domElement.exitPointerLock();
+    this.getDirection = (function () {
+        var direction = new Vector3(0, 0, -1);
 
-	};
+        return function (v) {
+            return v.copy(direction).applyQuaternion(this.object.quaternion);
+        };
+    })();
 
-    this.getObject = function () { // retaining this method for backward compatibility
+    this.moveForward = function (distance) {
+        // move forward parallel to the xz-plane
+        // assumes camera.up is y-up
 
-		return this.object;
+        vec.setFromMatrixColumn(this.object.matrix, 0);
 
-	};
+        vec.crossVectors(this.object.up, vec);
 
-	this.getDirection = function () {
+        this.object.position.addScaledVector(vec, distance);
+    };
 
-		var direction = new Vector3( 0, 0, - 1 );
+    this.moveRight = function (distance) {
+        vec.setFromMatrixColumn(this.object.matrix, 0);
 
-		return function ( v ) {
-
-			return v.copy( direction ).applyQuaternion( this.object.quaternion );
-
-		};
-
-	}();
-
-	this.moveForward = function ( distance ) {
-
-		// move forward parallel to the xz-plane
-		// assumes camera.up is y-up
-
-		vec.setFromMatrixColumn( this.object.matrix, 0 );
-
-		vec.crossVectors( this.object.up, vec );
-
-		this.object.position.addScaledVector( vec, distance );
-
-	};
-
-	this.moveRight = function ( distance ) {
-
-		vec.setFromMatrixColumn( this.object.matrix, 0 );
-
-		this.object.position.addScaledVector( vec, distance );
-
-	};
+        this.object.position.addScaledVector(vec, distance);
+    };
 
     this.keydown = function (event) {
         if (event.altKey) {
@@ -435,9 +421,9 @@ var Controls = function (object, domElement) {
     this.dispose = function () {
         this.domElement.removeEventListener('contextmenu', contextmenu, false);
 
-        this.domElement.removeEventListener( 'mousemove', _mousemove, false );
-		//this.domElement.removeEventListener( 'pointerlockchange', onPointerlockChange, false );
-		//this.domElement.removeEventListener( 'pointerlockerror', onPointerlockError, false );
+        this.domElement.removeEventListener('mousemove', _mousemove, false);
+        //this.domElement.removeEventListener( 'pointerlockchange', onPointerlockChange, false );
+        //this.domElement.removeEventListener( 'pointerlockerror', onPointerlockError, false );
 
         window.removeEventListener('keydown', _keydown, false);
         window.removeEventListener('keyup', _keyup, false);
@@ -464,7 +450,7 @@ var Controls = function (object, domElement) {
 };
 
 // from PointerLockControls.js, do we need this?
-Controls.prototype = Object.create( EventDispatcher.prototype );
+Controls.prototype = Object.create(EventDispatcher.prototype);
 Controls.prototype.constructor = Controls;
 
 export { Controls };

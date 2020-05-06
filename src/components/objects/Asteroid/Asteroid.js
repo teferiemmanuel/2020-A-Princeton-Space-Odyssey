@@ -34,7 +34,6 @@ class Asteroid extends Group {
             this.add(gltf.scene);
         });
 
-
         // Load object
         /*
         const loader = new OBJLoader();
