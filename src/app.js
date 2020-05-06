@@ -16,7 +16,8 @@ import {
     MeshBasicMaterial
 } from 'three';
 import { Controls } from './Controls.js';
-//import { FirstPersonControls } from './FirstPersonControls.js';
+import { FlyControls } from './FlyControls.js';
+import { FirstPersonControls } from './FirstPersonControls.js';
 //import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GameScene } from 'scenes';
 import { BasicLights } from 'lights';
@@ -59,9 +60,10 @@ controls.maxDistance = 16;
 controls.update();
 */
 //const controls = new FirstPersonControls(camera, canvas);
-const controls = new Controls(camera, canvas);
+const controls = new Controls(camera, document.body);
 controls.autoForward = false;
 controls.movementSpeed = 0.02;
+controls.rollSpeed = 0.001;
 
 // Bloom Pass Rendering
 const renderScene = new RenderPass(gameScene, camera);
