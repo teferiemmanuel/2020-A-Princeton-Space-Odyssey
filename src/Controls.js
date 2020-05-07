@@ -50,6 +50,10 @@ var Controls = function (object, domElement) {
     this.movementSpeed = 1.0;
     this.rollSpeed = 0.005;
 
+    this.barrel_roll_speed = 1 / 0.001;
+
+    this.multiplier = 1.0;
+
     this.autoForward = false;
 
     // disable default target object behavior
@@ -206,10 +210,17 @@ var Controls = function (object, domElement) {
                 break;
 
             case 82:
-                /*R*/ this.moveState.forward = 1;
+                /*R*/ this.multiplier = 0.1;
                 break;
             case 70:
-                /*F*/ this.moveState.back = 1;
+                /*F*/ this.multiplier = 2.5;
+                break;
+
+            case 84:
+                /*T*/ this.moveState.forward = 1;
+                break;
+            case 71:
+                /*G*/ this.moveState.back = 1;
                 break;
 
             case 38:
@@ -277,10 +288,17 @@ var Controls = function (object, domElement) {
                 break;
 
             case 82:
-                /*R*/ this.moveState.forward = 0;
+                /*R*/ this.multiplier = 0.1;
                 break;
             case 70:
-                /*F*/ this.moveState.back = 0;
+                /*F*/ this.multiplier = 2.5;
+                break;
+
+            case 84:
+                /*T*/ this.moveState.forward = 0;
+                break;
+            case 71:
+                /*G*/ this.moveState.back = 0;
                 break;
 
             case 38:
@@ -310,7 +328,13 @@ var Controls = function (object, domElement) {
     };
 
     this.update = function (delta) {
-        var moveMult = delta * this.movementSpeed;
+        if (this.multiplier < 1.0) {
+            this.multiplier *= 1.05;
+        }
+        else if (this.multiplier > 1.0) {
+            this.multiplier *= 0.98;
+        }
+        var moveMult = delta * this.movementSpeed * this.multiplier;
         var rotMult = delta * this.rollSpeed;
 
         this.object.translateX(this.moveVector.x * moveMult);
