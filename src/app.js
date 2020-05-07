@@ -104,7 +104,7 @@ const onAnimationFrameHandler = (timeStamp) => {
         // Handle time elapsed
         if (gameScene.gameTimeRem + 5 > MAX_FUEL_SECONDS)
             gameScene.gameTimeRem = MAX_FUEL_SECONDS;
-        else gameScene.gameTimeRem += 5;
+        else gameScene.gameTimeRem += 3;
         gameScene.handleCollectedFuel(gameScene.fuelCollision);
     }
 
@@ -192,7 +192,7 @@ window.setInterval(function () {
 // Wrapper to spawn fuel every 3s
 window.setInterval(function () {
     checkSplashAndSpawn();
-}, 3000);
+}, 2500);
 
 // Disable right click; right-click leads to weird control errors
 document.addEventListener(
