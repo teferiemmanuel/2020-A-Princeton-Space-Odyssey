@@ -21,7 +21,7 @@ import { AudioListener, Audio, AudioLoader } from 'three';
 import Barrel_roll from './components/audio/barrel_roll.mp3';
 
 const splash = document.getElementById('splash');
-//const success = document.getElementById('successScreen');
+//const finishGame = document.getElementById('finishGameScreen');
 
 var Controls = function (object, domElement) {
     if (domElement === undefined) {
@@ -357,7 +357,7 @@ var Controls = function (object, domElement) {
         );
 
         /*
-        if (splash.style.display == 'none' || success.style.display == 'none') {
+        if (splash.style.display == 'none' || finishGame.style.display == 'none') {
             this.isLocked = true;
         }
         else {

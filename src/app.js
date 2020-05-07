@@ -54,11 +54,15 @@ controls.autoForward = true;
 controls.movementSpeed = 0.005;
 controls.rollSpeed = 0.001;
 // add event listener to document.body
-document.body.addEventListener( 'click', function () {
-    //lock mouse on screen
-    controls.isLocked = true;
-    controls.lock();
-}, false );
+document.body.addEventListener(
+    'click',
+    function () {
+        //lock mouse on screen
+        controls.isLocked = true;
+        controls.lock();
+    },
+    false
+);
 
 // Bloom Pass Rendering
 const renderScene = new RenderPass(gameScene, camera);
@@ -155,25 +159,22 @@ function restoreMaterial(obj) {
 
 // Update time remaining
 window.setInterval(function () {
-    const splash = document.getElementById('splash');
-    const success = document.getElementById('successScreen');
+    const finishGame = document.getElementById('finishGameScreen');
     const hud = document.getElementById('hud');
 
     // Reset to start screen if time runs out
     if (gameScene.gameTimeRem <= 0) {
-        // Commenting out for development purposes
-
-        // document.getElementById('timeRemainingVal').innerHTML = 'Finished';
-        // splash.style.display = 'block';
-        // hud.style.display = 'none';
+        document.getElementById('finishGameMessage').innerHTML = 'Out of time!';
+        finishGame.style.display = 'block';
+        hud.style.display = 'none';
 
         // Reset the important parts of scene
         gameScene.resetScene();
     }
 
-    // Success screen if player collects all fuels
+    // Finish game screen if player collects all fuels
     if (gameScene.numCollectedFuels >= FUELS_TO_WIN) {
-        success.style.display = 'block';
+        finishGame.style.display = 'block';
         hud.style.display = 'none';
 
         gameScene.resetScene();

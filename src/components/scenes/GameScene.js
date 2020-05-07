@@ -4,19 +4,14 @@ import {
     AudioLoader,
     Scene,
     Vector3,
-    RepeatWrapping,
     CubeTextureLoader,
-    BackSide,
-    SphereBufferGeometry,
-    MeshBasicMaterial,
-    Mesh,
 } from 'three';
 import { Fuel, Player, Asteroid } from 'objects';
 import { BasicLights } from 'lights';
 import Corneria from '../audio/corneria_ultimate.mp3';
 
 const introDOM = document.getElementById('splash');
-const STARTING_SECONDS = 45;
+const STARTING_SECONDS = 5;
 const STARTING_FUELS = 1;
 const STARTING_COLLECTED_FUELS = 0;
 

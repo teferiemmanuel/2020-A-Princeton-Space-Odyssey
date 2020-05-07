@@ -64,7 +64,7 @@ h2 {
     position: absolute;
     width: 100%;
     display: none;
-    color: #f39f49;
+    color: #57e46a;
     text-align: center;
 }
 
@@ -82,7 +82,7 @@ h2 {
     top: 40%;
 }
 
-#successScreen {
+#finishGameScreen {
     position: absolute;
     width: 100%;
     top: 40%;
@@ -91,8 +91,7 @@ h2 {
 }
 
 img {
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
 }
 
 progress {

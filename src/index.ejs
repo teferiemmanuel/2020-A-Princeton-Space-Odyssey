@@ -54,12 +54,12 @@
                     Henry Wang
                 </h2>
             </div>
-            <!-- Success screen -->
-            <div id="successScreen">
-                <h1 id="successMessage" onclick="hideSuccess()">
+            <!-- Finish game screen -->
+            <div id="finishGameScreen">
+                <h1 id="finishGameMessage" onclick="hideFinishGame()">
                     Great job, pilot!
                 </h1>
-                <h2 id="restartMessage" onclick="hideSuccess()">
+                <h2 id="restartMessage" onclick="hideFinishGame()">
                     Click to Play Again!
                 </h1>
             </div>
@@ -75,10 +75,10 @@
                     sound.pause();
                     sound.currentTime = 0;
                 }
-                // Hide success screen
-                function hideSuccess() {
-                    const success = document.getElementById('successScreen');
-                    success.style.display = 'none';
+                // Hide finish game screen
+                function hideFinishGame() {
+                    const finishGame = document.getElementById('finishGameScreen');
+                    finishGame.style.display = 'none';
                     splash.style.display = 'block';
                 }
             </script>
