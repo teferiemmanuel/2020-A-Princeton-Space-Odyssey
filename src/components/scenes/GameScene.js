@@ -90,9 +90,9 @@ class GameScene extends Scene {
     // Randomly spawn fuel in bounded area
     spawnFuel() {
         // Random position
-        const xRandom = Math.floor(Math.random() * 21) - 10;
-        const yRandom = Math.floor(Math.random() * 21) - 10;
-        const zRandom = Math.floor(Math.random() * 21) - 10;
+        const xRandom = Math.floor(Math.random() * 31) - 10;
+        const yRandom = Math.floor(Math.random() * 31) - 10;
+        const zRandom = Math.floor(Math.random() * 31) - 10;
         const positionVec = new Vector3(xRandom, yRandom, zRandom);
 
         // Random color
