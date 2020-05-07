@@ -98,20 +98,22 @@ var Controls = function (object, domElement) {
 
         euler.setFromQuaternion(this.object.quaternion);
 
-        euler.y -= movementX * 0.002;
-        euler.x -= movementY * 0.002;
+        euler.y -= movementX * 0.0005;
+        euler.x -= movementY * 0.0005;
 
         euler.x = Math.max(-PI_2, Math.min(PI_2, euler.x));
 
         this.object.quaternion.setFromEuler(euler);
 
-        this.object.rotation.setFromQuaternion( this.object.quaternion, this.object.rotation.order );
+        this.object.rotation.setFromQuaternion(
+            this.object.quaternion,
+            this.object.rotation.order
+        );
 
         scope.dispatchEvent(changeEvent);
     };
 
-
-/*
+    /*
     this.onMouseMove = function (event) {
         var container = this.getContainerDimensions();
         var halfWidth = container.size[0] / 2;
@@ -226,7 +228,10 @@ var Controls = function (object, domElement) {
 
             case 81:
                 /*Q*/ this.moveState.rollLeft = 1;
-                if (!this.br_audio.isPlaying && splash.style.display == 'none') {
+                if (
+                    !this.br_audio.isPlaying &&
+                    splash.style.display == 'none'
+                ) {
                     br_loader.load(Barrel_roll, function (buffer) {
                         br_audio.setBuffer(buffer);
                         br_audio.setLoop(false);
@@ -237,7 +242,10 @@ var Controls = function (object, domElement) {
                 break;
             case 69:
                 /*E*/ this.moveState.rollRight = 1;
-                if (!this.br_audio.isPlaying && splash.style.display == 'none') {
+                if (
+                    !this.br_audio.isPlaying &&
+                    splash.style.display == 'none'
+                ) {
                     br_loader.load(Barrel_roll, function (buffer) {
                         br_audio.setBuffer(buffer);
                         br_audio.setLoop(false);
@@ -253,7 +261,7 @@ var Controls = function (object, domElement) {
     };
 
     this.keyup = function (event) {
-        switch ( event.keyCode ) {
+        switch (event.keyCode) {
             case 87:
                 /*W*/ this.moveState.up = 0;
                 break;
