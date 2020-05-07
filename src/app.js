@@ -97,7 +97,11 @@ const onAnimationFrameHandler = (timeStamp) => {
 
     gameScene.update && gameScene.update(timeStamp);
     if (gameScene.hasFuelCollision()) {
+        // Handle fuel collection
         gameScene.numCollectedFuels++;
+        gameScene.numSpawnedFuels--;
+
+        // Handle time elapsed
         if (gameScene.gameTimeRem + 5 > MAX_FUEL_SECONDS)
             gameScene.gameTimeRem = MAX_FUEL_SECONDS;
         else gameScene.gameTimeRem += 5;
@@ -167,7 +171,7 @@ window.setInterval(function () {
         // Populate post-game stats
         const finishGameTime = new Date().getTime() - elapsedTime;
         document.getElementById('finishGameTime').innerHTML =
-            'Time Elapsed: ' + Math.round(finishGameTime / 1000) + 's';
+            'Time Elapsed: ' + Math.floor(finishGameTime / 1000) + 's';
 
         document.getElementById('finishGameFuel').innerHTML =
             'Fuel Collected: ' + gameScene.numCollectedFuels;
