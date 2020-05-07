@@ -1,9 +1,9 @@
-<!doctype html><html><head><meta charset="utf-8"/><title>2020: A Princeton Space Odyssey</title><link rel="stylesheet" href="style.css"/><link rel="shortcut icon" href="/Graphics_Project/favicon.ico"></head><body><div id="hud"><div id="controls"><h3>WASD Move, R | F Up | Down, Q | E Roll, ↑ | ↓ Pitch, ← | → Yaw</h3></div><div id="fuelCollected"><h3>Fuel Collected: <span id="fuelCollectedVal"></span> / 5</h3></div><div id="fuelBar"><h3><span id="timeRemainingVal"></span></h3><progress id="timeRemainingProg" max="100"></progress></div><img src="textures/cockpit.png"/></div><div id="startScreen"><div id="loadOverlay" style="background-color: #333;
+<!doctype html><html><head><meta charset="utf-8"/><title>2020: A Princeton Space Odyssey</title><link rel="stylesheet" href="style.css"/><link rel="shortcut icon" href="/Graphics_Project/favicon.ico"></head><body><div id="hud"><div id="fuelCollected"><h3>Fuel Collected: <span id="fuelCollectedVal"></span> / 5</h3></div><div id="fuelBar"><h3><span id="timeRemainingVal"></span></h3><progress id="timeRemainingProg" max="100"></progress></div><img src="textures/cockpit.png"/></div><div id="startScreen"><div id="loadOverlay" style="background-color: #333;
                     position: absolute;
                     top: 0px;
                     left: 0px;
                     width: 100%;
-                    height: 100%;"></div><audio id="audio" autoplay><source src="2001.mp3" type="audio/mpeg"/></audio><div id="splash"><h1 id="gameTitleOne">2020</h1><h1 id="gameTitleTwo">a Princeton Space Odyssey</h1><button type="button" id="startButton" onclick="hideSplash()">Start Game</button><h2 id="acknowledgements">Created By: Jessica Edouard, Emmanuel Teferi, Justin Tran, Henry Wang</h2></div><div id="successScreen"><h1 id="successMessage" onclick="hideSuccess()">Great job, pilot!</h1><h2 id="restartMessage" onclick="hideSuccess()">Click to Play Again!</h2></div><script>const splash = document.getElementById('splash');
+                    height: 100%;"></div><audio id="audio" autoplay><source src="2001.mp3" type="audio/mpeg"/></audio><div id="splash"><h1 id="gameTitleOne">2020</h1><h1 id="gameTitleTwo">a Princeton Space Odyssey</h1><button type="button" id="startButton" onclick="hideSplash()">Start Game</button><h3 id="controls">Controls:</h3><h4 id="controls">WASD Move, R | F Up | Down, Q | E Roll, ↑ | ↓ Pitch, ← | → Yaw</h4><h2 id="acknowledgements">Created By: Jessica Edouard, Emmanuel Teferi, Justin Tran, Henry Wang</h2></div><div id="successScreen"><h1 id="successMessage" onclick="hideSuccess()">Great job, pilot!</h1><h2 id="restartMessage" onclick="hideSuccess()">Click to Play Again!</h2></div><script>const splash = document.getElementById('splash');
                 function hideSplash() {
                     const hud = document.getElementById('hud');
                     splash.style.display = 'none';
@@ -18,4 +18,4 @@
                     const success = document.getElementById('successScreen');
                     success.style.display = 'none';
                     splash.style.display = 'block';
-                }</script></div><script src="/Graphics_Project/main.eceb543f38d54a080a8b.js"></script></body></html>
+                }</script></div><script src="/Graphics_Project/main.89e341a15f401945aef8.js"></script></body></html>
