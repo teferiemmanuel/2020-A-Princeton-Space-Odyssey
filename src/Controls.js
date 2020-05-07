@@ -20,6 +20,9 @@ import { AudioListener, Audio, AudioLoader } from 'three';
 // DO A BARREL ROLL
 import Barrel_roll from './components/audio/barrel_roll.mp3';
 
+const splash = document.getElementById('splash');
+//const success = document.getElementById('successScreen');
+
 var Controls = function (object, domElement) {
     if (domElement === undefined) {
         console.warn(
@@ -47,7 +50,6 @@ var Controls = function (object, domElement) {
     this.movementSpeed = 1.0;
     this.rollSpeed = 0.005;
 
-    this.dragToLook = false;
     this.autoForward = false;
 
     // disable default target object behavior
@@ -55,8 +57,6 @@ var Controls = function (object, domElement) {
     // internals
 
     this.tmpQuaternion = new Quaternion();
-
-    this.mouseStatus = 0;
 
     this.moveState = {
         up: 0,
@@ -76,7 +76,7 @@ var Controls = function (object, domElement) {
     this.rotationVector = new Vector3(0, 0, 0);
 
     // camera is locked (from PointerLockControls)
-    this.isLocked = true;
+    this.isLocked = false;
     var scope = this;
     var changeEvent = { type: 'change' };
     var lockEvent = { type: 'lock' };
@@ -105,59 +105,26 @@ var Controls = function (object, domElement) {
 
         this.object.quaternion.setFromEuler(euler);
 
-        //this.object.rotation.setFromQuaternion( this.object.quaternion, this.object.rotation.order );
+        this.object.rotation.setFromQuaternion( this.object.quaternion, this.object.rotation.order );
 
         scope.dispatchEvent(changeEvent);
     };
 
-    /*
+
+/*
     this.onMouseMove = function (event) {
-        if (!this.dragToLook || this.mouseStatus > 0) {
-            var container = this.getContainerDimensions();
-            var halfWidth = container.size[0] / 2;
-            var halfHeight = container.size[1] / 2;
+        var container = this.getContainerDimensions();
+        var halfWidth = container.size[0] / 2;
+        var halfHeight = container.size[1] / 2;
 
-            this.moveState.yawLeft =
-                -(event.pageX - container.offset[0] - halfWidth) / halfWidth;
-            this.moveState.pitchDown =
-                (event.pageY - container.offset[1] - halfHeight) / halfHeight;
+        this.moveState.yawLeft =
+            -(event.pageX - container.offset[0] - halfWidth) / halfWidth;
+        this.moveState.pitchDown =
+            (event.pageY - container.offset[1] - halfHeight) / halfHeight;
 
-            this.updateRotationVector();
-        }
+        this.updateRotationVector();
     };
-*/
-
-    this.connect = function () {
-        this.domElement.addEventListener('mousemove', this.onMouseMove, false);
-        this.domElement.addEventListener(
-            'pointerlockchange',
-            onPointerlockChange,
-            false
-        );
-        this.domElement.addEventListener(
-            'pointerlockerror',
-            onPointerlockError,
-            false
-        );
-    };
-
-    this.disconnect = function () {
-        this.domElement.removeEventListener(
-            'mousemove',
-            this.onMouseMove,
-            false
-        );
-        this.domElement.removeEventListener(
-            'pointerlockchange',
-            onPointerlockChange,
-            false
-        );
-        this.domElement.removeEventListener(
-            'pointerlockerror',
-            onPointerlockError,
-            false
-        );
-    };
+    */
 
     function onPointerlockChange() {
         if (this.domElement.pointerLockElement === scope.domElement) {
@@ -222,15 +189,11 @@ var Controls = function (object, domElement) {
         //event.preventDefault();
 
         switch (event.keyCode) {
-            case 16:
-                /* shift */ this.movementSpeedMultiplier = 0.1;
-                break;
-
             case 87:
-                /*W*/ this.moveState.forward = 1;
+                /*W*/ this.moveState.up = 1;
                 break;
             case 83:
-                /*S*/ this.moveState.back = 1;
+                /*S*/ this.moveState.down = 1;
                 break;
 
             case 65:
@@ -241,10 +204,10 @@ var Controls = function (object, domElement) {
                 break;
 
             case 82:
-                /*R*/ this.moveState.up = 1;
+                /*R*/ this.moveState.forward = 1;
                 break;
             case 70:
-                /*F*/ this.moveState.down = 1;
+                /*F*/ this.moveState.back = 1;
                 break;
 
             case 38:
@@ -263,7 +226,7 @@ var Controls = function (object, domElement) {
 
             case 81:
                 /*Q*/ this.moveState.rollLeft = 1;
-                if (!this.br_audio.isPlaying) {
+                if (!this.br_audio.isPlaying && splash.style.display == 'none') {
                     br_loader.load(Barrel_roll, function (buffer) {
                         br_audio.setBuffer(buffer);
                         br_audio.setLoop(false);
@@ -274,7 +237,7 @@ var Controls = function (object, domElement) {
                 break;
             case 69:
                 /*E*/ this.moveState.rollRight = 1;
-                if (!this.br_audio.isPlaying) {
+                if (!this.br_audio.isPlaying && splash.style.display == 'none') {
                     br_loader.load(Barrel_roll, function (buffer) {
                         br_audio.setBuffer(buffer);
                         br_audio.setLoop(false);
@@ -290,16 +253,12 @@ var Controls = function (object, domElement) {
     };
 
     this.keyup = function (event) {
-        switch (event.keyCode) {
-            case 16:
-                /* shift */ this.movementSpeedMultiplier = 1;
-                break;
-
+        switch ( event.keyCode ) {
             case 87:
-                /*W*/ this.moveState.forward = 0;
+                /*W*/ this.moveState.up = 0;
                 break;
             case 83:
-                /*S*/ this.moveState.back = 0;
+                /*S*/ this.moveState.down = 0;
                 break;
 
             case 65:
@@ -310,10 +269,10 @@ var Controls = function (object, domElement) {
                 break;
 
             case 82:
-                /*R*/ this.moveState.up = 0;
+                /*R*/ this.moveState.forward = 0;
                 break;
             case 70:
-                /*F*/ this.moveState.down = 0;
+                /*F*/ this.moveState.back = 0;
                 break;
 
             case 38:
@@ -365,6 +324,15 @@ var Controls = function (object, domElement) {
             this.object.quaternion,
             this.object.rotation.order
         );
+
+        /*
+        if (splash.style.display == 'none' || success.style.display == 'none') {
+            this.isLocked = true;
+        }
+        else {
+            this.isLocked = false;
+        }
+        */
     };
 
     this.updateMovementVector = function () {
@@ -429,7 +397,18 @@ var Controls = function (object, domElement) {
         window.removeEventListener('keyup', _keyup, false);
 
         // account for pointer lock functions
-        this.disconnect();
+        /*
+        this.domElement.removeEventListener(
+            'pointerlockchange',
+            onPointerlockChange,
+            false
+        );
+        this.domElement.removeEventListener(
+            'pointerlockerror',
+            onPointerlockError,
+            false
+        );
+        */
     };
 
     var _mousemove = bind(this, this.onMouseMove);
@@ -438,9 +417,19 @@ var Controls = function (object, domElement) {
 
     this.domElement.addEventListener('contextmenu', contextmenu, false);
 
-    //this.connect();
-
     this.domElement.addEventListener('mousemove', _mousemove, false);
+    /*
+    this.domElement.addEventListener(
+        'pointerlockchange',
+        onPointerlockChange,
+        false
+    );
+    this.domElement.addEventListener(
+        'pointerlockerror',
+        onPointerlockError,
+        false
+    );
+    */
 
     window.addEventListener('keydown', _keydown, false);
     window.addEventListener('keyup', _keyup, false);

@@ -8,8 +8,8 @@
  */
 import { WebGLRenderer, PerspectiveCamera, Vector3, Vector2 } from 'three';
 import { Controls } from './Controls.js';
-import { FlyControls } from './FlyControls.js';
-import { FirstPersonControls } from './FirstPersonControls.js';
+//import { FlyControls } from './FlyControls.js';
+//import { FirstPersonControls } from './FirstPersonControls.js';
 //import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GameScene } from 'scenes';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
@@ -50,9 +50,15 @@ controls.update();
 //const controls = new FirstPersonControls(camera, canvas);
 //const controls = new Controls(camera, document.body);
 const controls = new Controls(camera, canvas);
-controls.autoForward = false;
-controls.movementSpeed = 0.01;
+controls.autoForward = true;
+controls.movementSpeed = 0.005;
 controls.rollSpeed = 0.001;
+// add event listener to document.body
+document.body.addEventListener( 'click', function () {
+    //lock mouse on screen
+    controls.isLocked = true;
+    controls.lock();
+}, false );
 
 // Bloom Pass Rendering
 const renderScene = new RenderPass(gameScene, camera);

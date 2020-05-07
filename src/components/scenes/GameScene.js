@@ -157,7 +157,7 @@ class GameScene extends Scene {
     }
 
     handleCollectedFuel(collectedFuel) {
-        console.log(collectedFuel);
+        //console.log(collectedFuel);
         // for now, let's dispose of them
         this.remove(collectedFuel);
 
