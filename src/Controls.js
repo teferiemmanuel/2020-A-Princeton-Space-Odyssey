@@ -210,10 +210,10 @@ var Controls = function (object, domElement) {
                 break;
 
             case 82:
-                /*R*/ this.multiplier = 0.1;
+                /*R*/ this.multiplier = 2.5;
                 break;
             case 70:
-                /*F*/ this.multiplier = 2.5;
+                /*F*/ this.multiplier = 0.1;
                 break;
 
             case 84:
@@ -288,10 +288,10 @@ var Controls = function (object, domElement) {
                 break;
 
             case 82:
-                /*R*/ this.multiplier = 0.1;
+                /*R*/ this.multiplier = 2.5;
                 break;
             case 70:
-                /*F*/ this.multiplier = 2.5;
+                /*F*/ this.multiplier = 0.1;
                 break;
 
             case 84:
@@ -330,8 +330,7 @@ var Controls = function (object, domElement) {
     this.update = function (delta) {
         if (this.multiplier < 1.0) {
             this.multiplier *= 1.05;
-        }
-        else if (this.multiplier > 1.0) {
+        } else if (this.multiplier > 1.0) {
             this.multiplier *= 0.98;
         }
         var moveMult = delta * this.movementSpeed * this.multiplier;
