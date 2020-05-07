@@ -11,7 +11,7 @@ import { BasicLights } from 'lights';
 import Corneria from '../audio/corneria_ultimate.mp3';
 
 const introDOM = document.getElementById('splash');
-const STARTING_SECONDS = 5;
+const STARTING_SECONDS = 15;
 const STARTING_FUELS = 1;
 const STARTING_COLLECTED_FUELS = 0;
 
@@ -68,8 +68,7 @@ class GameScene extends Scene {
     }
 
     update(timeStamp) {
-        const { rotationSpeed, updateList } = this.state;
-        this.rotation.y = (rotationSpeed * timeStamp) / 10000;
+        const { updateList } = this.state;
 
         // Call update for each object in the updateList
         for (const obj of updateList) {

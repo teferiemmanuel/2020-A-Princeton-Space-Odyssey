@@ -8,9 +8,6 @@
  */
 import { WebGLRenderer, PerspectiveCamera, Vector3, Vector2 } from 'three';
 import { Controls } from './Controls.js';
-//import { FlyControls } from './FlyControls.js';
-//import { FirstPersonControls } from './FirstPersonControls.js';
-//import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GameScene } from 'scenes';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
@@ -19,8 +16,8 @@ import { BloomPass } from 'three/examples/jsm/postprocessing/BloomPass.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 
 // Constants
-const STARTING_SECONDS = 45;
-const FUELS_TO_WIN = 5;
+const STARTING_SECONDS = 15;
+const MAX_FUEL_SECONDS = 30;
 
 // Initialize core ThreeJS components
 const camera = new PerspectiveCamera();
@@ -101,6 +98,9 @@ const onAnimationFrameHandler = (timeStamp) => {
     gameScene.update && gameScene.update(timeStamp);
     if (gameScene.hasFuelCollision()) {
         gameScene.numCollectedFuels++;
+        if (gameScene.gameTimeRem + 5 > MAX_FUEL_SECONDS)
+            gameScene.gameTimeRem = MAX_FUEL_SECONDS;
+        else gameScene.gameTimeRem += 5;
         gameScene.handleCollectedFuel(gameScene.fuelCollision);
     }
 
@@ -127,10 +127,10 @@ window.addEventListener('resize', windowResizeHandler, false);
 function updateHUD() {
     document.getElementById('fuelCollectedVal').innerHTML =
         gameScene.numCollectedFuels;
-    document.getElementById('timeRemainingVal').innerHTML =
-        gameScene.gameTimeRem + ' seconds remaining';
+    document.getElementById('timeElapsedVal').innerHTML =
+        gameScene.gameTimeRem + 's of fuel remaining';
     document.getElementById('timeRemainingProg').value =
-        (gameScene.gameTimeRem / STARTING_SECONDS) * 100;
+        (gameScene.gameTimeRem / MAX_FUEL_SECONDS) * 100;
 }
 
 // Check if splash screen is up; If not, spawn fuel
@@ -162,21 +162,20 @@ window.setInterval(function () {
     const finishGame = document.getElementById('finishGameScreen');
     const hud = document.getElementById('hud');
 
-    // Reset to start screen if time runs out
+    // Reset to start screen if fuel/time runs out
     if (gameScene.gameTimeRem <= 0) {
-        document.getElementById('finishGameMessage').innerHTML = 'Out of time!';
+        // Populate post-game stats
+        const finishGameTime = new Date().getTime() - elapsedTime;
+        document.getElementById('finishGameTime').innerHTML =
+            'Time Elapsed: ' + Math.round(finishGameTime / 1000) + 's';
+
+        document.getElementById('finishGameFuel').innerHTML =
+            'Fuel Collected: ' + gameScene.numCollectedFuels;
+
         finishGame.style.display = 'block';
         hud.style.display = 'none';
 
         // Reset the important parts of scene
-        gameScene.resetScene();
-    }
-
-    // Finish game screen if player collects all fuels
-    if (gameScene.numCollectedFuels >= FUELS_TO_WIN) {
-        finishGame.style.display = 'block';
-        hud.style.display = 'none';
-
         gameScene.resetScene();
     }
 

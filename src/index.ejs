@@ -10,11 +10,11 @@
         <div id="hud">
             <!-- Fuel charges collected -->
             <div id="fuelCollected">
-                <h3>Fuel Collected: <span id="fuelCollectedVal"></span> / 5</h3>
+                <h3>Fuel Collected: <span id="fuelCollectedVal"></span></h3>
             </div>
-            <!-- A 45s timer reflected on screen -->
+            <!-- A timer reflected on screen -->
             <div id="fuelBar">
-                <h3><span id="timeRemainingVal"></span></h3>
+                <h3><span id="timeElapsedVal"></span></h3>
                 <progress id="timeRemainingProg" max="100"> </progress>
             </div>
             <!-- Cockpit view overlay -->
@@ -55,17 +55,23 @@
                 </h2>
             </div>
             <!-- Finish game screen -->
-            <div id="finishGameScreen">
-                <h1 id="finishGameMessage" onclick="hideFinishGame()">
-                    Great job, pilot!
+            <div id="finishGameScreen" onclick="hideFinishGame()">
+                <h1 id="finishGameMessage" >
+                    Out of fuel!
                 </h1>
-                <h2 id="restartMessage" onclick="hideFinishGame()">
+                <h2 id="finishGameFuel">
+                </h2>
+                <h2 id="finishGameTime">
+                </h2>
+                <br>
+                <h2 id="restartMessage">
                     Click to Play Again!
                 </h1>
             </div>
             <!-- Hide Start Splash -->
             <script>
                 const splash = document.getElementById('splash');
+                var elapsedTime;
                 function hideSplash() {
                     const hud = document.getElementById('hud');
                     splash.style.display = 'none';
@@ -74,6 +80,9 @@
                     const sound = document.getElementById('audio');
                     sound.pause();
                     sound.currentTime = 0;
+
+                    // Start game elapsed timer
+                    elapsedTime = new Date().getTime()
                 }
                 // Hide finish game screen
                 function hideFinishGame() {
