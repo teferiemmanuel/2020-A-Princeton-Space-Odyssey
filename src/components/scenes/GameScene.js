@@ -5,7 +5,7 @@ import {
     Scene,
     Vector3,
     RepeatWrapping,
-    TextureLoader,
+    CubeTextureLoader,
     BackSide,
     SphereBufferGeometry,
     MeshBasicMaterial,
@@ -131,29 +131,17 @@ class GameScene extends Scene {
 
     // creates a space background scene that can be used by the renderer
     createBackground() {
-        const loader = new TextureLoader();
-        const texture = loader.load('textures/spaceGameBackground.png');
+        const loader = new CubeTextureLoader();
+        const texture = loader.load([
+            'textures/right.jpg',
+            'textures/left.jpg',
+            'textures/top.jpg',
+            'textures/bottom.jpg',
+            'textures/front.jpg',
+            'textures/back.jpg',
+        ]);
 
-        texture.wrapS = RepeatWrapping;
-        texture.wrapT = RepeatWrapping;
-        texture.repeat.set(15, 15);
-
-        const material = new MeshBasicMaterial({
-            map: texture,
-            side: BackSide,
-        });
-
-        const plane = new SphereBufferGeometry(500, 7, 7);
-        let bgMesh = new Mesh(plane, material);
-
-        bgMesh.position.x = this.camera.position.x;
-        bgMesh.position.y = this.camera.position.y;
-        bgMesh.position.z = this.camera.position.z;
-        bgMesh.layers.set(1);
-
-        this.bgMesh = bgMesh;
-
-        this.add(bgMesh);
+        this.background = texture;
     }
 
     handleCollectedFuel(collectedFuel) {
