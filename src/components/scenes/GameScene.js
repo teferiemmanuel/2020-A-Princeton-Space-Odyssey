@@ -86,6 +86,9 @@ class GameScene extends Scene {
         asteroid.position.z = 0;
 
         this.add(lights, fuel, player, asteroid, asteroid2, powerup);
+        console.log(fuel);
+        console.log(powerup);
+
     }
 
     addToUpdateList(object) {

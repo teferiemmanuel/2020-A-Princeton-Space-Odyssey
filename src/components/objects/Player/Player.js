@@ -62,6 +62,13 @@ class Player extends Group {
             else this.gameScene.gameTimeRem += 3;
             this.gameScene.handleCollectedFuel(e.body.fuel);
           }
+          else if (e.body.powerup !== undefined) {
+            document.getElementById('collisionMessage').innerHTML =
+                'Temporary Invincibility';
+            // TODO: Somebody implement invincibility here?
+
+            gameScene.handlePowerupCollision(gameScene.powerupCollision);
+          }
         });
 
         // debugging mesh just in case we need to visualize boudingSphere

@@ -92,14 +92,6 @@ const onAnimationFrameHandler = (timeStamp) => {
 
     gameScene.update && gameScene.update(timeStamp);
 
-    // Invincibility if player collects powerup
-    if (gameScene.hasPowerupCollision()) {
-        document.getElementById('collisionMessage').innerHTML =
-            'Temporary Invincibility';
-        // TODO: Somebody implement invincibility here?
-        gameScene.handlePowerupCollision(gameScene.powerupCollision);
-    }
-
     window.requestAnimationFrame(onAnimationFrameHandler);
 
     // Update HUD values

@@ -6,9 +6,11 @@ import {
     TetrahedronBufferGeometry,
     Mesh,
 } from 'three';
+import { Vec3, Body } from 'cannon';
+import { Sphere as SpherePhysics } from 'cannon';
 
 class Powerup extends Group {
-    constructor(parent, color, pos) {
+    constructor(parent, color, pos, world) {
         // Call parent Group() constructor
         super();
 
@@ -75,6 +77,16 @@ class Powerup extends Group {
         this.powerup_out = powerup_out;
         this.add(powerup_in.mesh);
         this.powerup_in = powerup_in;
+
+        const shape = new SpherePhysics(this.boundingSphere.radius);
+        const body = new Body({
+          position: pos.clone()
+        });
+        body.addShape(shape);
+        this.body = body;
+        this.body.powerup = this;
+
+        world.addBody(body);
 
         // Add self to parent's update list
         parent.addToUpdateList(this);
