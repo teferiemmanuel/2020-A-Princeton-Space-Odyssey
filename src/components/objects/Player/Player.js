@@ -2,6 +2,7 @@ import { Audio, AudioLoader, Vector3, Group, Sphere } from 'three';
 import { Body } from 'cannon';
 import { Sphere as SpherePhysics } from 'cannon';
 import AsteroidCollision from '../../audio/asteroid_collision.mp3';
+import FuelPickup from '../../audio/fuel_pickup.mp3';
 
 class Player extends Group {
     constructor(parent, positionVec, world) {
@@ -30,38 +31,49 @@ class Player extends Group {
         this.body = body;
         this.body.gameScene = parent;
 
-        this.body.addEventListener("collide",function(e){
-          console.log(this);
+        this.body.addEventListener('collide', function (e) {
+            if (e.body.asteroid !== undefined) {
+                document.getElementById('collisionMessage').innerHTML =
+                    'OOF! You lost some fuel';
 
-          if (e.body.asteroid !== undefined) {
-            document.getElementById('collisionMessage').innerHTML =
-                'OOF! You lost some fuel';
+                this.gameScene.gameTimeRem -= 5;
 
-            this.gameScene.gameTimeRem -= 5;
+                // create an audio source
+                const soundEffect = new Audio(this.gameScene.listener);
+                // load a sound and set it as the Audio object's buffer
+                const audioLoader = new AudioLoader();
+                audioLoader.load(AsteroidCollision, function (buffer) {
+                    soundEffect.setBuffer(buffer);
+                    soundEffect.setLoop(false);
+                    soundEffect.setVolume(0.15);
+                    soundEffect.play();
+                });
+            } else if (e.body.fuel !== undefined) {
+                document.getElementById('collisionMessage').innerHTML =
+                    'Fuel recharged!';
+                this.gameScene.numCollectedFuels++;
+                this.gameScene.numSpawnedFuels--;
 
-            // create an audio source
-            const soundEffect = new Audio(this.gameScene.listener);
-            // load a sound and set it as the Audio object's buffer
-            const audioLoader = new AudioLoader();
-            audioLoader.load(AsteroidCollision, function (buffer) {
-                soundEffect.setBuffer(buffer);
-                soundEffect.setLoop(false);
-                soundEffect.setVolume(0.15);
-                soundEffect.play();
-            });
-          }
-          else if (e.body.fuel !== undefined) {
-            document.getElementById('collisionMessage').innerHTML =
-                'Fuel recharged!';
-            this.gameScene.numCollectedFuels++;
-            this.gameScene.numSpawnedFuels--;
+                // create an audio source
+                const soundEffect = new Audio(this.gameScene.listener);
+                // load a sound and set it as the Audio object's buffer
+                const audioLoader = new AudioLoader();
+                audioLoader.load(FuelPickup, function (buffer) {
+                    soundEffect.setBuffer(buffer);
+                    soundEffect.setLoop(false);
+                    soundEffect.setVolume(0.15);
+                    soundEffect.play();
+                });
 
-            // Handle time elapsed
-            if (this.gameScene.gameTimeRem + 5 > this.gameScene.MAX_FUEL_SECONDS)
-                tihs.gameScene.gameTimeRem = this.gameScene.MAX_FUEL_SECONDS;
-            else this.gameScene.gameTimeRem += 3;
-            this.gameScene.handleCollectedFuel(e.body.fuel);
-          }
+                // Handle time elapsed
+                if (
+                    this.gameScene.gameTimeRem + 5 >
+                    this.gameScene.MAX_FUEL_SECONDS
+                )
+                    tihs.gameScene.gameTimeRem = this.gameScene.MAX_FUEL_SECONDS;
+                else this.gameScene.gameTimeRem += 3;
+                this.gameScene.handleCollectedFuel(e.body.fuel);
+            }
         });
 
         // debugging mesh just in case we need to visualize boudingSphere

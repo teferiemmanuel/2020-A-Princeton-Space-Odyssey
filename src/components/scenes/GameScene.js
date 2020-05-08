@@ -9,7 +9,6 @@ import {
 import { Fuel, Player, Asteroid, Powerup } from 'objects';
 import { BasicLights } from 'lights';
 import Corneria from '../audio/corneria_ultimate.mp3';
-import FuelPickup from '../audio/fuel_pickup.mp3';
 import PowerupPickup from '../audio/powerup_pickup.mp3';
 
 const introDOM = document.getElementById('splash');
@@ -42,25 +41,6 @@ class GameScene extends Scene {
         this.world = world;
 
         // Add meshes to scene
-        const lights = new BasicLights();
-
-        const asteroid = new Asteroid(
-            this,
-            new Vector3(0, 0, 15),
-            this.world,
-            new Vector3(0, 0, 5),
-            new Vector3(0, 0, 0)
-        );
-        const asteroid2 = new Asteroid(
-            this,
-            new Vector3(0, 10, 15),
-            this.world,
-            new Vector3(0, 0, 5),
-            new Vector3(0, 0, 0)
-        );
-
-        const fuel = new Fuel(this, 'yellow', new Vector3(0, 0, 5), this.world);
-        const powerup = new Powerup(this, 'orange', new Vector3(0, 0, -5));
         const player = new Player(this, this.camera.position, this.world);
         this.playerBounds = player.boundingSphere;
         this.createBackground();
@@ -77,15 +57,7 @@ class GameScene extends Scene {
             music.setVolume(0.15);
             music.pause();
         });
-
         this.music = music;
-
-        // asteroid
-        asteroid.position.x = 0;
-        asteroid.position.y = 0;
-        asteroid.position.z = 0;
-
-        this.add(lights, fuel, player, asteroid, asteroid2, powerup);
     }
 
     addToUpdateList(object) {
@@ -259,17 +231,19 @@ class GameScene extends Scene {
         this.numCollectedFuels = STARTING_COLLECTED_FUELS;
         this.children = [];
 
-        // Re-add essential objects
-        this.add(new BasicLights());
-        this.add(
-            new Asteroid(
-                this,
-                new Vector3(0, 0, 15),
-                this.world,
-                new Vector3(0, 0, 5),
-                new Vector3(0, 0, 0)
-            )
+        const lights = new BasicLights();
+        const fuel = new Fuel(this, 'yellow', new Vector3(0, 0, 5), this.world);
+        const powerup = new Powerup(this, 'orange', new Vector3(0, 0, -5));
+        const asteroid = new Asteroid(
+            this,
+            new Vector3(0, 0, 15),
+            this.world,
+            new Vector3(0, 0, 5),
+            new Vector3(0, 0, 0)
         );
+
+        // Re-add essential objects
+        this.add(lights, fuel, powerup, asteroid);
         this.createBackground();
     }
 }

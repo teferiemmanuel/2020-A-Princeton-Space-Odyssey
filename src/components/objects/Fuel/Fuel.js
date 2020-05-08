@@ -59,7 +59,7 @@ class Fuel extends Group {
 
         const shape = new SpherePhysics(this.boundingSphere.radius);
         const body = new Body({
-          position: positionVec.clone()
+            position: positionVec.clone(),
         });
         body.addShape(shape);
         this.body = body;
