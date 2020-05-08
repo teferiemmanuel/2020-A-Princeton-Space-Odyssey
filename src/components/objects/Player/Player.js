@@ -6,7 +6,7 @@ import {
     SphereBufferGeometry,
     Mesh,
 } from 'three';
-import { World, NaiveBroadphase, Vec3, Body } from 'cannon';
+import { Vec3, Body } from 'cannon';
 import { Sphere as SpherePhysics } from 'cannon';
 
 
