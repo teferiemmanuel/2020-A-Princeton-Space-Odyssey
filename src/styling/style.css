@@ -28,13 +28,13 @@ h2 {
     color: #000000;
     text-align: center;
     margin: 0;
-    top: 45%;
+    top: 42%;
 }
 
 #startButton {
     background-color: transparent;
     position: absolute;
-    top: 45%;
+    top: 40%;
     left: 45%;
     padding: 0.5em 3em;
     border: 0.16em solid;
@@ -46,12 +46,12 @@ h2 {
     color: #ffffff;
 }
 
-#startButton:hover ~ #controls {
+#controls {
     color: #f39f49;
 }
 
 #acknowledgements {
-    top: 75%;
+    top: 55%;
 }
 
 #splash {

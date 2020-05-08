@@ -195,13 +195,6 @@ var Controls = function (object, domElement) {
         //event.preventDefault();
 
         switch (event.keyCode) {
-            case 87:
-                /*W*/ this.moveState.up = 1;
-                break;
-            case 83:
-                /*S*/ this.moveState.down = 1;
-                break;
-
             case 65:
                 /*A*/ this.moveState.left = 1;
                 break;
@@ -209,10 +202,10 @@ var Controls = function (object, domElement) {
                 /*D*/ this.moveState.right = 1;
                 break;
 
-            case 82:
+            case 87:
                 /*R*/ this.multiplier = 2.5;
                 break;
-            case 70:
+            case 83:
                 /*F*/ this.multiplier = 0.1;
                 break;
 
@@ -273,13 +266,6 @@ var Controls = function (object, domElement) {
 
     this.keyup = function (event) {
         switch (event.keyCode) {
-            case 87:
-                /*W*/ this.moveState.up = 0;
-                break;
-            case 83:
-                /*S*/ this.moveState.down = 0;
-                break;
-
             case 65:
                 /*A*/ this.moveState.left = 0;
                 break;
@@ -287,10 +273,10 @@ var Controls = function (object, domElement) {
                 /*D*/ this.moveState.right = 0;
                 break;
 
-            case 82:
+            case 87:
                 /*R*/ this.multiplier = 2.5;
                 break;
-            case 70:
+            case 83:
                 /*F*/ this.multiplier = 0.1;
                 break;
 
