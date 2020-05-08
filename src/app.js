@@ -101,6 +101,8 @@ const onAnimationFrameHandler = (timeStamp) => {
     gameScene.update && gameScene.update(timeStamp);
     if (gameScene.hasFuelCollision()) {
         // Handle fuel collection
+        document.getElementById('collisionMessage').innerHTML =
+            'Fuel recharged!';
         gameScene.numCollectedFuels++;
         gameScene.numSpawnedFuels--;
 
@@ -111,9 +113,20 @@ const onAnimationFrameHandler = (timeStamp) => {
         gameScene.handleCollectedFuel(gameScene.fuelCollision);
     }
 
-    // end game if asteroid is hit.
+    // Lose time if player runs into an asteroid
     if (gameScene.hasAsteroidCollision()) {
-        console.log('GAME OVER!!!');
+        document.getElementById('collisionMessage').innerHTML =
+            'OOF! You lost some fuel';
+        gameScene.gameTimeRem -= 5;
+        gameScene.handleAsteroidCollision(gameScene.asteroidCollision);
+    }
+
+    // Invincibility if player collects powerup
+    if (gameScene.hasPowerupCollision()) {
+        document.getElementById('collisionMessage').innerHTML =
+            'Temporary Invincibility';
+        // TODO: Somebody implement invincibility here?
+        gameScene.handlePowerupCollision(gameScene.powerupCollision);
     }
 
     window.requestAnimationFrame(onAnimationFrameHandler);
@@ -199,6 +212,7 @@ window.setInterval(function () {
 
         // Reset the important parts of scene
         gameScene.resetScene();
+        document.getElementById('collisionMessage').innerHTML = '';
     }
 
     // Only decrement time if HUD is up; indicates gameScene is active

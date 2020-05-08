@@ -11,7 +11,7 @@ import { BasicLights } from 'lights';
 import Corneria from '../audio/corneria_ultimate.mp3';
 
 const introDOM = document.getElementById('splash');
-const STARTING_SECONDS = 55;
+const STARTING_SECONDS = 15;
 const STARTING_FUELS = 1;
 const STARTING_COLLECTED_FUELS = 0;
 
@@ -113,8 +113,23 @@ class GameScene extends Scene {
         const asteroid = new Asteroid(this, positionVec);
 
         this.add(asteroid);
-        console.log('Spawned!!!');
         this.numSpawnedAsteroids++;
+    }
+
+    hasPowerupCollision() {
+        let powerupObjs = this.getAllPowerupObjects();
+        for (var i = 0; i < powerupObjs.length; i++) {
+            if (
+                powerupObjs[i].boundingSphere.intersectsSphere(
+                    this.playerBounds
+                )
+            ) {
+                this.powerupCollision = powerupObjs[i];
+                return true;
+            }
+        }
+        this.powerupCollision = null;
+        return false;
     }
 
     hasFuelCollision() {
@@ -165,6 +180,16 @@ class GameScene extends Scene {
         return aObjs;
     }
 
+    getAllPowerupObjects() {
+        let powerupObjs = [];
+        for (var i = 0; i < this.children.length; i++) {
+            if (this.children[i] instanceof Powerup) {
+                powerupObjs.push(this.children[i]);
+            }
+        }
+        return powerupObjs;
+    }
+
     // creates a space background scene that can be used by the renderer
     createBackground() {
         const loader = new CubeTextureLoader();
@@ -195,6 +220,29 @@ class GameScene extends Scene {
         collectedFuel.energyOrb.material.dispose();
 
         this.fuelCollision == null;
+    }
+
+    handleAsteroidCollision(asteroidCollision) {
+        // for now, let's dispose of them
+        this.remove(asteroidCollision);
+
+        asteroidCollision.rockSurface.material.dispose();
+        asteroidCollision.rockOutline.material.dispose();
+
+        this.asteroidCollision == null;
+    }
+
+    handlePowerupCollision(powerupCollision) {
+        // for now, let's dispose of them
+        this.remove(powerupCollision);
+
+        powerupCollision.powerup_in.geometry.dispose();
+        powerupCollision.powerup_in.material.dispose();
+
+        powerupCollision.powerup_out.geometry.dispose();
+        powerupCollision.powerup_out.material.dispose();
+
+        this.powerupCollision == null;
     }
 
     // Reset objects in scene for new game
