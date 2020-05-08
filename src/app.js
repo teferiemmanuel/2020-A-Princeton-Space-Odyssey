@@ -10,9 +10,7 @@ import { WebGLRenderer, PerspectiveCamera, Vector3, Vector2 } from 'three';
 import { Controls } from './Controls.js';
 import { GameScene } from 'scenes';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
-import { BloomPass } from 'three/examples/jsm/postprocessing/BloomPass.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { World, NaiveBroadphase } from 'cannon';
 // If out of bounds, from the 50x50 position from the start
@@ -24,7 +22,7 @@ const MAX_FUEL_SECONDS = 30;
 
 // Cannon js physics things...
 const world = new World();
-world.gravity.set(0,0,0);
+world.gravity.set(0, 0, 0);
 world.broadphase = new NaiveBroadphase();
 world.solver.iterations = 10;
 
@@ -43,16 +41,6 @@ canvas.style.display = 'block'; // Removes padding below canvas
 document.body.appendChild(canvas);
 
 // Set up controls
-/*
-const controls = new OrbitControls(camera, canvas);
-controls.enableDamping = true;
-controls.enablePan = false;
-controls.minDistance = 4;
-controls.maxDistance = 16;
-controls.update();
-*/
-//const controls = new FirstPersonControls(camera, canvas);
-//const controls = new Controls(camera, document.body);
 const controls = new Controls(camera, canvas);
 controls.autoForward = true;
 controls.movementSpeed = 0.0025;
@@ -88,7 +76,6 @@ composer.addPass(bloomPass);
 
 // Render loop
 const onAnimationFrameHandler = (timeStamp) => {
-    //controls.update();
     controls.update(20); // empirically determined...what do you guys think?
     updatePhysics();
 
@@ -133,10 +120,9 @@ windowResizeHandler();
 window.addEventListener('resize', windowResizeHandler, false);
 
 function updatePhysics() {
-          // Step the physics world
-          world.step(1/60);
+    // Step the physics world
+    world.step(1 / 60);
 }
-
 
 // Update HUD values
 function updateHUD() {
@@ -165,20 +151,6 @@ function checkSplashAndSpawnAsteroid() {
     // Check if there are fewer than 9 asteroid elements spawned
     if (splash.style.display === 'none' && gameScene.numSpawnedAsteroids < 9) {
         gameScene.spawnAsteroid();
-    }
-}
-
-function darkenNonBloomed(obj) {
-    if (obj.isMesh && bloomLayer.test(obj.layers) === false) {
-        materials[obj.uuid] = obj.material;
-        obj.material = darkMaterial;
-    }
-}
-
-function restoreMaterial(obj) {
-    if (materials[obj.uuid]) {
-        obj.material = materials[obj.uuid];
-        delete materials[obj.uuid];
     }
 }
 

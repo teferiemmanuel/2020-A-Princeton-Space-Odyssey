@@ -1,15 +1,7 @@
-import { Vector3, Group, Sphere } from 'three';
-import {
-    MeshBasicMaterial,
-    DoubleSide,
-    RingBufferGeometry,
-    SphereBufferGeometry,
-    Mesh,
-} from 'three';
-import { Vec3, Body } from 'cannon';
-import { Fuel, Asteroid, Powerup } from 'objects';
+import { Audio, AudioLoader, Vector3, Group, Sphere } from 'three';
+import { Body } from 'cannon';
 import { Sphere as SpherePhysics } from 'cannon';
-
+import AsteroidCollision from '../../audio/asteroid_collision.mp3';
 
 class Player extends Group {
     constructor(parent, positionVec, world) {
@@ -24,17 +16,13 @@ class Player extends Group {
 
         this.boundingSphere = boundingSphere;
         this.gameScene = parent;
-        console.log(parent);
-        console.log(this.gameScene.gameTimeRem);
-
-
         this.positionVec = positionVec;
 
         const shape = new SpherePhysics(this.boundingSphere.radius);
 
         const body = new Body({
-          mass: 1,
-          position: positionVec.clone()
+            mass: 1,
+            position: positionVec.clone(),
         });
         body.addShape(shape);
         world.addBody(body);
@@ -50,7 +38,17 @@ class Player extends Group {
                 'OOF! You lost some fuel';
 
             this.gameScene.gameTimeRem -= 5;
-            console.log("Collided with body:",e.body);
+
+            // create an audio source
+            const soundEffect = new Audio(this.gameScene.listener);
+            // load a sound and set it as the Audio object's buffer
+            const audioLoader = new AudioLoader();
+            audioLoader.load(AsteroidCollision, function (buffer) {
+                soundEffect.setBuffer(buffer);
+                soundEffect.setLoop(false);
+                soundEffect.setVolume(0.15);
+                soundEffect.play();
+            });
           }
           else if (e.body.fuel !== undefined) {
             document.getElementById('collisionMessage').innerHTML =
@@ -80,25 +78,24 @@ class Player extends Group {
     }
 
     update(timeStamp) {
-      this.boundingSphere.center.x = this.positionVec.x;
-      this.boundingSphere.center.y = this.positionVec.y;
-      this.boundingSphere.center.z = this.positionVec.z;
+        this.boundingSphere.center.x = this.positionVec.x;
+        this.boundingSphere.center.y = this.positionVec.y;
+        this.boundingSphere.center.z = this.positionVec.z;
 
-      this.body.position.copy(this.positionVec.clone());
+        this.body.position.copy(this.positionVec.clone());
 
-      // debugging mesh
-      // this.energyOrb.position.x = this.positionVec.x;
-      // this.energyOrb.position.y = this.positionVec.y;
-      // this.energyOrb.position.z = this.positionVec.z;
+        // debugging mesh
+        // this.energyOrb.position.x = this.positionVec.x;
+        // this.energyOrb.position.y = this.positionVec.y;
+        // this.energyOrb.position.z = this.positionVec.z;
     }
 }
 
 function createBoundingSphere() {
+    let boundingSphere = {};
 
-  let boundingSphere = {}
-
-  boundingSphere = new Sphere(new Vector3(), 0.6);
-  return boundingSphere;
+    boundingSphere = new Sphere(new Vector3(), 0.6);
+    return boundingSphere;
 }
 
 // function createEnergyOrbMesh() {

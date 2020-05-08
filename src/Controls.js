@@ -54,11 +54,11 @@ var Controls = function (object, domElement) {
     this.accelerate = false;
     this.brake = false;
 
-    this.barrel_left = false;
-    this.barrel_right = false;
+
 
     this.autoForward = false;
-    this.barrel = 0 
+    this.barrel_left = 0;
+    this.barrel_right = 0;
     // disable default target object behavior
 
     // internals
@@ -120,21 +120,6 @@ var Controls = function (object, domElement) {
         scope.dispatchEvent(changeEvent);
     };
 
-    /*
-    this.onMouseMove = function (event) {
-        var container = this.getContainerDimensions();
-        var halfWidth = container.size[0] / 2;
-        var halfHeight = container.size[1] / 2;
-
-        this.moveState.yawLeft =
-            -(event.pageX - container.offset[0] - halfWidth) / halfWidth;
-        this.moveState.pitchDown =
-            (event.pageY - container.offset[1] - halfHeight) / halfHeight;
-
-        this.updateRotationVector();
-    };
-    */
-
     function onPointerlockChange() {
         if (this.domElement.pointerLockElement === scope.domElement) {
             scope.dispatchEvent(lockEvent);
@@ -190,21 +175,21 @@ var Controls = function (object, domElement) {
         this.object.position.addScaledVector(vec, distance);
     };
 
-    var map = {81: false, 69: false};
+    //var map = {81: false, 69: false};
     this.keydown = function (event) {
         if (event.altKey) {
             return;
         }
         // console.log("keycode")
         // console.log(event.keyCode)
-        if (event.keyCode in map) {
-            map[event.keyCode] = true;
-            if (map[81] && map[69]) {
-                // barrel roll
-                console.log("barrel.")
-                this.barrel = 6 * Math.PI;
-            }
-        }
+        // if (event.keyCode in map) {
+        //     map[event.keyCode] = true;
+        //     if (map[81] && map[69]) {
+        //         // barrel roll
+        //         console.log("barrel.")
+        //         this.barrel = 6 * Math.PI;
+        //     }
+        // }
         //event.preventDefault();
 
         switch (event.keyCode) {
@@ -255,7 +240,9 @@ var Controls = function (object, domElement) {
                 break;
 
             case 81:
-                /*Q*/ this.moveState.rollLeft = 1;
+            /*Q*/   this.moveState.rollLeft = 1;
+                    this.barrel_left = 6 * Math.PI;
+
                 if (
                     !this.br_audio.isPlaying &&
                     splash.style.display == 'none'
@@ -270,6 +257,8 @@ var Controls = function (object, domElement) {
                 break;
             case 69:
                 /*E*/ this.moveState.rollRight = 1;
+                this.barrel_right = 6 * Math.PI;
+
                 if (
                     !this.br_audio.isPlaying &&
                     splash.style.display == 'none'
@@ -329,11 +318,11 @@ var Controls = function (object, domElement) {
 
             case 81:
                 /*Q*/ this.moveState.rollLeft = 0;
-                map[81] = false;
+                //map[81] = false;
                 break;
             case 69:
                 /*E*/ this.moveState.rollRight = 0;
-                map[69] = false;
+                //map[69] = false;
                 break;
         }
 
@@ -369,9 +358,16 @@ var Controls = function (object, domElement) {
             this.object.quaternion,
             this.object.rotation.order
         );
-        if (this.barrel > 0) {
+        if (this.barrel_right > 0) {
             // Lazy implementation of twirl
-            this.barrel -= Math.PI / 8;
+            this.barrel_right -= Math.PI / 8;
+            this.rotationVector.z -= Math.PI / 8;
+        }
+ 
+
+        else if (this.barrel_left > 0) {
+            // Lazy implementation of twirl
+            this.barrel_left -= Math.PI / 8;
             this.rotationVector.z += Math.PI / 8;
         }
         else {
@@ -397,8 +393,6 @@ var Controls = function (object, domElement) {
         this.moveVector.x = -this.moveState.left + this.moveState.right;
         this.moveVector.y = -this.moveState.down + this.moveState.up;
         this.moveVector.z = -forward + this.moveState.back;
-
-        //console.log( 'move:', [ this.moveVector.x, this.moveVector.y, this.moveVector.z ] );
     };
 
     this.updateRotationVector = function () {
@@ -408,8 +402,6 @@ var Controls = function (object, domElement) {
             -this.moveState.yawRight + this.moveState.yawLeft;
         this.rotationVector.z =
             -this.moveState.rollRight + this.moveState.rollLeft;
-
-        //console.log( 'rotate:', [ this.rotationVector.x, this.rotationVector.y, this.rotationVector.z ] );
     };
 
     this.getContainerDimensions = function () {

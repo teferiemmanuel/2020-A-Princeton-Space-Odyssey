@@ -2,15 +2,11 @@
 
 import { Group } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
-import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js';
 import { MeshLambertMaterial } from 'three';
 import { Sphere, Vector3 } from 'three';
-import { Vec3, Body } from 'cannon';
+import { Body } from 'cannon';
 import { Sphere as SpherePhysics } from 'cannon';
 import MODEL from './out.glb';
-// import { C } from 'cannon';
 
 class Asteroid extends Group {
     constructor(parent, positionVec, world, angularVec, velocityVec) {
@@ -70,10 +66,10 @@ class Asteroid extends Group {
     }
 
     update(timeStamp) {
-      if (this.body !== undefined) {
-        this.position.copy(this.body.position);
-        this.quaternion.copy(this.body.quaternion);
-      }
+        if (this.body !== undefined) {
+            this.position.copy(this.body.position);
+            this.quaternion.copy(this.body.quaternion);
+        }
     }
 }
 
