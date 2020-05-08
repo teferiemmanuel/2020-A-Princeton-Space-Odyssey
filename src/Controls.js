@@ -253,7 +253,7 @@ var Controls = function (object, domElement) {
                     br_loader.load(Barrel_roll, function (buffer) {
                         br_audio.setBuffer(buffer);
                         br_audio.setLoop(false);
-                        br_audio.setVolume(0.3);
+                        br_audio.setVolume(0.15);
                         br_audio.play();
                     });
                 }
@@ -267,7 +267,7 @@ var Controls = function (object, domElement) {
                     br_loader.load(Barrel_roll, function (buffer) {
                         br_audio.setBuffer(buffer);
                         br_audio.setLoop(false);
-                        br_audio.setVolume(0.3);
+                        br_audio.setVolume(0.15);
                         br_audio.play();
                     });
                 }

@@ -9,6 +9,9 @@ import {
 import { Fuel, Player, Asteroid, Powerup } from 'objects';
 import { BasicLights } from 'lights';
 import Corneria from '../audio/corneria_ultimate.mp3';
+import AsteroidCollision from '../audio/asteroid_collision.mp3';
+import FuelPickup from '../audio/fuel_pickup.mp3';
+import PowerupPickup from '../audio/powerup_pickup.mp3';
 
 const introDOM = document.getElementById('splash');
 const STARTING_SECONDS = 15;
@@ -45,15 +48,15 @@ class GameScene extends Scene {
         this.createBackground();
 
         // add audio to scene
-        const listener = new AudioListener();
+        this.listener = new AudioListener();
         // create a global audio source
-        const music = new Audio(listener);
+        const music = new Audio(this.listener);
         // load a sound and set it as the Audio object's buffer
         const audioLoader = new AudioLoader();
         audioLoader.load(Corneria, function (buffer) {
             music.setBuffer(buffer);
             music.setLoop(false);
-            music.setVolume(0.3);
+            music.setVolume(0.15);
             music.pause();
         });
 
@@ -102,7 +105,7 @@ class GameScene extends Scene {
             this.camera.position.z +
             (Math.floor(Math.random() * 16) - 1) * randNegative();
         const positionVec = new Vector3(xRandom, yRandom, zRandom);
-        console.log(this.camera.position);
+
         // Random color
         const colorOptions = ['red', 'green', 'yellow'];
         const colorChosen = colorOptions[Math.floor(Math.random() * 3)];
@@ -137,6 +140,11 @@ class GameScene extends Scene {
     }
 
     hasPowerupCollision() {
+        // create an audio source
+        const soundEffect = new Audio(this.listener);
+        // load a sound and set it as the Audio object's buffer
+        const audioLoader = new AudioLoader();
+
         let powerupObjs = this.getAllPowerupObjects();
         for (var i = 0; i < powerupObjs.length; i++) {
             if (
@@ -145,6 +153,12 @@ class GameScene extends Scene {
                 )
             ) {
                 this.powerupCollision = powerupObjs[i];
+                audioLoader.load(PowerupPickup, function (buffer) {
+                    soundEffect.setBuffer(buffer);
+                    soundEffect.setLoop(false);
+                    soundEffect.setVolume(0.15);
+                    soundEffect.play();
+                });
                 return true;
             }
         }
@@ -153,12 +167,23 @@ class GameScene extends Scene {
     }
 
     hasFuelCollision() {
+        // create an audio source
+        const soundEffect = new Audio(this.listener);
+        // load a sound and set it as the Audio object's buffer
+        const audioLoader = new AudioLoader();
+
         let fuelObjs = this.getAllFuelObjects();
         for (var i = 0; i < fuelObjs.length; i++) {
             if (
                 fuelObjs[i].boundingSphere.intersectsSphere(this.playerBounds)
             ) {
                 this.fuelCollision = fuelObjs[i];
+                audioLoader.load(FuelPickup, function (buffer) {
+                    soundEffect.setBuffer(buffer);
+                    soundEffect.setLoop(false);
+                    soundEffect.setVolume(0.15);
+                    soundEffect.play();
+                });
                 return true;
             }
         }
@@ -168,10 +193,21 @@ class GameScene extends Scene {
 
     // may not work if children in getAllAsteroidObjects is wrong.
     hasAsteroidCollision() {
+        // create an audio source
+        const soundEffect = new Audio(this.listener);
+        // load a sound and set it as the Audio object's buffer
+        const audioLoader = new AudioLoader();
+
         let aObjs = this.getAllAsteroidObjects();
         for (var i = 0; i < aObjs.length; i++) {
             if (aObjs[i].boundingSphere.intersectsSphere(this.playerBounds)) {
                 this.asteroidCollision = aObjs[i];
+                audioLoader.load(AsteroidCollision, function (buffer) {
+                    soundEffect.setBuffer(buffer);
+                    soundEffect.setLoop(false);
+                    soundEffect.setVolume(0.15);
+                    soundEffect.play();
+                });
                 return true;
             }
         }
