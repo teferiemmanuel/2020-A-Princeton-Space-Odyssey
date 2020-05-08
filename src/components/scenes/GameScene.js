@@ -19,7 +19,7 @@ const STARTING_COLLECTED_FUELS = 0;
 const STARTING_ASTEROIDS = 3;
 
 class GameScene extends Scene {
-    constructor(camera) {
+    constructor(camera, world) {
         // Call parent Scene() constructor
         super();
 
@@ -30,12 +30,17 @@ class GameScene extends Scene {
 
         this.camera = camera;
 
+        this.world = world;
+
         // Add meshes to scene
         const lights = new BasicLights();
-        const asteroid = new Asteroid(this, new Vector3(0, 0, 15));
+
+        const asteroid = new Asteroid(this, new Vector3(0, 0, 15), this.world, new Vector3(0, 0, 5), new Vector3(0, 0, 0));
+        const asteroid2 = new Asteroid(this, new Vector3(0, 10, 15), this.world, new Vector3(0, 0, 5), new Vector3(0, 0, 0));
+
         const fuel = new Fuel(this, 'yellow', new Vector3(0, 0, 5));
         const powerup = new Powerup(this, 'orange', new Vector3(0, 0, -5));
-        const player = new Player(this, this.camera.position);
+        const player = new Player(this, this.camera.position, this.world);
         this.playerBounds = player.boundingSphere;
         this.createBackground();
 
@@ -65,7 +70,7 @@ class GameScene extends Scene {
         asteroid.position.y = 0;
         asteroid.position.z = 0;
 
-        this.add(lights, fuel, player, asteroid, powerup);
+        this.add(lights, fuel, player, asteroid, asteroid2, powerup);
     }
 
     addToUpdateList(object) {
@@ -121,7 +126,11 @@ class GameScene extends Scene {
             (Math.floor(Math.random() * 16) - 1) * randNegative();
         const positionVec = new Vector3(xRandom, yRandom, zRandom);
 
-        const asteroid = new Asteroid(this, positionVec);
+        // Dummy vectors. TODO: replace them
+        const angularVec = new Vector3(0, 0, -3);
+        const velocityVec = new Vector3(0, 0, 0);
+
+        const asteroid = new Asteroid(this, positionVec, this.world, angularVec, velocityVec);
 
         this.add(asteroid);
         this.numSpawnedAsteroids++;

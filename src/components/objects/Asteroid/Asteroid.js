@@ -7,13 +7,17 @@ import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js';
 import { MeshLambertMaterial } from 'three';
 import { Sphere, Vector3 } from 'three';
+import { World, NaiveBroadphase, Vec3, Body } from 'cannon';
+import { Sphere as SpherePhysics } from 'cannon';
 import MODEL from './out.glb';
 // import { C } from 'cannon';
 
 class Asteroid extends Group {
-    constructor(parent, positionVec) {
+    constructor(parent, positionVec, world, angularVec, velocityVec) {
         // Call parent Group() constructor
         super();
+
+        // loading model things
 
         const loader = new GLTFLoader();
 
@@ -30,7 +34,20 @@ class Asteroid extends Group {
 
             this.rockSurface = obj;
             this.boundingSphere = obj.geometry.boundingSphere;
+            this.boundingSphere.radius -= 1.2;
             this.add(obj);
+
+            const shape = new SpherePhysics(this.boundingSphere.radius);
+            const body = new Body({
+              mass: 1,
+              position: positionVec.clone()
+            });
+            body.addShape(shape);
+            body.angularVelocity.set(angularVec.x, angularVec.y, angularVec.z);
+            body.velocity.set(velocityVec.x, velocityVec.y, velocityVec.z);
+            this.body = body;
+
+            world.addBody(body);
 
             var outline = obj.clone();
             outline.material = new MeshLambertMaterial({
@@ -51,9 +68,10 @@ class Asteroid extends Group {
     }
 
     update(timeStamp) {
-        this.rotation.x += 0.0069;
-        this.rotation.y -= 0.0069;
-        this.rotation.z += 0.001337;
+      if (this.body !== undefined) {
+        this.position.copy(this.body.position);
+        this.quaternion.copy(this.body.quaternion);
+      }
     }
 }
 

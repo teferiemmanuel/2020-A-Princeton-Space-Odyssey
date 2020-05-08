@@ -14,7 +14,7 @@ import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { BloomPass } from 'three/examples/jsm/postprocessing/BloomPass.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-
+import { World, NaiveBroadphase, Box, Vec3, Body } from 'cannon';
 // If out of bounds, from the 50x50 position from the start
 // Spawn asteroids in game scene there's a variable in,  gamescene.
 // then barrel roll.
@@ -22,12 +22,18 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 // Constants
 const MAX_FUEL_SECONDS = 30;
 
+// Cannon js physics things...
+const world = new World();
+world.gravity.set(0,0,0);
+world.broadphase = new NaiveBroadphase();
+world.solver.iterations = 10;
+
 // Initialize core ThreeJS components
 const camera = new PerspectiveCamera();
 // Set up camera
 resetPlayerPosition();
 
-const gameScene = new GameScene(camera);
+const gameScene = new GameScene(camera, world);
 const renderer = new WebGLRenderer({ antialias: true });
 
 // Set up renderer and canvas
@@ -84,6 +90,7 @@ composer.addPass(bloomPass);
 const onAnimationFrameHandler = (timeStamp) => {
     //controls.update();
     controls.update(20); // empirically determined...what do you guys think?
+    updatePhysics();
 
     renderer.autoClear = false;
 
@@ -145,6 +152,12 @@ const windowResizeHandler = () => {
 };
 windowResizeHandler();
 window.addEventListener('resize', windowResizeHandler, false);
+
+function updatePhysics() {
+          // Step the physics world
+          world.step(1/60);
+}
+
 
 // Update HUD values
 function updateHUD() {

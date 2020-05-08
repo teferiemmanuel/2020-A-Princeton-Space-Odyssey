@@ -6,9 +6,12 @@ import {
     SphereBufferGeometry,
     Mesh,
 } from 'three';
+import { World, NaiveBroadphase, Vec3, Body } from 'cannon';
+import { Sphere as SpherePhysics } from 'cannon';
+
 
 class Player extends Group {
-    constructor(parent, positionVec) {
+    constructor(parent, positionVec, world) {
         // Call parent Group() constructor
         super();
 
@@ -23,6 +26,17 @@ class Player extends Group {
         this.boundingSphere = boundingSphere;
 
         this.positionVec = positionVec;
+
+        const shape = new SpherePhysics(this.boundingSphere.radius);
+
+        const body = new Body({
+          mass: 1,
+          position: positionVec.clone()
+        });
+        body.addShape(shape);
+        world.addBody(body);
+
+        this.body = body;
 
         // debugging mesh just in case we need to visualize boudingSphere
         // let energyOrbMesh = createEnergyOrbMesh();
@@ -41,6 +55,8 @@ class Player extends Group {
       this.boundingSphere.center.x = this.positionVec.x;
       this.boundingSphere.center.y = this.positionVec.y;
       this.boundingSphere.center.z = this.positionVec.z;
+
+      this.body.position.copy(this.positionVec.clone());
 
       // debugging mesh
       // this.energyOrb.position.x = this.positionVec.x;
