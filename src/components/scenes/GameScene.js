@@ -9,7 +9,6 @@ import {
 import { Fuel, Player, Asteroid, Powerup } from 'objects';
 import { BasicLights } from 'lights';
 import Corneria from '../audio/corneria_ultimate.mp3';
-import AsteroidCollision from '../audio/asteroid_collision.mp3';
 import FuelPickup from '../audio/fuel_pickup.mp3';
 import PowerupPickup from '../audio/powerup_pickup.mp3';
 
@@ -45,8 +44,20 @@ class GameScene extends Scene {
         // Add meshes to scene
         const lights = new BasicLights();
 
-        const asteroid = new Asteroid(this, new Vector3(0, 0, 15), this.world, new Vector3(0, 0, 5), new Vector3(0, 0, 0));
-        const asteroid2 = new Asteroid(this, new Vector3(0, 10, 15), this.world, new Vector3(0, 0, 5), new Vector3(0, 0, 0));
+        const asteroid = new Asteroid(
+            this,
+            new Vector3(0, 0, 15),
+            this.world,
+            new Vector3(0, 0, 5),
+            new Vector3(0, 0, 0)
+        );
+        const asteroid2 = new Asteroid(
+            this,
+            new Vector3(0, 10, 15),
+            this.world,
+            new Vector3(0, 0, 5),
+            new Vector3(0, 0, 0)
+        );
 
         const fuel = new Fuel(this, 'yellow', new Vector3(0, 0, 5));
         const powerup = new Powerup(this, 'orange', new Vector3(0, 0, -5));
@@ -68,7 +79,6 @@ class GameScene extends Scene {
         });
 
         this.music = music;
-
 
         // asteroid
         asteroid.position.x = 0;
@@ -135,7 +145,13 @@ class GameScene extends Scene {
         const angularVec = new Vector3(0, 0, -3);
         const velocityVec = new Vector3(0, 0, 0);
 
-        const asteroid = new Asteroid(this, positionVec, this.world, angularVec, velocityVec);
+        const asteroid = new Asteroid(
+            this,
+            positionVec,
+            this.world,
+            angularVec,
+            velocityVec
+        );
 
         this.add(asteroid);
         this.numSpawnedAsteroids++;
@@ -229,7 +245,6 @@ class GameScene extends Scene {
     }
 
     handleCollectedFuel(collectedFuel) {
-        //console.log(collectedFuel);
         // for now, let's dispose of them
         this.remove(collectedFuel);
 

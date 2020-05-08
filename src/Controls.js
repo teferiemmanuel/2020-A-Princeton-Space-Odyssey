@@ -120,21 +120,6 @@ var Controls = function (object, domElement) {
         scope.dispatchEvent(changeEvent);
     };
 
-    /*
-    this.onMouseMove = function (event) {
-        var container = this.getContainerDimensions();
-        var halfWidth = container.size[0] / 2;
-        var halfHeight = container.size[1] / 2;
-
-        this.moveState.yawLeft =
-            -(event.pageX - container.offset[0] - halfWidth) / halfWidth;
-        this.moveState.pitchDown =
-            (event.pageY - container.offset[1] - halfHeight) / halfHeight;
-
-        this.updateRotationVector();
-    };
-    */
-
     function onPointerlockChange() {
         if (this.domElement.pointerLockElement === scope.domElement) {
             scope.dispatchEvent(lockEvent);
@@ -380,8 +365,6 @@ var Controls = function (object, domElement) {
         this.moveVector.x = -this.moveState.left + this.moveState.right;
         this.moveVector.y = -this.moveState.down + this.moveState.up;
         this.moveVector.z = -forward + this.moveState.back;
-
-        //console.log( 'move:', [ this.moveVector.x, this.moveVector.y, this.moveVector.z ] );
     };
 
     this.updateRotationVector = function () {
@@ -391,8 +374,6 @@ var Controls = function (object, domElement) {
             -this.moveState.yawRight + this.moveState.yawLeft;
         this.rotationVector.z =
             -this.moveState.rollRight + this.moveState.rollLeft;
-
-        //console.log( 'rotate:', [ this.rotationVector.x, this.rotationVector.y, this.rotationVector.z ] );
     };
 
     this.getContainerDimensions = function () {
