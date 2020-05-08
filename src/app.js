@@ -14,7 +14,7 @@ import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { BloomPass } from 'three/examples/jsm/postprocessing/BloomPass.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import { World, NaiveBroadphase, Box, Vec3, Body } from 'cannon';
+import { World, NaiveBroadphase } from 'cannon';
 // If out of bounds, from the 50x50 position from the start
 // Spawn asteroids in game scene there's a variable in,  gamescene.
 // then barrel roll.
