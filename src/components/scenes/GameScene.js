@@ -16,7 +16,7 @@ const STARTING_FUELS = 1;
 const STARTING_COLLECTED_FUELS = 0;
 
 //Asteroid generation parameters:
-const STARTING_ASTEROIDS = 3
+const STARTING_ASTEROIDS = 3;
 
 class GameScene extends Scene {
     constructor(camera) {
@@ -114,7 +114,7 @@ class GameScene extends Scene {
         const asteroid = new Asteroid(this, positionVec);
 
         this.add(asteroid);
-        console.log("Spawned!!!")
+        console.log('Spawned!!!');
         this.numSpawnedAsteroids++;
     }
 
@@ -136,9 +136,7 @@ class GameScene extends Scene {
     hasAsteroidCollision() {
         let aObjs = this.getAllAsteroidObjects();
         for (var i = 0; i < aObjs.length; i++) {
-            if (
-                aObjs[i].boundingSphere.intersectsSphere(this.playerBounds)
-            ) {
+            if (aObjs[i].boundingSphere.intersectsSphere(this.playerBounds)) {
                 this.asteroidCollision = aObjs[i];
                 return true;
             }
@@ -146,9 +144,6 @@ class GameScene extends Scene {
         this.asteroidCollision = null;
         return false;
     }
-
-
-
 
     getAllFuelObjects() {
         let fuelObjs = [];
@@ -160,7 +155,7 @@ class GameScene extends Scene {
         return fuelObjs;
     }
 
-    // return asteroids, used in collision detection. 
+    // return asteroids, used in collision detection.
     getAllAsteroidObjects() {
         let aObjs = [];
         for (var i = 0; i < this.children.length; i++) {

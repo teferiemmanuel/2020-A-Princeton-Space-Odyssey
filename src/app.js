@@ -16,11 +16,10 @@ import { BloomPass } from 'three/examples/jsm/postprocessing/BloomPass.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 
 // If out of bounds, from the 50x50 position from the start
-// Spawn asteroids in game scene there's a variable in,  gamescene.  
-// then barrel roll. 
+// Spawn asteroids in game scene there's a variable in,  gamescene.
+// then barrel roll.
 
 // Constants
-const STARTING_SECONDS = 15;
 const MAX_FUEL_SECONDS = 30;
 
 // Initialize core ThreeJS components
@@ -114,7 +113,7 @@ const onAnimationFrameHandler = (timeStamp) => {
 
     // end game if asteroid is hit.
     if (gameScene.hasAsteroidCollision()) {
-        console.log("GAME OVER!!!")
+        console.log('GAME OVER!!!');
     }
 
     window.requestAnimationFrame(onAnimationFrameHandler);

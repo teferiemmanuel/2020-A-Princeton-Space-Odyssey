@@ -195,14 +195,14 @@ var Controls = function (object, domElement) {
         //event.preventDefault();
 
         switch (event.keyCode) {
-            case 65:
-                /*A*/ this.moveState.left = 1;
-                break;
-            case 68:
-                /*D*/ this.moveState.right = 1;
-                break;
+            // case 65:
+            //     /*A*/ this.moveState.left = 1;
+            //     break;
+            // case 68:
+            //     /*D*/ this.moveState.right = 1;
+            //     break;
 
-            case 82:
+            case 32:
                 /*R*/
                 if (this.speed_multiplier < 1.0) {
                     this.speed_multiplier = 1.0;
@@ -212,7 +212,7 @@ var Controls = function (object, domElement) {
                 }
                 this.accelerate = true;
                 break;
-            case 70:
+            case 16:
                 /*F*/
                 if (this.speed_multiplier > 0.1) {
                     this.speed_multiplier *= 0.69;
@@ -277,18 +277,18 @@ var Controls = function (object, domElement) {
 
     this.keyup = function (event) {
         switch (event.keyCode) {
-            case 65:
-                /*A*/ this.moveState.left = 0;
-                break;
-            case 68:
-                /*D*/ this.moveState.right = 0;
-                break;
+            // case 65:
+            //     /*A*/ this.moveState.left = 0;
+            //     break;
+            // case 68:
+            //     /*D*/ this.moveState.right = 0;
+            //     break;
 
-            case 82:
+            case 32:
                 /*R*/ this.speed_multiplier *= 0.99;
                 this.accelerate = false;
                 break;
-            case 70:
+            case 16:
                 /*F*/ this.speed_multiplier = 0.1;
                 this.brake = false;
                 break;
@@ -329,8 +329,7 @@ var Controls = function (object, domElement) {
     this.update = function (delta) {
         if (this.speed_multiplier < 1.0 && !this.brake) {
             this.speed_multiplier *= 1.5;
-        }
-        else if (this.speed_multiplier > 1.0 && !this.accelerate) {
+        } else if (this.speed_multiplier > 1.0 && !this.accelerate) {
             this.speed_multiplier *= 0.98;
         }
         var moveMult = delta * this.movementSpeed * this.speed_multiplier;
