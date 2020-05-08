@@ -213,9 +213,9 @@ function resetPlayerPosition() {
     camera.layers.enable(1);
 }
 // Listener for restarting position
-document
-    .getElementById('startButton')
-    .addEventListener('click', resetPlayerPosition);
+document.getElementById('startButton').addEventListener('click', () => {
+    resetPlayerPosition(), gameScene.resetScene();
+});
 
 // Disable right click; right-click leads to weird control errors
 document.addEventListener(
