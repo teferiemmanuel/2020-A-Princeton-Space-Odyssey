@@ -104,19 +104,6 @@ const onAnimationFrameHandler = (timeStamp) => {
     renderer.render(gameScene, camera);
 
     gameScene.update && gameScene.update(timeStamp);
-    if (gameScene.hasFuelCollision()) {
-        // Handle fuel collection
-        document.getElementById('collisionMessage').innerHTML =
-            'Fuel recharged!';
-        gameScene.numCollectedFuels++;
-        gameScene.numSpawnedFuels--;
-
-        // Handle time elapsed
-        if (gameScene.gameTimeRem + 5 > MAX_FUEL_SECONDS)
-            gameScene.gameTimeRem = MAX_FUEL_SECONDS;
-        else gameScene.gameTimeRem += 3;
-        gameScene.handleCollectedFuel(gameScene.fuelCollision);
-    }
 
     // Invincibility if player collects powerup
     if (gameScene.hasPowerupCollision()) {

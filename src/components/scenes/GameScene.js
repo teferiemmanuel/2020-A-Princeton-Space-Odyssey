@@ -45,10 +45,11 @@ class GameScene extends Scene {
         // Add meshes to scene
         const lights = new BasicLights();
 
+        // TODO: move this into a set scene function
         const asteroid = new Asteroid(this, new Vector3(0, 0, 15), this.world, new Vector3(0, 0, 5), new Vector3(0, 0, 0));
         const asteroid2 = new Asteroid(this, new Vector3(0, 10, 15), this.world, new Vector3(0, 0, 5), new Vector3(0, 0, 0));
 
-        const fuel = new Fuel(this, 'yellow', new Vector3(0, 0, 5));
+        const fuel = new Fuel(this, 'yellow', new Vector3(0, 0, 5), this.world);
         const powerup = new Powerup(this, 'orange', new Vector3(0, 0, -5));
         const player = new Player(this, this.camera.position, this.world);
         this.playerBounds = player.boundingSphere;
@@ -111,7 +112,7 @@ class GameScene extends Scene {
         // Random color
         const colorOptions = ['red', 'green', 'yellow'];
         const colorChosen = colorOptions[Math.floor(Math.random() * 3)];
-        const fuel = new Fuel(this, colorChosen, positionVec);
+        const fuel = new Fuel(this, colorChosen, positionVec, this.world);
 
         this.add(fuel);
         this.numSpawnedFuels++;
@@ -166,41 +167,6 @@ class GameScene extends Scene {
         }
         this.powerupCollision = null;
         return false;
-    }
-
-    hasFuelCollision() {
-        // create an audio source
-        const soundEffect = new Audio(this.listener);
-        // load a sound and set it as the Audio object's buffer
-        const audioLoader = new AudioLoader();
-
-        let fuelObjs = this.getAllFuelObjects();
-        for (var i = 0; i < fuelObjs.length; i++) {
-            if (
-                fuelObjs[i].boundingSphere.intersectsSphere(this.playerBounds)
-            ) {
-                this.fuelCollision = fuelObjs[i];
-                audioLoader.load(FuelPickup, function (buffer) {
-                    soundEffect.setBuffer(buffer);
-                    soundEffect.setLoop(false);
-                    soundEffect.setVolume(0.15);
-                    soundEffect.play();
-                });
-                return true;
-            }
-        }
-        this.fuelCollision = null;
-        return false;
-    }
-
-    getAllFuelObjects() {
-        let fuelObjs = [];
-        for (var i = 0; i < this.children.length; i++) {
-            if (this.children[i] instanceof Fuel) {
-                fuelObjs.push(this.children[i]);
-            }
-        }
-        return fuelObjs;
     }
 
     getAllPowerupObjects() {

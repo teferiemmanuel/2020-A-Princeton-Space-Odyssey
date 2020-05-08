@@ -6,9 +6,11 @@ import {
     SphereBufferGeometry,
     Mesh,
 } from 'three';
+import { Vec3, Body } from 'cannon';
+import { Sphere as SpherePhysics } from 'cannon';
 
 class Fuel extends Group {
-    constructor(parent, color, positionVec) {
+    constructor(parent, color, positionVec, world) {
         // Call parent Group() constructor
         super();
 
@@ -54,6 +56,16 @@ class Fuel extends Group {
         energyOrb.mesh.position.z = positionVec.z;
         this.add(energyOrb.mesh);
         this.energyOrb = energyOrb.mesh;
+
+        const shape = new SpherePhysics(this.boundingSphere.radius);
+        const body = new Body({
+          position: positionVec.clone()
+        });
+        body.addShape(shape);
+        this.body = body;
+        this.body.fuel = this;
+
+        world.addBody(body);
 
         // Add self to parent's update list
         parent.addToUpdateList(this);

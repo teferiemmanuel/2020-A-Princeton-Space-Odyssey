@@ -34,17 +34,18 @@ class Asteroid extends Group {
 
             this.rockSurface = obj;
             this.boundingSphere = obj.geometry.boundingSphere;
-            this.boundingSphere.radius -= 1.2;
+            this.boundingSphere.radius -= 0.6;
             this.add(obj);
 
             const shape = new SpherePhysics(this.boundingSphere.radius);
             const body = new Body({
               mass: 1,
-              position: positionVec.clone()
+              position: positionVec.clone(),
+              angularVelocity: angularVec.clone(),
+              velocity: velocityVec.clone()
             });
             body.addShape(shape);
-            body.angularVelocity.set(angularVec.x, angularVec.y, angularVec.z);
-            body.velocity.set(velocityVec.x, velocityVec.y, velocityVec.z);
+
             this.body = body;
             this.body.asteroid = this;
 
