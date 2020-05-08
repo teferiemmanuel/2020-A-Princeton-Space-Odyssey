@@ -25,9 +25,7 @@ const MAX_FUEL_SECONDS = 30;
 // Initialize core ThreeJS components
 const camera = new PerspectiveCamera();
 // Set up camera
-camera.position.set(6, 3, -10);
-camera.lookAt(new Vector3(0, 0, 0));
-camera.layers.enable(1);
+resetPlayerPosition();
 
 const gameScene = new GameScene(camera);
 const renderer = new WebGLRenderer({ antialias: true });
@@ -51,7 +49,7 @@ controls.update();
 //const controls = new Controls(camera, document.body);
 const controls = new Controls(camera, canvas);
 controls.autoForward = true;
-controls.movementSpeed = 0.005;
+controls.movementSpeed = 0.0025;
 controls.rollSpeed = 0.001;
 // add event listener to document.body
 document.body.addEventListener(
@@ -221,15 +219,26 @@ window.setInterval(function () {
     }
 }, 1000);
 
-// Wrapper to spawn fuel every 3s
+// Wrapper to spawn fuel every 2.5s
 window.setInterval(function () {
     checkSplashAndSpawn();
 }, 2500);
 
-// Wrapper to spawn asteroid every 6s
+// Wrapper to spawn asteroid every 1.5s
 window.setInterval(function () {
     checkSplashAndSpawnAsteroid();
-}, 5000);
+}, 1500);
+
+// Resets player position to default after starting game
+function resetPlayerPosition() {
+    camera.position.set(6, 3, -10);
+    camera.lookAt(new Vector3(0, 0, 0));
+    camera.layers.enable(1);
+}
+// Listener for restarting position
+document
+    .getElementById('startButton')
+    .addEventListener('click', resetPlayerPosition);
 
 // Disable right click; right-click leads to weird control errors
 document.addEventListener(

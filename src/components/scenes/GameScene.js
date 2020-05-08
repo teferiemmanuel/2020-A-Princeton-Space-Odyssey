@@ -87,15 +87,20 @@ class GameScene extends Scene {
     // Randomly spawn fuel in bounded area
     spawnFuel() {
         // Random position
-        const xRandom = Math.floor(Math.random() * 31) - 10;
-        const yRandom = Math.floor(Math.random() * 31) - 10;
-        const zRandom = Math.floor(Math.random() * 31) - 10;
+        const xRandom =
+            this.camera.position.x +
+            (Math.floor(Math.random() * 16) - 1) * randNegative();
+        const yRandom =
+            this.camera.position.y +
+            (Math.floor(Math.random() * 16) - 1) * randNegative();
+        const zRandom =
+            this.camera.position.z +
+            (Math.floor(Math.random() * 16) - 1) * randNegative();
         const positionVec = new Vector3(xRandom, yRandom, zRandom);
-
+        console.log(this.camera.position);
         // Random color
         const colorOptions = ['red', 'green', 'yellow'];
         const colorChosen = colorOptions[Math.floor(Math.random() * 3)];
-
         const fuel = new Fuel(this, colorChosen, positionVec);
 
         this.add(fuel);
@@ -104,10 +109,16 @@ class GameScene extends Scene {
 
     // Randomly spawn asteroids in bounded area
     spawnAsteroid() {
-        // spawn in Random position in game map.
-        const xRandom = Math.floor(Math.random() * 31) - 10;
-        const yRandom = Math.floor(Math.random() * 31) - 10;
-        const zRandom = Math.floor(Math.random() * 31) - 10;
+        // spawn in Random position around player
+        const xRandom =
+            this.camera.position.x +
+            (Math.floor(Math.random() * 16) - 1) * randNegative();
+        const yRandom =
+            this.camera.position.y +
+            (Math.floor(Math.random() * 16) - 1) * randNegative();
+        const zRandom =
+            this.camera.position.z +
+            (Math.floor(Math.random() * 16) - 1) * randNegative();
         const positionVec = new Vector3(xRandom, yRandom, zRandom);
 
         const asteroid = new Asteroid(this, positionVec);
@@ -226,7 +237,10 @@ class GameScene extends Scene {
         // for now, let's dispose of them
         this.remove(asteroidCollision);
 
+        asteroidCollision.rockSurface.geometry.dispose();
         asteroidCollision.rockSurface.material.dispose();
+
+        asteroidCollision.rockOutline.geometry.dispose();
         asteroidCollision.rockOutline.material.dispose();
 
         this.asteroidCollision == null;
@@ -258,6 +272,11 @@ class GameScene extends Scene {
         this.add(new Asteroid(this, new Vector3(0, 0, 15)));
         this.createBackground();
     }
+}
+
+// Helper function to help generate negative numbers
+function randNegative() {
+    return Math.floor(Math.random() * 2) == 1 ? 1 : -1;
 }
 
 export default GameScene;
