@@ -54,11 +54,11 @@ var Controls = function (object, domElement) {
     this.accelerate = false;
     this.brake = false;
 
-    this.barrel_left = false;
-    this.barrel_right = false;
+
 
     this.autoForward = false;
-    this.barrel = 0;
+    this.barrel_left = 0;
+    this.barrel_right = 0;
     // disable default target object behavior
 
     // internals
@@ -190,22 +190,31 @@ var Controls = function (object, domElement) {
         this.object.position.addScaledVector(vec, distance);
     };
 
-    var map = { 81: false, 69: false };
+    //var map = {81: false, 69: false};
     this.keydown = function (event) {
         if (event.altKey) {
             return;
         }
-
-        if (event.keyCode in map) {
-            map[event.keyCode] = true;
-            if (map[81] && map[69]) {
-                // barrel roll
-                this.barrel = 6 * Math.PI;
-            }
-        }
+        // console.log("keycode")
+        // console.log(event.keyCode)
+        // if (event.keyCode in map) {
+        //     map[event.keyCode] = true;
+        //     if (map[81] && map[69]) {
+        //         // barrel roll
+        //         console.log("barrel.")
+        //         this.barrel = 6 * Math.PI;
+        //     }
+        // }
         //event.preventDefault();
 
         switch (event.keyCode) {
+            // case 65:
+            //     /*A*/ this.moveState.left = 1;
+            //     break;
+            // case 68:
+            //     /*D*/ this.moveState.right = 1;
+            //     break;
+
             case 32:
                 /*Space*/
                 if (this.speed_multiplier < 1.0) {
@@ -246,7 +255,9 @@ var Controls = function (object, domElement) {
                 break;
 
             case 81:
-                /*Q*/ this.moveState.rollLeft = 1;
+            /*Q*/   this.moveState.rollLeft = 1;
+                    this.barrel_left = 6 * Math.PI;
+
                 if (
                     !this.br_audio.isPlaying &&
                     splash.style.display == 'none'
@@ -261,6 +272,8 @@ var Controls = function (object, domElement) {
                 break;
             case 69:
                 /*E*/ this.moveState.rollRight = 1;
+                this.barrel_right = 6 * Math.PI;
+
                 if (
                     !this.br_audio.isPlaying &&
                     splash.style.display == 'none'
@@ -281,6 +294,13 @@ var Controls = function (object, domElement) {
 
     this.keyup = function (event) {
         switch (event.keyCode) {
+            // case 65:
+            //     /*A*/ this.moveState.left = 0;
+            //     break;
+            // case 68:
+            //     /*D*/ this.moveState.right = 0;
+            //     break;
+
             case 32:
                 /*Space*/ this.speed_multiplier *= 0.99;
                 this.accelerate = false;
@@ -313,11 +333,11 @@ var Controls = function (object, domElement) {
 
             case 81:
                 /*Q*/ this.moveState.rollLeft = 0;
-                map[81] = false;
+                //map[81] = false;
                 break;
             case 69:
                 /*E*/ this.moveState.rollRight = 0;
-                map[69] = false;
+                //map[69] = false;
                 break;
         }
 
@@ -353,11 +373,19 @@ var Controls = function (object, domElement) {
             this.object.quaternion,
             this.object.rotation.order
         );
-        if (this.barrel > 0) {
+        if (this.barrel_right > 0) {
             // Lazy implementation of twirl
-            this.barrel -= Math.PI / 8;
+            this.barrel_right -= Math.PI / 8;
+            this.rotationVector.z -= Math.PI / 8;
+        }
+ 
+
+        else if (this.barrel_left > 0) {
+            // Lazy implementation of twirl
+            this.barrel_left -= Math.PI / 8;
             this.rotationVector.z += Math.PI / 8;
-        } else {
+        }
+        else {
             this.rotationVector.z = 0;
         }
 
@@ -479,3 +507,4 @@ Controls.prototype = Object.create(EventDispatcher.prototype);
 Controls.prototype.constructor = Controls;
 
 export { Controls };
+
