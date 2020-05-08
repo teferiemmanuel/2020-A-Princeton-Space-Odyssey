@@ -46,6 +46,7 @@ class Asteroid extends Group {
             body.angularVelocity.set(angularVec.x, angularVec.y, angularVec.z);
             body.velocity.set(velocityVec.x, velocityVec.y, velocityVec.z);
             this.body = body;
+            this.body.asteroid = this;
 
             world.addBody(body);
 

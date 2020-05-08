@@ -118,14 +118,6 @@ const onAnimationFrameHandler = (timeStamp) => {
         gameScene.handleCollectedFuel(gameScene.fuelCollision);
     }
 
-    // Lose time if player runs into an asteroid
-    if (gameScene.hasAsteroidCollision()) {
-        document.getElementById('collisionMessage').innerHTML =
-            'OOF! You lost some fuel';
-        gameScene.gameTimeRem -= 5;
-        gameScene.handleAsteroidCollision(gameScene.asteroidCollision);
-    }
-
     // Invincibility if player collects powerup
     if (gameScene.hasPowerupCollision()) {
         document.getElementById('collisionMessage').innerHTML =
