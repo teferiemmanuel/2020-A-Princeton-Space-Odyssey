@@ -50,9 +50,9 @@ var Controls = function (object, domElement) {
     this.movementSpeed = 1.0;
     this.rollSpeed = 0.005;
 
-    this.barrel_roll_speed = 1 / 0.001;
-
-    this.multiplier = 1.0;
+    this.speed_multiplier = 1.0;
+    this.accelerate = false;
+    this.brake = false;
 
     this.autoForward = false;
 
@@ -210,10 +210,21 @@ var Controls = function (object, domElement) {
                 break;
 
             case 82:
-                /*R*/ this.multiplier = 2.5;
+                /*R*/
+                if (this.speed_multiplier < 1.0) {
+                    this.speed_multiplier = 1.0;
+                }
+                if (this.speed_multiplier < 5.0) {
+                    this.speed_multiplier *= 1.1;
+                }
+                this.accelerate = true;
                 break;
             case 70:
-                /*F*/ this.multiplier = 0.1;
+                /*F*/
+                if (this.speed_multiplier > 0.1) {
+                    this.speed_multiplier *= 0.69;
+                }
+                this.brake = true;
                 break;
 
             case 84:
@@ -288,10 +299,12 @@ var Controls = function (object, domElement) {
                 break;
 
             case 82:
-                /*R*/ this.multiplier = 2.5;
+                /*R*/ this.speed_multiplier *= 0.99;
+                this.accelerate = false;
                 break;
             case 70:
-                /*F*/ this.multiplier = 0.1;
+                /*F*/ this.speed_multiplier = 0.1;
+                this.brake = false;
                 break;
 
             case 84:
@@ -328,12 +341,13 @@ var Controls = function (object, domElement) {
     };
 
     this.update = function (delta) {
-        if (this.multiplier < 1.0) {
-            this.multiplier *= 1.05;
-        } else if (this.multiplier > 1.0) {
-            this.multiplier *= 0.98;
+        if (this.speed_multiplier < 1.0 && !this.brake) {
+            this.speed_multiplier *= 1.5;
         }
-        var moveMult = delta * this.movementSpeed * this.multiplier;
+        else if (this.speed_multiplier > 1.0 && !this.accelerate) {
+            this.speed_multiplier *= 0.98;
+        }
+        var moveMult = delta * this.movementSpeed * this.speed_multiplier;
         var rotMult = delta * this.rollSpeed;
 
         this.object.translateX(this.moveVector.x * moveMult);
