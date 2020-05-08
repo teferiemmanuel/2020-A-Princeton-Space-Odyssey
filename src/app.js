@@ -15,6 +15,10 @@ import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPa
 import { BloomPass } from 'three/examples/jsm/postprocessing/BloomPass.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 
+// If out of bounds, from the 50x50 position from the start
+// Spawn asteroids in game scene there's a variable in,  gamescene.  
+// then barrel roll. 
+
 // Constants
 const STARTING_SECONDS = 15;
 const MAX_FUEL_SECONDS = 30;
@@ -108,6 +112,11 @@ const onAnimationFrameHandler = (timeStamp) => {
         gameScene.handleCollectedFuel(gameScene.fuelCollision);
     }
 
+    // end game if asteroid is hit.
+    if (gameScene.hasAsteroidCollision()) {
+        console.log("GAME OVER!!!")
+    }
+
     window.requestAnimationFrame(onAnimationFrameHandler);
 
     // Update HUD values
@@ -144,6 +153,16 @@ function checkSplashAndSpawn() {
     // Check if there are fewer than 10 fuel elements spawned
     if (splash.style.display === 'none' && gameScene.numSpawnedFuels < 10) {
         gameScene.spawnFuel();
+    }
+}
+
+// Check if splash screen is up; If not, spawn Asterid
+function checkSplashAndSpawnAsteroid() {
+    // Check if splash screen is still displayed
+    const splash = document.getElementById('splash');
+    // Check if there are fewer than 10 fuel elements spawned
+    if (splash.style.display === 'none' && gameScene.numSpawnedAsteroids < 9) {
+        gameScene.spawnAsteroid();
     }
 }
 
@@ -193,6 +212,11 @@ window.setInterval(function () {
 window.setInterval(function () {
     checkSplashAndSpawn();
 }, 2500);
+
+// Wrapper to spawn asteroid every 6s
+window.setInterval(function () {
+    checkSplashAndSpawnAsteroid();
+}, 5000);
 
 // Disable right click; right-click leads to weird control errors
 document.addEventListener(

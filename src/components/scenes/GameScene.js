@@ -15,6 +15,9 @@ const STARTING_SECONDS = 15;
 const STARTING_FUELS = 1;
 const STARTING_COLLECTED_FUELS = 0;
 
+//Asteroid generation parameters:
+const STARTING_ASTEROIDS = 3
+
 class GameScene extends Scene {
     constructor(camera) {
         // Call parent Scene() constructor
@@ -53,6 +56,8 @@ class GameScene extends Scene {
         // Set scene info for HUD
         this.gameTimeRem = STARTING_SECONDS;
         this.numSpawnedFuels = STARTING_FUELS;
+        this.numSpawnedAsteroids = STARTING_ASTEROIDS;
+
         this.numCollectedFuels = STARTING_COLLECTED_FUELS;
 
         // asteroid
@@ -68,13 +73,12 @@ class GameScene extends Scene {
     }
 
     update(timeStamp) {
-        const { updateList } = this.state;
-
+        const { rotationSpeed, updateList } = this.state;
+        this.rotation.y = (rotationSpeed * timeStamp) / 10000;
         // Call update for each object in the updateList
         for (const obj of updateList) {
             obj.update(timeStamp);
         }
-
         // deals with music playing (don't want to clash with opening music)
         if (!this.music.isPlaying && introDOM.style.display == 'none') {
             this.music.play();
@@ -99,6 +103,21 @@ class GameScene extends Scene {
         this.numSpawnedFuels++;
     }
 
+    // Randomly spawn asteroids in bounded area
+    spawnAsteroid() {
+        // spawn in Random position in game map.
+        const xRandom = Math.floor(Math.random() * 31) - 10;
+        const yRandom = Math.floor(Math.random() * 31) - 10;
+        const zRandom = Math.floor(Math.random() * 31) - 10;
+        const positionVec = new Vector3(xRandom, yRandom, zRandom);
+
+        const asteroid = new Asteroid(this, positionVec);
+
+        this.add(asteroid);
+        console.log("Spawned!!!")
+        this.numSpawnedAsteroids++;
+    }
+
     hasFuelCollision() {
         let fuelObjs = this.getAllFuelObjects();
         for (var i = 0; i < fuelObjs.length; i++) {
@@ -113,6 +132,24 @@ class GameScene extends Scene {
         return false;
     }
 
+    // may not work if children in getAllAsteroidObjects is wrong.
+    hasAsteroidCollision() {
+        let aObjs = this.getAllAsteroidObjects();
+        for (var i = 0; i < aObjs.length; i++) {
+            if (
+                aObjs[i].boundingSphere.intersectsSphere(this.playerBounds)
+            ) {
+                this.asteroidCollision = aObjs[i];
+                return true;
+            }
+        }
+        this.asteroidCollision = null;
+        return false;
+    }
+
+
+
+
     getAllFuelObjects() {
         let fuelObjs = [];
         for (var i = 0; i < this.children.length; i++) {
@@ -121,6 +158,17 @@ class GameScene extends Scene {
             }
         }
         return fuelObjs;
+    }
+
+    // return asteroids, used in collision detection. 
+    getAllAsteroidObjects() {
+        let aObjs = [];
+        for (var i = 0; i < this.children.length; i++) {
+            if (this.children[i] instanceof Fuel) {
+                aObjs.push(this.children[i]);
+            }
+        }
+        return aObjs;
     }
 
     // creates a space background scene that can be used by the renderer
