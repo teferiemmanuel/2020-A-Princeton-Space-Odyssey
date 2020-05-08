@@ -2,6 +2,9 @@ import { Audio, AudioLoader, Vector3, Group, Sphere } from 'three';
 import { Body } from 'cannon';
 import { Sphere as SpherePhysics } from 'cannon';
 import AsteroidCollision from '../../audio/asteroid_collision.mp3';
+import FuelPickup from '../../audio/fuel_pickup.mp3';
+import PowerupPickup from '../../audio/powerup_pickup.mp3';
+
 
 class Player extends Group {
     constructor(parent, positionVec, world) {
@@ -49,6 +52,14 @@ class Player extends Group {
                 soundEffect.setVolume(0.15);
                 soundEffect.play();
             });
+
+            // Handle time elapsed
+            if (
+                this.gameScene.gameTimeRem + 5 >
+                this.gameScene.MAX_FUEL_SECONDS
+            )
+                this.gameScene.gameTimeRem = this.gameScene.MAX_FUEL_SECONDS;
+            else this.gameScene.gameTimeRem += 3;
           }
           else if (e.body.fuel !== undefined) {
             document.getElementById('collisionMessage').innerHTML =
@@ -67,7 +78,18 @@ class Player extends Group {
                 'Temporary Invincibility';
             // TODO: Somebody implement invincibility here?
 
-            gameScene.handlePowerupCollision(gameScene.powerupCollision);
+            // create an audio source
+            const soundEffect = new Audio(this.gameScene.listener);
+            // load a sound and set it as the Audio object's buffer
+            const audioLoader = new AudioLoader();
+            audioLoader.load(PowerupPickup, function (buffer) {
+                soundEffect.setBuffer(buffer);
+                soundEffect.setLoop(false);
+                soundEffect.setVolume(0.15);
+                soundEffect.play();
+            });
+
+            this.gameScene.handlePowerupCollision(e.body.powerup);
           }
         });
 

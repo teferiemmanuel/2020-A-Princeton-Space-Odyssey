@@ -54,8 +54,6 @@ var Controls = function (object, domElement) {
     this.accelerate = false;
     this.brake = false;
 
-
-
     this.autoForward = false;
     this.barrel_left = 0;
     this.barrel_right = 0;
@@ -180,26 +178,8 @@ var Controls = function (object, domElement) {
         if (event.altKey) {
             return;
         }
-        // console.log("keycode")
-        // console.log(event.keyCode)
-        // if (event.keyCode in map) {
-        //     map[event.keyCode] = true;
-        //     if (map[81] && map[69]) {
-        //         // barrel roll
-        //         console.log("barrel.")
-        //         this.barrel = 6 * Math.PI;
-        //     }
-        // }
-        //event.preventDefault();
 
         switch (event.keyCode) {
-            // case 65:
-            //     /*A*/ this.moveState.left = 1;
-            //     break;
-            // case 68:
-            //     /*D*/ this.moveState.right = 1;
-            //     break;
-
             case 32:
                 /*Space*/
                 if (this.speed_multiplier < 1.0) {
@@ -240,8 +220,8 @@ var Controls = function (object, domElement) {
                 break;
 
             case 81:
-            /*Q*/   this.moveState.rollLeft = 1;
-                    this.barrel_left = 6 * Math.PI;
+                /*Q*/ this.moveState.rollLeft = 1;
+                this.barrel_left = 6 * Math.PI;
 
                 if (
                     !this.br_audio.isPlaying &&
@@ -362,15 +342,11 @@ var Controls = function (object, domElement) {
             // Lazy implementation of twirl
             this.barrel_right -= Math.PI / 8;
             this.rotationVector.z -= Math.PI / 8;
-        }
- 
-
-        else if (this.barrel_left > 0) {
+        } else if (this.barrel_left > 0) {
             // Lazy implementation of twirl
             this.barrel_left -= Math.PI / 8;
             this.rotationVector.z += Math.PI / 8;
-        }
-        else {
+        } else {
             this.rotationVector.z = 0;
         }
 
@@ -488,4 +464,3 @@ Controls.prototype = Object.create(EventDispatcher.prototype);
 Controls.prototype.constructor = Controls;
 
 export { Controls };
-

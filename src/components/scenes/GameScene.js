@@ -9,8 +9,6 @@ import {
 import { Fuel, Player, Asteroid, Powerup } from 'objects';
 import { BasicLights } from 'lights';
 import Corneria from '../audio/corneria_ultimate.mp3';
-import FuelPickup from '../audio/fuel_pickup.mp3';
-import PowerupPickup from '../audio/powerup_pickup.mp3';
 
 const introDOM = document.getElementById('splash');
 const STARTING_SECONDS = 15;
@@ -42,25 +40,6 @@ class GameScene extends Scene {
         this.world = world;
 
         // Add meshes to scene
-        const lights = new BasicLights();
-
-        const asteroid = new Asteroid(
-            this,
-            new Vector3(0, 0, 15),
-            this.world,
-            new Vector3(0, 0, 5),
-            new Vector3(0, 0, 0)
-        );
-        const asteroid2 = new Asteroid(
-            this,
-            new Vector3(0, 10, 15),
-            this.world,
-            new Vector3(0, 0, 5),
-            new Vector3(0, 0, 0)
-        );
-
-        const fuel = new Fuel(this, 'yellow', new Vector3(0, 0, 5), this.world);
-        const powerup = new Powerup(this, 'orange', new Vector3(0, 0, -5));
         const player = new Player(this, this.camera.position, this.world);
         this.playerBounds = player.boundingSphere;
         this.createBackground();
@@ -77,18 +56,7 @@ class GameScene extends Scene {
             music.setVolume(0.15);
             music.pause();
         });
-
         this.music = music;
-
-        // asteroid
-        asteroid.position.x = 0;
-        asteroid.position.y = 0;
-        asteroid.position.z = 0;
-
-        this.add(lights, fuel, player, asteroid, asteroid2, powerup);
-        console.log(fuel);
-        console.log(powerup);
-
     }
 
     addToUpdateList(object) {
@@ -160,43 +128,6 @@ class GameScene extends Scene {
         this.numSpawnedAsteroids++;
     }
 
-    hasPowerupCollision() {
-        // create an audio source
-        const soundEffect = new Audio(this.listener);
-        // load a sound and set it as the Audio object's buffer
-        const audioLoader = new AudioLoader();
-
-        let powerupObjs = this.getAllPowerupObjects();
-        for (var i = 0; i < powerupObjs.length; i++) {
-            if (
-                powerupObjs[i].boundingSphere.intersectsSphere(
-                    this.playerBounds
-                )
-            ) {
-                this.powerupCollision = powerupObjs[i];
-                audioLoader.load(PowerupPickup, function (buffer) {
-                    soundEffect.setBuffer(buffer);
-                    soundEffect.setLoop(false);
-                    soundEffect.setVolume(0.15);
-                    soundEffect.play();
-                });
-                return true;
-            }
-        }
-        this.powerupCollision = null;
-        return false;
-    }
-
-    getAllPowerupObjects() {
-        let powerupObjs = [];
-        for (var i = 0; i < this.children.length; i++) {
-            if (this.children[i] instanceof Powerup) {
-                powerupObjs.push(this.children[i]);
-            }
-        }
-        return powerupObjs;
-    }
-
     // creates a space background scene that can be used by the renderer
     createBackground() {
         const loader = new CubeTextureLoader();
@@ -262,17 +193,19 @@ class GameScene extends Scene {
         this.numCollectedFuels = STARTING_COLLECTED_FUELS;
         this.children = [];
 
-        // Re-add essential objects
-        this.add(new BasicLights());
-        this.add(
-            new Asteroid(
-                this,
-                new Vector3(0, 0, 15),
-                this.world,
-                new Vector3(0, 0, 5),
-                new Vector3(0, 0, 0)
-            )
+        const lights = new BasicLights();
+        const fuel = new Fuel(this, 'yellow', new Vector3(0, 0, 5), this.world);
+        const powerup = new Powerup(this, 'orange', new Vector3(0, 0, -5), this.world);
+        const asteroid = new Asteroid(
+            this,
+            new Vector3(0, 0, 15),
+            this.world,
+            new Vector3(0, 0, 5),
+            new Vector3(0, 0, 0)
         );
+
+        // Re-add essential objects
+        this.add(lights, fuel, powerup, asteroid);
         this.createBackground();
     }
 }
