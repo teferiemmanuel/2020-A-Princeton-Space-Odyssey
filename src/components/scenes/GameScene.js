@@ -26,6 +26,13 @@ class GameScene extends Scene {
         // Call parent Scene() constructor
         super();
 
+        // Set scene info for HUD
+        this.gameTimeRem = STARTING_SECONDS;
+        this.numSpawnedFuels = STARTING_FUELS;
+        this.numSpawnedAsteroids = STARTING_ASTEROIDS;
+
+        this.numCollectedFuels = STARTING_COLLECTED_FUELS;
+
         // Init state
         this.state = {
             updateList: [],
@@ -61,12 +68,7 @@ class GameScene extends Scene {
         });
 
         this.music = music;
-        // Set scene info for HUD
-        this.gameTimeRem = STARTING_SECONDS;
-        this.numSpawnedFuels = STARTING_FUELS;
-        this.numSpawnedAsteroids = STARTING_ASTEROIDS;
 
-        this.numCollectedFuels = STARTING_COLLECTED_FUELS;
 
         // asteroid
         asteroid.position.x = 0;
@@ -191,30 +193,6 @@ class GameScene extends Scene {
         return false;
     }
 
-    // may not work if children in getAllAsteroidObjects is wrong.
-    hasAsteroidCollision() {
-        // create an audio source
-        const soundEffect = new Audio(this.listener);
-        // load a sound and set it as the Audio object's buffer
-        const audioLoader = new AudioLoader();
-
-        let aObjs = this.getAllAsteroidObjects();
-        for (var i = 0; i < aObjs.length; i++) {
-            if (aObjs[i].boundingSphere.intersectsSphere(this.playerBounds)) {
-                this.asteroidCollision = aObjs[i];
-                audioLoader.load(AsteroidCollision, function (buffer) {
-                    soundEffect.setBuffer(buffer);
-                    soundEffect.setLoop(false);
-                    soundEffect.setVolume(0.15);
-                    soundEffect.play();
-                });
-                return true;
-            }
-        }
-        this.asteroidCollision = null;
-        return false;
-    }
-
     getAllFuelObjects() {
         let fuelObjs = [];
         for (var i = 0; i < this.children.length; i++) {
@@ -223,17 +201,6 @@ class GameScene extends Scene {
             }
         }
         return fuelObjs;
-    }
-
-    // return asteroids, used in collision detection.
-    getAllAsteroidObjects() {
-        let aObjs = [];
-        for (var i = 0; i < this.children.length; i++) {
-            if (this.children[i] instanceof Asteroid) {
-                aObjs.push(this.children[i]);
-            }
-        }
-        return aObjs;
     }
 
     getAllPowerupObjects() {

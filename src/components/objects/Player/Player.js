@@ -6,7 +6,7 @@ import {
     SphereBufferGeometry,
     Mesh,
 } from 'three';
-import { World, NaiveBroadphase, Vec3, Body } from 'cannon';
+import { Vec3, Body } from 'cannon';
 import { Sphere as SpherePhysics } from 'cannon';
 
 
@@ -24,6 +24,10 @@ class Player extends Group {
         boundingSphere.center.z = positionVec.z;
 
         this.boundingSphere = boundingSphere;
+        this.gameScene = parent;
+        console.log(parent);
+        console.log(this.gameScene.gameTimeRem);
+
 
         this.positionVec = positionVec;
 
@@ -37,6 +41,15 @@ class Player extends Group {
         world.addBody(body);
 
         this.body = body;
+        this.body.gameScene = parent;
+
+        this.body.addEventListener("collide",function(e){
+          document.getElementById('collisionMessage').innerHTML =
+              'OOF! You lost some fuel';
+          console.log(this);
+          this.gameScene.gameTimeRem -= 5;
+          console.log("Collided with body:",e.body);
+        });
 
         // debugging mesh just in case we need to visualize boudingSphere
         // let energyOrbMesh = createEnergyOrbMesh();
