@@ -58,7 +58,7 @@ var Controls = function (object, domElement) {
     this.barrel_right = false;
 
     this.autoForward = false;
-
+    this.barrel = 0 
     // disable default target object behavior
 
     // internals
@@ -190,11 +190,21 @@ var Controls = function (object, domElement) {
         this.object.position.addScaledVector(vec, distance);
     };
 
+    var map = {81: false, 69: false};
     this.keydown = function (event) {
         if (event.altKey) {
             return;
         }
-
+        // console.log("keycode")
+        // console.log(event.keyCode)
+        if (event.keyCode in map) {
+            map[event.keyCode] = true;
+            if (map[81] && map[69]) {
+                // barrel roll
+                console.log("barrel.")
+                this.barrel = 6 * Math.PI;
+            }
+        }
         //event.preventDefault();
 
         switch (event.keyCode) {
@@ -253,7 +263,7 @@ var Controls = function (object, domElement) {
                     br_loader.load(Barrel_roll, function (buffer) {
                         br_audio.setBuffer(buffer);
                         br_audio.setLoop(false);
-                        br_audio.setVolume(0.15);
+                        br_audio.setVolume(0.3);
                         br_audio.play();
                     });
                 }
@@ -267,7 +277,7 @@ var Controls = function (object, domElement) {
                     br_loader.load(Barrel_roll, function (buffer) {
                         br_audio.setBuffer(buffer);
                         br_audio.setLoop(false);
-                        br_audio.setVolume(0.15);
+                        br_audio.setVolume(0.3);
                         br_audio.play();
                     });
                 }
@@ -319,9 +329,11 @@ var Controls = function (object, domElement) {
 
             case 81:
                 /*Q*/ this.moveState.rollLeft = 0;
+                map[81] = false;
                 break;
             case 69:
                 /*E*/ this.moveState.rollRight = 0;
+                map[69] = false;
                 break;
         }
 
@@ -357,6 +369,14 @@ var Controls = function (object, domElement) {
             this.object.quaternion,
             this.object.rotation.order
         );
+        if (this.barrel > 0) {
+            // Lazy implementation of twirl
+            this.barrel -= Math.PI / 8;
+            this.rotationVector.z += Math.PI / 8;
+        }
+        else {
+            this.rotationVector.z = 0;
+        }
 
         /*
         if (splash.style.display == 'none' || finishGame.style.display == 'none') {
@@ -476,3 +496,4 @@ Controls.prototype = Object.create(EventDispatcher.prototype);
 Controls.prototype.constructor = Controls;
 
 export { Controls };
+
