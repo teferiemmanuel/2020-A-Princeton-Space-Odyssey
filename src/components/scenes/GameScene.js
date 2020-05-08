@@ -6,12 +6,12 @@ import {
     Vector3,
     CubeTextureLoader,
 } from 'three';
-import { Fuel, Player, Asteroid } from 'objects';
+import { Fuel, Player, Asteroid, Powerup } from 'objects';
 import { BasicLights } from 'lights';
 import Corneria from '../audio/corneria_ultimate.mp3';
 
 const introDOM = document.getElementById('splash');
-const STARTING_SECONDS = 15;
+const STARTING_SECONDS = 55;
 const STARTING_FUELS = 1;
 const STARTING_COLLECTED_FUELS = 0;
 
@@ -25,7 +25,6 @@ class GameScene extends Scene {
 
         // Init state
         this.state = {
-            rotationSpeed: 0,
             updateList: [],
         };
 
@@ -35,6 +34,7 @@ class GameScene extends Scene {
         const lights = new BasicLights();
         const asteroid = new Asteroid(this, new Vector3(0, 0, 15));
         const fuel = new Fuel(this, 'yellow', new Vector3(0, 0, 5));
+        const powerup = new Powerup(this, 'orange', new Vector3(0, 0, -5));
         const player = new Player(this, this.camera.position);
         this.playerBounds = player.boundingSphere;
         this.createBackground();
@@ -65,7 +65,7 @@ class GameScene extends Scene {
         asteroid.position.y = 0;
         asteroid.position.z = 0;
 
-        this.add(lights, fuel, player, asteroid);
+        this.add(lights, fuel, player, asteroid, powerup);
     }
 
     addToUpdateList(object) {
@@ -73,8 +73,7 @@ class GameScene extends Scene {
     }
 
     update(timeStamp) {
-        const { rotationSpeed, updateList } = this.state;
-        this.rotation.y = (rotationSpeed * timeStamp) / 10000;
+        const { updateList } = this.state;
         // Call update for each object in the updateList
         for (const obj of updateList) {
             obj.update(timeStamp);
@@ -159,7 +158,7 @@ class GameScene extends Scene {
     getAllAsteroidObjects() {
         let aObjs = [];
         for (var i = 0; i < this.children.length; i++) {
-            if (this.children[i] instanceof Fuel) {
+            if (this.children[i] instanceof Asteroid) {
                 aObjs.push(this.children[i]);
             }
         }

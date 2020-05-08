@@ -159,7 +159,7 @@ function checkSplashAndSpawn() {
 function checkSplashAndSpawnAsteroid() {
     // Check if splash screen is still displayed
     const splash = document.getElementById('splash');
-    // Check if there are fewer than 10 fuel elements spawned
+    // Check if there are fewer than 9 asteroid elements spawned
     if (splash.style.display === 'none' && gameScene.numSpawnedAsteroids < 9) {
         gameScene.spawnAsteroid();
     }

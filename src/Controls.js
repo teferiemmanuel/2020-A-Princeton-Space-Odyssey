@@ -54,6 +54,9 @@ var Controls = function (object, domElement) {
     this.accelerate = false;
     this.brake = false;
 
+    this.barrel_left = false;
+    this.barrel_right = false;
+
     this.autoForward = false;
 
     // disable default target object behavior
@@ -203,7 +206,7 @@ var Controls = function (object, domElement) {
             //     break;
 
             case 32:
-                /*R*/
+                /*Space*/
                 if (this.speed_multiplier < 1.0) {
                     this.speed_multiplier = 1.0;
                 }
@@ -213,7 +216,7 @@ var Controls = function (object, domElement) {
                 this.accelerate = true;
                 break;
             case 16:
-                /*F*/
+                /*Shift*/
                 if (this.speed_multiplier > 0.1) {
                     this.speed_multiplier *= 0.69;
                 }
@@ -285,11 +288,11 @@ var Controls = function (object, domElement) {
             //     break;
 
             case 32:
-                /*R*/ this.speed_multiplier *= 0.99;
+                /*Space*/ this.speed_multiplier *= 0.99;
                 this.accelerate = false;
                 break;
             case 16:
-                /*F*/ this.speed_multiplier = 0.1;
+                /*Shift*/ this.speed_multiplier *= 0.69;
                 this.brake = false;
                 break;
 
