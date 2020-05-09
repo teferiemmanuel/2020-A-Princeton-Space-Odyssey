@@ -21,7 +21,7 @@ const STARTING_FUELS = 1;
 const STARTING_COLLECTED_FUELS = 0;
 
 //Asteroid generation parameters:
-const STARTING_ASTEROIDS = 3;
+const STARTING_ASTEROIDS = 1;
 
 class GameScene extends Scene {
     constructor(camera, world) {
@@ -32,7 +32,6 @@ class GameScene extends Scene {
         this.gameTimeRem = STARTING_SECONDS;
         this.numSpawnedFuels = STARTING_FUELS;
         this.numSpawnedAsteroids = STARTING_ASTEROIDS;
-
         this.numCollectedFuels = STARTING_COLLECTED_FUELS;
 
         // Init state
@@ -195,6 +194,7 @@ class GameScene extends Scene {
     resetScene() {
         // Reset objects
         this.gameTimeRem = STARTING_SECONDS;
+        this.numSpawnedAsteroids = STARTING_ASTEROIDS;
         this.numSpawnedFuels = STARTING_FUELS;
         this.numCollectedFuels = STARTING_COLLECTED_FUELS;
         this.children = [];
