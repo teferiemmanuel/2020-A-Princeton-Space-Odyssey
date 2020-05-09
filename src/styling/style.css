@@ -24,11 +24,11 @@ h2 {
 }
 
 #controls {
+    color: #f39f49;
     position: relative;
-    color: #000000;
     text-align: center;
     margin: 0;
-    top: 42%;
+    top: 40%;
 }
 
 #startButton {
@@ -46,12 +46,8 @@ h2 {
     color: #ffffff;
 }
 
-#controls {
-    color: #f39f49;
-}
-
 #acknowledgements {
-    top: 55%;
+    top: 50%;
 }
 
 #splash {
