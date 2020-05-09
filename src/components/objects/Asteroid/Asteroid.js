@@ -9,7 +9,7 @@ import { Sphere as SpherePhysics } from 'cannon';
 import MODEL from './out.glb';
 
 class Asteroid extends Group {
-    constructor(parent, positionVec, world, angularVec, velocityVec) {
+    constructor(parent, positionVec, world, isStill) {
         // Call parent Group() constructor
         super();
 
@@ -23,8 +23,12 @@ class Asteroid extends Group {
             var obj =
                 gltf.scene.children[0].children[0].children[0].children[0];
 
+                // randomly choose a color for this asteroid
+            const colorOptions = [0xb0a83f, 0x9a9e5c, 0x9775ff, 0xb0803f, 0xadaaa1, 0x9f9aad];
+            const colorChosen = colorOptions[Math.floor(Math.random() * 6)];
+
             obj.material = new MeshLambertMaterial({
-                color: 0xb0803f,
+                color: colorChosen,
                 wireframe: false,
             });
 
@@ -33,12 +37,28 @@ class Asteroid extends Group {
             this.boundingSphere.radius -= 0.6;
             this.add(obj);
 
+
+            //generate a random velocity and scale
+            const angularVec = new Vector3(Math.random() * 10 - 5,
+                                           Math.random() * 10 - 5,
+                                           Math.random() * 10 - 5);
+
+            var velocityVec;
+            if (isStill) {
+              velocityVec = new Vector3(0,0,0);
+            }
+            else {
+              velocityVec = new Vector3(Math.random() * 40 - 20,
+                                        Math.random() * 40 - 20,
+                                        Math.random() * 40 - 20);
+            }
+
             const shape = new SpherePhysics(this.boundingSphere.radius);
             const body = new Body({
               mass: 1,
               position: positionVec.clone(),
-              angularVelocity: angularVec.clone(),
-              velocity: velocityVec.clone()
+              angularVelocity: angularVec,
+              velocity: velocityVec
             });
             body.addShape(shape);
 

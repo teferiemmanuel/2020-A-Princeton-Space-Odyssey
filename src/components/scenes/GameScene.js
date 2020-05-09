@@ -117,16 +117,11 @@ class GameScene extends Scene {
             (Math.floor(Math.random() * 16) - 1) * randNegative();
         const positionVec = new Vector3(xRandom, yRandom, zRandom);
 
-        // Dummy vectors. TODO: replace them
-        const angularVec = new Vector3(0, 0, -3);
-        const velocityVec = new Vector3(0, 0, 0);
-
         const asteroid = new Asteroid(
             this,
             positionVec,
             this.world,
-            angularVec,
-            velocityVec
+            false,
         );
 
         this.add(asteroid);
@@ -193,8 +188,7 @@ class GameScene extends Scene {
             this,
             new Vector3(0, 0, 15),
             this.world,
-            new Vector3(0, 0, 5),
-            new Vector3(0, 0, 0)
+            true
         );
 
         // Re-add essential objects
