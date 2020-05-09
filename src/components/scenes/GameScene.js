@@ -195,6 +195,14 @@ class GameScene extends Scene {
             this.world,
             true
         );
+
+
+        // Re-add essential objects
+        this.add(lights, fuel, powerup, asteroid);
+        // Super hacky because disposing bodies in Cannon.js sucks. So we reset manually
+        this.world.bodies = [essentialBody, fuel.body, powerup.body];
+
+
         // TODO: populate game area
         for (let i = 0; i < this.MAX_ASTEROIDS_SPAWNS - 5; i++) {
           // generate asteroids, but leave some to be spawned in game
@@ -225,10 +233,6 @@ class GameScene extends Scene {
           this.add(fuel_new);
         }
 
-        // Re-add essential objects
-        this.add(lights, fuel, powerup, asteroid);
-        // Super hacky because disposing bodies in Cannon.js sucks. So we reset manually
-        this.world.bodies = [essentialBody, fuel.body, powerup.body];
         this.createBackground();
         this.addStardust();
     }
