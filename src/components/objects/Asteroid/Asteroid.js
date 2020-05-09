@@ -48,9 +48,9 @@ class Asteroid extends Group {
               velocityVec = new Vector3(0,0,0);
             }
             else {
-              velocityVec = new Vector3(Math.random() * 40 - 20,
-                                        Math.random() * 40 - 20,
-                                        Math.random() * 40 - 20);
+              velocityVec = new Vector3(Math.random() * 30 - 15,
+                                        Math.random() * 30 - 15,
+                                        Math.random() * 30 - 15);
             }
 
             const shape = new SpherePhysics(this.boundingSphere.radius);

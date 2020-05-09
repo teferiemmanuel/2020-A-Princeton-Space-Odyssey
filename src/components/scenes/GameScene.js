@@ -22,6 +22,8 @@ const STARTING_COLLECTED_FUELS = 0;
 
 //Asteroid generation parameters:
 const STARTING_ASTEROIDS = 1;
+// game is assumed to be a cube and the player is assumed to be in the center of it.
+// this represents the half side length of the cube
 const GAME_BOUNDS = 25;
 export const MAX_ASTEROIDS_SPAWNS = 25;
 export const MAX_FUEL_SPAWNS = 25;
@@ -194,6 +196,34 @@ class GameScene extends Scene {
             true
         );
         // TODO: populate game area
+        for (let i = 0; i < this.MAX_ASTEROIDS_SPAWNS - 5; i++) {
+          // generate asteroids, but leave some to be spawned in game
+          const position = new Vector3(Math.random() * GAME_BOUNDS * 2 - GAME_BOUNDS,
+                                       Math.random() * GAME_BOUNDS * 2 - GAME_BOUNDS,
+                                       Math.random() * GAME_BOUNDS * 2 - GAME_BOUNDS);
+
+          const asteroid_new = new Asteroid(
+              this,
+              position,
+              this.world,
+              false
+          );
+          this.add(asteroid_new);
+        }
+
+        // TODO: populate game area
+        for (let i = 0; i < this.MAX_FUEL_SPAWNS - 5; i++) {
+          // generate fuels, but leave some to be spawned in game
+          const position = new Vector3(Math.random() * GAME_BOUNDS * 2 - GAME_BOUNDS,
+                                       Math.random() * GAME_BOUNDS * 2 - GAME_BOUNDS,
+                                       Math.random() * GAME_BOUNDS * 2 - GAME_BOUNDS);
+
+          const colorOptions = ['red', 'green', 'yellow'];
+          const colorChosen = colorOptions[Math.floor(Math.random() * 3)];
+          const fuel_new = new Fuel(this, colorChosen, position, this.world);
+
+          this.add(fuel_new);
+        }
 
         // Re-add essential objects
         this.add(lights, fuel, powerup, asteroid);
