@@ -149,7 +149,6 @@ class GameScene extends Scene {
     }
 
     handleCollectedFuel(collectedFuel) {
-        // for now, let's dispose of them
         this.remove(collectedFuel);
 
         collectedFuel.innerRing.geometry.dispose();
@@ -160,25 +159,9 @@ class GameScene extends Scene {
 
         collectedFuel.energyOrb.geometry.dispose();
         collectedFuel.energyOrb.material.dispose();
-
-        collectedFuel = null;
-    }
-
-    handleAsteroidCollision(asteroidCollision) {
-        // for now, let's dispose of them
-        this.remove(asteroidCollision);
-
-        asteroidCollision.rockSurface.geometry.dispose();
-        asteroidCollision.rockSurface.material.dispose();
-
-        asteroidCollision.rockOutline.geometry.dispose();
-        asteroidCollision.rockOutline.material.dispose();
-
-        asteroidCollision = null;
     }
 
     handlePowerupCollision(powerupCollision) {
-        // for now, let's dispose of them
         this.remove(powerupCollision);
 
         powerupCollision.powerup_in.geometry.dispose();
@@ -186,8 +169,6 @@ class GameScene extends Scene {
 
         powerupCollision.powerup_out.geometry.dispose();
         powerupCollision.powerup_out.material.dispose();
-
-        powerupCollision = null;
     }
 
     // Reset objects in scene for new game
@@ -198,6 +179,7 @@ class GameScene extends Scene {
         this.numSpawnedFuels = STARTING_FUELS;
         this.numCollectedFuels = STARTING_COLLECTED_FUELS;
         this.children = [];
+        const essentialBody = this.world.bodies[0];
 
         const lights = new BasicLights();
         const fuel = new Fuel(this, 'yellow', new Vector3(0, 0, 5), this.world);
@@ -217,6 +199,8 @@ class GameScene extends Scene {
 
         // Re-add essential objects
         this.add(lights, fuel, powerup, asteroid);
+        // Super hacky because disposing bodies in Cannon.js sucks. So we reset manually
+        this.world.bodies = [essentialBody, fuel.body, powerup.body];
         this.createBackground();
         this.addStardust();
     }

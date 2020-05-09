@@ -48,9 +48,6 @@ class Player extends Group {
                     soundEffect.setVolume(0.15);
                     soundEffect.play();
                 });
-
-                // this.gameScene.handleAsteroidCollision(e.body.asteroid);
-                world.removeBody(e.body.asteroid);
             } else if (e.body.fuel !== undefined) {
                 document.getElementById('collisionMessage').innerHTML =
                     'Fuel recharged!';
@@ -77,7 +74,6 @@ class Player extends Group {
                 else this.gameScene.gameTimeRem += 3;
 
                 this.gameScene.handleCollectedFuel(e.body.fuel);
-                world.removeBody(e.body.fuel.body);
             } else if (e.body.powerup !== undefined) {
                 document.getElementById('collisionMessage').innerHTML =
                     'Temporary Invincibility for 5s!';
@@ -100,7 +96,6 @@ class Player extends Group {
                 });
 
                 this.gameScene.handlePowerupCollision(e.body.powerup);
-                world.removeBody(e.body.powerup);
             }
         });
 
