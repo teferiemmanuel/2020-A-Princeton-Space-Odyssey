@@ -85,13 +85,13 @@ class GameScene extends Scene {
         // Random position
         const xRandom =
             this.camera.position.x +
-            (Math.floor(Math.random() * 16) - 1) * randNegative();
+            (Math.floor(Math.random() * 25) - 1) * randNegative();
         const yRandom =
             this.camera.position.y +
-            (Math.floor(Math.random() * 16) - 1) * randNegative();
+            (Math.floor(Math.random() * 25) - 1) * randNegative();
         const zRandom =
             this.camera.position.z +
-            (Math.floor(Math.random() * 16) - 1) * randNegative();
+            (Math.floor(Math.random() * 25) - 1) * randNegative();
         const positionVec = new Vector3(xRandom, yRandom, zRandom);
 
         // Random color
@@ -108,21 +108,16 @@ class GameScene extends Scene {
         // spawn in Random position around player
         const xRandom =
             this.camera.position.x +
-            (Math.floor(Math.random() * 16) - 1) * randNegative();
+            (Math.floor(Math.random() * 10) - 1) * randNegative();
         const yRandom =
             this.camera.position.y +
-            (Math.floor(Math.random() * 16) - 1) * randNegative();
+            (Math.floor(Math.random() * 10) - 1) * randNegative();
         const zRandom =
             this.camera.position.z +
-            (Math.floor(Math.random() * 16) - 1) * randNegative();
+            (Math.floor(Math.random() * 10) - 1) * randNegative();
         const positionVec = new Vector3(xRandom, yRandom, zRandom);
 
-        const asteroid = new Asteroid(
-            this,
-            positionVec,
-            this.world,
-            false,
-        );
+        const asteroid = new Asteroid(this, positionVec, this.world, false);
 
         this.add(asteroid);
         this.numSpawnedAsteroids++;
