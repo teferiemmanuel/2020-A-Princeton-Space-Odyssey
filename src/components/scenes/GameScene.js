@@ -9,7 +9,7 @@ import {
     BufferGeometry,
     Float32BufferAttribute,
     Points,
-    PointsMaterial
+    PointsMaterial,
 } from 'three';
 import { Fuel, Player, Asteroid, Powerup } from 'objects';
 import { BasicLights } from 'lights';
@@ -201,7 +201,12 @@ class GameScene extends Scene {
 
         const lights = new BasicLights();
         const fuel = new Fuel(this, 'yellow', new Vector3(0, 0, 5), this.world);
-        const powerup = new Powerup(this, 'orange', new Vector3(0, 0, -5), this.world);
+        const powerup = new Powerup(
+            this,
+            'orange',
+            new Vector3(0, 0, -5),
+            this.world
+        );
         const asteroid = new Asteroid(
             this,
             new Vector3(0, 0, 15),
@@ -217,31 +222,30 @@ class GameScene extends Scene {
     }
 
     addStardust() {
-      const vertices = [];
+        const vertices = [];
 
-      for ( let i = 0; i < 10000; i ++ ) {
+        for (let i = 0; i < 10000; i++) {
+            let x = MathUtils.randFloatSpread(2000);
+            let y = MathUtils.randFloatSpread(2000);
+            let z = MathUtils.randFloatSpread(2000);
 
-        let x = MathUtils.randFloatSpread( 2000 );
-        let y = MathUtils.randFloatSpread( 2000 );
-        let z = MathUtils.randFloatSpread( 2000 );
+            vertices.push(x, y, z);
+        }
 
-        vertices.push( x, y, z );
+        const geometry = new BufferGeometry();
+        geometry.setAttribute(
+            'position',
+            new Float32BufferAttribute(vertices, 3)
+        );
 
-      }
+        const material = new PointsMaterial({
+            color: 0xffffff,
+            size: 1,
+        });
 
-      const geometry = new BufferGeometry();
-      geometry.setAttribute( 'position', new Float32BufferAttribute( vertices, 3 ) );
+        const points = new Points(geometry, material);
 
-      const material = new PointsMaterial( {
-        color: 0xffffff,
-        size: 1,
-       } );
-
-      const points = new Points( geometry, material );
-
-      this.add(points);
-
-      console.log(this);
+        this.add(points);
     }
 }
 

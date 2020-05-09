@@ -9,7 +9,7 @@ class Player extends Group {
     constructor(parent, positionVec, world) {
         // Call parent Group() constructor
         super();
-
+        let vulnToAsteroid = true;
         let boundingSphere = createBoundingSphere();
 
         boundingSphere.center.x = positionVec.x;
@@ -21,7 +21,6 @@ class Player extends Group {
         this.positionVec = positionVec;
 
         const shape = new SpherePhysics(this.boundingSphere.radius);
-
         const body = new Body({
             mass: 1,
             position: positionVec.clone(),
@@ -33,9 +32,7 @@ class Player extends Group {
         this.body.gameScene = parent;
 
         this.body.addEventListener('collide', function (e) {
-            console.log(this);
-
-            if (e.body.asteroid !== undefined) {
+            if (e.body.asteroid !== undefined && vulnToAsteroid === true) {
                 document.getElementById('collisionMessage').innerHTML =
                     'OOF! You lost some fuel';
 
@@ -86,8 +83,13 @@ class Player extends Group {
                 this.gameScene.handleCollectedFuel(e.body.fuel);
             } else if (e.body.powerup !== undefined) {
                 document.getElementById('collisionMessage').innerHTML =
-                    'Temporary Invincibility';
-                // TODO: Somebody implement invincibility here?
+                    'Temporary Invincibility for 5s!';
+
+                // Temporary invincibility for 5s
+                vulnToAsteroid = false;
+                setTimeout(() => {
+                    vulnToAsteroid = true;
+                }, 5000);
 
                 // create an audio source
                 const soundEffect = new Audio(this.gameScene.listener);
