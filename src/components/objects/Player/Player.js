@@ -70,7 +70,7 @@ class Player extends Group {
                     this.gameScene.gameTimeRem + 5 >
                     this.gameScene.MAX_FUEL_SECONDS
                 )
-                    tihs.gameScene.gameTimeRem = this.gameScene.MAX_FUEL_SECONDS;
+                    this.gameScene.gameTimeRem = this.gameScene.MAX_FUEL_SECONDS;
                 else this.gameScene.gameTimeRem += 3;
 
                 this.gameScene.handleCollectedFuel(e.body.fuel);
