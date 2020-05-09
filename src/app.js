@@ -131,7 +131,7 @@ function checkSplashAndSpawn() {
     // Check if splash screen is still displayed
     const splash = document.getElementById('splash');
     // Check if there are fewer than 10 fuel elements spawned
-    if (splash.style.display === 'none' && gameScene.numSpawnedFuels < 10) {
+    if (splash.style.display === 'none' && gameScene.numSpawnedFuels < gameScene.MAX_FUEL_SPAWNS) {
         gameScene.spawnFuel();
     }
 }
@@ -141,7 +141,7 @@ function checkSplashAndSpawnAsteroid() {
     // Check if splash screen is still displayed
     const splash = document.getElementById('splash');
     // Check if there are fewer than 9 asteroid elements spawned
-    if (splash.style.display === 'none' && gameScene.numSpawnedAsteroids < 9) {
+    if (splash.style.display === 'none' && gameScene.numSpawnedAsteroids < gameScene.MAX_ASTEROIDS_SPAWNS) {
         gameScene.spawnAsteroid();
     }
 }
@@ -187,7 +187,7 @@ window.setInterval(function () {
 
 // Resets player position to default after starting game
 function resetPlayerPosition() {
-    camera.position.set(6, 3, -10);
+    camera.position.set(0, 0, 0);
     camera.lookAt(new Vector3(0, 0, 0));
     camera.layers.enable(1);
 }

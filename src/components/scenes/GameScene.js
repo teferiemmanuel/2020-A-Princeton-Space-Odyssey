@@ -22,6 +22,11 @@ const STARTING_COLLECTED_FUELS = 0;
 
 //Asteroid generation parameters:
 const STARTING_ASTEROIDS = 1;
+const GAME_BOUNDS = 25;
+export const MAX_ASTEROIDS_SPAWNS = 25;
+export const MAX_FUEL_SPAWNS = 25;
+
+
 
 class GameScene extends Scene {
     constructor(camera, world) {
@@ -33,6 +38,9 @@ class GameScene extends Scene {
         this.numSpawnedFuels = STARTING_FUELS;
         this.numSpawnedAsteroids = STARTING_ASTEROIDS;
         this.numCollectedFuels = STARTING_COLLECTED_FUELS;
+        this.MAX_ASTEROIDS_SPAWNS = MAX_ASTEROIDS_SPAWNS;
+        this.MAX_FUEL_SPAWNS = MAX_FUEL_SPAWNS;
+
 
         // Init state
         this.state = {
@@ -190,6 +198,7 @@ class GameScene extends Scene {
             this.world,
             true
         );
+        // TODO: populate game area
 
         // Re-add essential objects
         this.add(lights, fuel, powerup, asteroid);
