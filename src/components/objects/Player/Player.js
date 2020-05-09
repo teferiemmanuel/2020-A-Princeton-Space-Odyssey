@@ -77,7 +77,7 @@ class Player extends Group {
                 else this.gameScene.gameTimeRem += 3;
 
                 this.gameScene.handleCollectedFuel(e.body.fuel);
-                world.removeBody(e.body.fuel);
+                world.removeBody(e.body.fuel.body);
             } else if (e.body.powerup !== undefined) {
                 document.getElementById('collisionMessage').innerHTML =
                     'Temporary Invincibility for 5s!';
