@@ -5,6 +5,11 @@ import {
     Scene,
     Vector3,
     CubeTextureLoader,
+    MathUtils,
+    BufferGeometry,
+    Float32BufferAttribute,
+    Points,
+    PointsMaterial
 } from 'three';
 import { Fuel, Player, Asteroid, Powerup } from 'objects';
 import { BasicLights } from 'lights';
@@ -43,6 +48,7 @@ class GameScene extends Scene {
         const player = new Player(this, this.camera.position, this.world);
         this.playerBounds = player.boundingSphere;
         this.createBackground();
+        this.addStardust();
 
         // add audio to scene
         this.listener = new AudioListener();
@@ -207,6 +213,35 @@ class GameScene extends Scene {
         // Re-add essential objects
         this.add(lights, fuel, powerup, asteroid);
         this.createBackground();
+        this.addStardust();
+    }
+
+    addStardust() {
+      const vertices = [];
+
+      for ( let i = 0; i < 10000; i ++ ) {
+
+        let x = MathUtils.randFloatSpread( 2000 );
+        let y = MathUtils.randFloatSpread( 2000 );
+        let z = MathUtils.randFloatSpread( 2000 );
+
+        vertices.push( x, y, z );
+
+      }
+
+      const geometry = new BufferGeometry();
+      geometry.setAttribute( 'position', new Float32BufferAttribute( vertices, 3 ) );
+
+      const material = new PointsMaterial( {
+        color: 0xffffff,
+        size: 1,
+       } );
+
+      const points = new Points( geometry, material );
+
+      this.add(points);
+
+      console.log(this);
     }
 }
 
