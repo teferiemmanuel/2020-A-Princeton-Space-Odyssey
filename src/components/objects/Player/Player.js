@@ -48,14 +48,7 @@ class Player extends Group {
                     soundEffect.setVolume(0.15);
                     soundEffect.play();
                 });
-
-                // Handle time elapsed
-                if (
-                    this.gameScene.gameTimeRem + 5 >
-                    this.gameScene.MAX_FUEL_SECONDS
-                )
-                    this.gameScene.gameTimeRem = this.gameScene.MAX_FUEL_SECONDS;
-                else this.gameScene.gameTimeRem += 3;
+                // this.gameScene.handleAsteroidCollision(e.body.asteroid);
             } else if (e.body.fuel !== undefined) {
                 document.getElementById('collisionMessage').innerHTML =
                     'Fuel recharged!';
@@ -80,6 +73,7 @@ class Player extends Group {
                 )
                     tihs.gameScene.gameTimeRem = this.gameScene.MAX_FUEL_SECONDS;
                 else this.gameScene.gameTimeRem += 3;
+
                 this.gameScene.handleCollectedFuel(e.body.fuel);
             } else if (e.body.powerup !== undefined) {
                 document.getElementById('collisionMessage').innerHTML =

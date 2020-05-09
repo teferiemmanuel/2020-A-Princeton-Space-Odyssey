@@ -161,7 +161,7 @@ class GameScene extends Scene {
         collectedFuel.energyOrb.geometry.dispose();
         collectedFuel.energyOrb.material.dispose();
 
-        this.fuelCollision == null;
+        collectedFuel = null;
     }
 
     handleAsteroidCollision(asteroidCollision) {
@@ -174,7 +174,7 @@ class GameScene extends Scene {
         asteroidCollision.rockOutline.geometry.dispose();
         asteroidCollision.rockOutline.material.dispose();
 
-        this.asteroidCollision == null;
+        asteroidCollision = null;
     }
 
     handlePowerupCollision(powerupCollision) {
@@ -187,7 +187,7 @@ class GameScene extends Scene {
         powerupCollision.powerup_out.geometry.dispose();
         powerupCollision.powerup_out.material.dispose();
 
-        this.powerupCollision == null;
+        powerupCollision = null;
     }
 
     // Reset objects in scene for new game
