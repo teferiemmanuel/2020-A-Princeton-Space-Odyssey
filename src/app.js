@@ -131,28 +131,36 @@ function checkSplashAndSpawn() {
     // Check if splash screen is still displayed
     const splash = document.getElementById('splash');
     // Check if there are fewer than 10 fuel elements spawned
-    if (splash.style.display === 'none' && gameScene.numSpawnedFuels < gameScene.MAX_FUEL_SPAWNS) {
+    if (
+        splash.style.display === 'none' &&
+        gameScene.numSpawnedFuels < gameScene.MAX_FUEL_SPAWNS
+    ) {
         gameScene.spawnFuel();
     }
 }
 
-// Check if splash screen is up; If not, spawn Asterid
+// Check if splash screen is up; If not, spawn asteroid
 function checkSplashAndSpawnAsteroid() {
     // Check if splash screen is still displayed
     const splash = document.getElementById('splash');
     // Check if there are fewer than 9 asteroid elements spawned
-    if (splash.style.display === 'none' && gameScene.numSpawnedAsteroids < gameScene.MAX_ASTEROIDS_SPAWNS) {
+    if (
+        splash.style.display === 'none' &&
+        gameScene.numSpawnedAsteroids < gameScene.MAX_ASTEROIDS_SPAWNS
+    ) {
         gameScene.spawnAsteroid();
     }
 }
 
-
-// Check if splash screen is up; If not, spawn Asterid
+// Check if splash screen is up; If not, spawn powerup
 function checkSplashAndSpawnPowerup() {
     // Check if splash screen is still displayed
     const splash = document.getElementById('splash');
-    // Check if there are fewer than 9 asteroid elements spawned
-    if (splash.style.display === 'none' && gameScene.numSpawnedPowerups < gameScene.MAX_POWERUP_SPAWNS) {
+    // Check if there are fewer than 9 powerup elements spawned
+    if (
+        splash.style.display === 'none' &&
+        gameScene.numSpawnedPowerups < gameScene.MAX_POWERUP_SPAWNS
+    ) {
         gameScene.spawnPowerup();
     }
 }

@@ -23,15 +23,14 @@ const STARTING_COLLECTED_FUELS = 0;
 //Asteroid generation parameters:
 const STARTING_ASTEROIDS = 1;
 // invincibility starting num, could need adjustment?
-const STARTING_POWERUPS = 3
+const STARTING_POWERUPS = 1;
 // game is assumed to be a cube and the player is assumed to be in the center of it.
 // this represents the half side length of the cube
 const GAME_BOUNDS = 25;
 const MAX_FUEL_SECONDS = 30;
 export const MAX_ASTEROIDS_SPAWNS = 40;
 export const MAX_FUEL_SPAWNS = 10;
-export const MAX_POWERUP_SPAWNS = 10;
-
+export const MAX_POWERUP_SPAWNS = 8;
 
 class GameScene extends Scene {
     constructor(camera, world) {
@@ -49,7 +48,6 @@ class GameScene extends Scene {
         this.MAX_FUEL_SPAWNS = MAX_FUEL_SPAWNS;
         this.MAX_FUEL_SECONDS = MAX_FUEL_SECONDS;
         this.MAX_POWERUP_SPAWNS = MAX_POWERUP_SPAWNS;
-
 
         // Init state
         this.state = {
@@ -140,7 +138,6 @@ class GameScene extends Scene {
         this.numSpawnedAsteroids++;
     }
 
-
     // Randomly spawn asteroids in bounded area
     spawnPowerup() {
         // spawn in Random position around player
@@ -156,14 +153,11 @@ class GameScene extends Scene {
         const positionVec = new Vector3(xRandom, yRandom, zRandom);
         const colorOptions = ['pink', 'orange', 'green', 'turquoise'];
         const colorChosen = colorOptions[Math.floor(Math.random() * 4)];
-        const powerup = new Powerup(this, colorChosen, positionVec, this.world);;
+        const powerup = new Powerup(this, colorChosen, positionVec, this.world);
 
         this.add(powerup);
-        console.log("power up spawned");
         this.numSpawnedPowerups++;
     }
-
-
 
     // creates a space background scene that can be used by the renderer
     createBackground() {
