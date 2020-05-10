@@ -24,17 +24,17 @@ h2 {
 }
 
 #controls {
+    color: #f39f49;
     position: relative;
-    color: #000000;
     text-align: center;
     margin: 0;
-    top: 45%;
+    top: 40%;
 }
 
 #startButton {
     background-color: transparent;
     position: absolute;
-    top: 45%;
+    top: 40%;
     left: 45%;
     padding: 0.5em 3em;
     border: 0.16em solid;
@@ -46,12 +46,8 @@ h2 {
     color: #ffffff;
 }
 
-#startButton:hover ~ #controls {
-    color: #f39f49;
-}
-
 #acknowledgements {
-    top: 75%;
+    top: 50%;
 }
 
 #splash {
@@ -66,6 +62,13 @@ h2 {
     display: none;
     color: #57e46a;
     text-align: center;
+}
+
+#collisionMessage {
+    display: inline-block;
+    position: absolute;
+    left: 44%;
+    top: 10%;
 }
 
 #fuelCollected {
