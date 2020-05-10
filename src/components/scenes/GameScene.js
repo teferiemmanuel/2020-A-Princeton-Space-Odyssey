@@ -135,6 +135,33 @@ class GameScene extends Scene {
         this.numSpawnedAsteroids++;
     }
 
+<<<<<<< HEAD
+=======
+    // Randomly spawn asteroids in bounded area
+    spawnPowerup() {
+        // spawn in Random position around player
+        const xRandom =
+            this.camera.position.x +
+            (Math.floor(Math.random() * 10) - 1) * randNegative();
+        const yRandom =
+            this.camera.position.y +
+            (Math.floor(Math.random() * 10) - 1) * randNegative();
+        const zRandom =
+            this.camera.position.z +
+            (Math.floor(Math.random() * 10) - 1) * randNegative();
+        const positionVec = new Vector3(xRandom, yRandom, zRandom);
+        const colorOptions = ['pink', 'orange', 'green', 'turquoise'];
+        const colorChosen = colorOptions[Math.floor(Math.random() * 4)];
+        const powerup = new Powerup(this, colorChosen, positionVec, this.world);;
+
+        this.add(powerup);
+        //console.log("power up spawned");
+        this.numSpawnedPowerups++;
+    }
+
+
+
+>>>>>>> 078cbda... spawn power ups, multi color
     // creates a space background scene that can be used by the renderer
     createBackground() {
         const loader = new CubeTextureLoader();
