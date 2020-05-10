@@ -21,7 +21,7 @@ import { AudioListener, Audio, AudioLoader } from 'three';
 import Barrel_roll from './components/audio/barrel_roll.mp3';
 
 const splash = document.getElementById('splash');
-//const finishGame = document.getElementById('finishGameScreen');
+const hud = document.getElementById('hud');
 
 var Controls = function (object, domElement) {
     if (domElement === undefined) {
@@ -46,7 +46,6 @@ var Controls = function (object, domElement) {
     this.br_audio = br_audio;
 
     // API
-
     this.movementSpeed = 1.0;
     this.rollSpeed = 0.005;
 
@@ -60,7 +59,6 @@ var Controls = function (object, domElement) {
     // disable default target object behavior
 
     // internals
-
     this.tmpQuaternion = new Quaternion();
 
     this.moveState = {
@@ -78,23 +76,19 @@ var Controls = function (object, domElement) {
         rollRight: 0,
     };
     this.game_edge_return = {
-        left_x  : 0,
-        right_x : 0, 
-        left_y  : 0,
-        right_y : 0, 
-        left_z  : 0,
-        right_z : 0, 
+        left_x: 0,
+        right_x: 0,
+        left_y: 0,
+        right_y: 0,
+        left_z: 0,
+        right_z: 0,
     };
-    
+
     this.moveVector = new Vector3(0, 0, 0);
     this.rotationVector = new Vector3(0, 0, 0);
 
-    // camera is locked (from PointerLockControls)
-    this.isLocked = false;
     var scope = this;
     var changeEvent = { type: 'change' };
-    var lockEvent = { type: 'lock' };
-    var unlockEvent = { type: 'unlock' };
     var start_position = new Vector3(6, 3, -10);
 
     var euler = new Euler(0, 0, 0, 'YXZ');
@@ -128,28 +122,12 @@ var Controls = function (object, domElement) {
         scope.dispatchEvent(changeEvent);
     };
 
-    function onPointerlockChange() {
-        if (this.domElement.pointerLockElement === scope.domElement) {
-            scope.dispatchEvent(lockEvent);
-
-            scope.isLocked = true;
-        } else {
-            scope.dispatchEvent(unlockEvent);
-
-            scope.isLocked = false;
-        }
-    }
-
-    function onPointerlockError() {
-        console.error('Controls: Unable to use Pointer Lock API');
-    }
-
     this.lock = function () {
         this.domElement.requestPointerLock();
     };
 
     this.unlock = function () {
-        this.domElement.exitPointerLock();
+        document.exitPointerLock();
     };
 
     this.getObject = function () {
@@ -179,112 +157,108 @@ var Controls = function (object, domElement) {
 
     // bounds check the camera in x, y, z direction, rotate camera 180 and move position inward 12 units
     var radius = 25;
-    this.inXBounds = function() {
-        if (this.object.position.x > start_position.x  + radius ) {
-            alert("WARNING, TURN AROUND TO AVOID DEEP SPACE");
+    this.inXBounds = function () {
+        if (this.object.position.x > start_position.x + radius) {
+            alert('WARNING, TURN AROUND TO AVOID DEEP SPACE');
 
             // this.movementSpeed = 0;
-            console.log(this.object.position)
+            console.log(this.object.position);
             //this.speed_multiplier = 0.1;
             this.moveVector.x = 0;
             this.moveVector.y = 0;
             this.moveVector.z = 0;
             this.game_edge_return.right_x += 32 * Math.PI;
             // this.game_edge_return.right_y += 12 * Math.PI;
-            // this.game_edge_return.right_z += 12 * Math.PI;           
+            // this.game_edge_return.right_z += 12 * Math.PI;
             this.object.position.x -= 12;
-            console.log("Crossed x upper bound");
-        }
-        else if (this.object.position.x < start_position.x - radius){
-            alert("WARNING, TURN AROUND TO AVOID DEEP SPACE");
+            console.log('Crossed x upper bound');
+        } else if (this.object.position.x < start_position.x - radius) {
+            alert('WARNING, TURN AROUND TO AVOID DEEP SPACE');
             // this.movementSpeed = 0;
-            console.log(this.object.position)
+            console.log(this.object.position);
             //this.speed_multiplier = 0.1;
             this.moveVector.x = 0;
             this.moveVector.y = 0;
             this.moveVector.z = 0;
 
-            this.game_edge_return.left_x += 32* Math.PI;
+            this.game_edge_return.left_x += 32 * Math.PI;
             // this.game_edge_return.left_x += 12 * Math.PI;
             // this.game_edge_return.left_x  += 12 * Math.PI;
             this.object.position.x += 12;
 
-            console.log("Crossed x lower bound");
+            console.log('Crossed x lower bound');
         }
-    }
+    };
 
-    this.inYBounds = function() {
-        if (this.object.position.y > start_position.y  + radius ) {
-            alert("WARNING, TURN AROUND TO AVOID DEEP SPACE");
+    this.inYBounds = function () {
+        if (this.object.position.y > start_position.y + radius) {
+            alert('WARNING, TURN AROUND TO AVOID DEEP SPACE');
             // this.movementSpeed = 0;
-            console.log(this.object.position)
+            console.log(this.object.position);
             //this.speed_multiplier = 0.1;
             this.moveVector.x = 0;
             this.moveVector.y = 0;
             this.moveVector.z = 0;
             this.game_edge_return.right_y += 32 * Math.PI;
             // this.game_edge_return.right_y += 12 * Math.PI;
-            // this.game_edge_return.right_z += 12 * Math.PI;           
+            // this.game_edge_return.right_z += 12 * Math.PI;
             this.object.position.y -= 12;
 
-            console.log("Crossed y upper bound");
-        }
-        else if (this.object.position.y < start_position.y - radius){
-            alert("WARNING, TURN AROUND TO AVOID DEEP SPACE");
+            console.log('Crossed y upper bound');
+        } else if (this.object.position.y < start_position.y - radius) {
+            alert('WARNING, TURN AROUND TO AVOID DEEP SPACE');
 
             // this.movementSpeed = 0;
-            console.log(this.object.position)
+            console.log(this.object.position);
             //this.speed_multiplier = 0.1;
             this.moveVector.x = 0;
             this.moveVector.y = 0;
             this.moveVector.z = 0;
 
-            this.game_edge_return.left_y += 32* Math.PI;
+            this.game_edge_return.left_y += 32 * Math.PI;
             // this.game_edge_return.left_x += 12 * Math.PI;
             // this.game_edge_return.left_x  += 12 * Math.PI;
             this.object.position.y += 12;
 
-            console.log("Crossed y lower bound");
+            console.log('Crossed y lower bound');
         }
-    }
+    };
 
-    this.inZBounds = function() {
-        if (this.object.position.z > start_position.z  + radius ) {
-            alert("WARNING, TURN AROUND TO AVOID DEEP SPACE");
+    this.inZBounds = function () {
+        if (this.object.position.z > start_position.z + radius) {
+            alert('WARNING, TURN AROUND TO AVOID DEEP SPACE');
 
             // this.movementSpeed = 0;
-            console.log(this.object.position)
+            console.log(this.object.position);
             //this.speed_multiplier = 0.1;
             this.moveVector.x = 0;
             this.moveVector.y = 0;
             this.moveVector.z = 0;
             this.game_edge_return.right_z += 32 * Math.PI;
             // this.game_edge_return.right_y += 12 * Math.PI;
-            // this.game_edge_return.right_z += 12 * Math.PI;   
-            // move position vector after turning        
+            // this.game_edge_return.right_z += 12 * Math.PI;
+            // move position vector after turning
             this.object.position.z -= 12;
 
-            console.log("Crossed z upper bound");
-        }
-        else if (this.object.position.z < start_position.z - radius){
-            alert("WARNING, TURN AROUND TO AVOID DEEP SPACE");
+            console.log('Crossed z upper bound');
+        } else if (this.object.position.z < start_position.z - radius) {
+            alert('WARNING, TURN AROUND TO AVOID DEEP SPACE');
 
             // this.movementSpeed = 0;
-            console.log(this.object.position)
+            console.log(this.object.position);
             //this.speed_multiplier = 0.1;
             this.moveVector.x = 0;
             this.moveVector.y = 0;
             this.moveVector.z = 0;
 
-            this.game_edge_return.left_z += 32* Math.PI;
+            this.game_edge_return.left_z += 32 * Math.PI;
             // this.game_edge_return.left_x += 12 * Math.PI;
             // this.game_edge_return.left_x  += 12 * Math.PI;
             this.object.position.z += 12;
 
-            console.log("Crossed z lower bound");
+            console.log('Crossed z lower bound');
         }
-    }
-
+    };
 
     this.moveRight = function (distance) {
         vec.setFromMatrixColumn(this.object.matrix, 0);
@@ -378,13 +352,6 @@ var Controls = function (object, domElement) {
 
     this.keyup = function (event) {
         switch (event.keyCode) {
-            // case 65:
-            //     /*A*/ this.moveState.left = 0;
-            //     break;
-            // case 68:
-            //     /*D*/ this.moveState.right = 0;
-            //     break;
-
             case 32:
                 /*Space*/ this.speed_multiplier *= 0.99;
                 this.accelerate = false;
@@ -469,14 +436,12 @@ var Controls = function (object, domElement) {
             this.rotationVector.z = 0;
         }
 
-        /*
-        if (splash.style.display == 'none' || finishGame.style.display == 'none') {
-            this.isLocked = true;
+        // Mouse lock during game only
+        if (hud.style.display === 'block') {
+            this.lock();
+        } else {
+            this.unlock();
         }
-        else {
-            this.isLocked = false;
-        }
-        */
     };
 
     this.updateMovementVector = function () {
@@ -530,25 +495,8 @@ var Controls = function (object, domElement) {
         this.domElement.removeEventListener('contextmenu', contextmenu, false);
 
         this.domElement.removeEventListener('mousemove', _mousemove, false);
-        //this.domElement.removeEventListener( 'pointerlockchange', onPointerlockChange, false );
-        //this.domElement.removeEventListener( 'pointerlockerror', onPointerlockError, false );
-
         window.removeEventListener('keydown', _keydown, false);
         window.removeEventListener('keyup', _keyup, false);
-
-        // account for pointer lock functions
-        /*
-        this.domElement.removeEventListener(
-            'pointerlockchange',
-            onPointerlockChange,
-            false
-        );
-        this.domElement.removeEventListener(
-            'pointerlockerror',
-            onPointerlockError,
-            false
-        );
-        */
     };
 
     var _mousemove = bind(this, this.onMouseMove);
@@ -556,104 +504,83 @@ var Controls = function (object, domElement) {
     var _keyup = bind(this, this.keyup);
 
     this.domElement.addEventListener('contextmenu', contextmenu, false);
-
     this.domElement.addEventListener('mousemove', _mousemove, false);
-    /*
-    this.domElement.addEventListener(
-        'pointerlockchange',
-        onPointerlockChange,
-        false
-    );
-    this.domElement.addEventListener(
-        'pointerlockerror',
-        onPointerlockError,
-        false
-    );
-    */
 
     // bound check and turn if out of bounds!
-        this.inXBounds();
-        this.inYBounds();
-        this.inZBounds();
-        if (this.game_edge_return.right_x > 0) {
-            this.accelerate = false;
-            this.moveVector.x = 0;
-            this.moveVector.y = 0;
-            this.moveVector.z = 0;
-            this.game_edge_return.right_x -= Math.PI / 2;
-            this.rotationVector.x -= Math.PI / 2;
-            this.rotationVector.y -= Math.PI / 2;
+    this.inXBounds();
+    this.inYBounds();
+    this.inZBounds();
+    if (this.game_edge_return.right_x > 0) {
+        this.accelerate = false;
+        this.moveVector.x = 0;
+        this.moveVector.y = 0;
+        this.moveVector.z = 0;
+        this.game_edge_return.right_x -= Math.PI / 2;
+        this.rotationVector.x -= Math.PI / 2;
+        this.rotationVector.y -= Math.PI / 2;
+    } else {
+        this.rotationVector.x = 0;
+    }
 
-        }
-        else {
-            this.rotationVector.x = 0;
-        }
+    if (this.game_edge_return.right_y > 0) {
+        this.accelerate = false;
+        this.moveVector.x = 0;
+        this.moveVector.y = 0;
+        this.moveVector.z = 0;
+        this.game_edge_return.right_y -= Math.PI / 2;
+        this.rotationVector.y -= Math.PI / 2;
+        this.rotationVector.x -= Math.PI / 2;
+    } else {
+        this.rotationVector.y = 0;
+    }
 
-        if (this.game_edge_return.right_y > 0) {
-            this.accelerate = false;
-            this.moveVector.x = 0;
-            this.moveVector.y = 0;
-            this.moveVector.z = 0;
-            this.game_edge_return.right_y -= Math.PI / 2;
-            this.rotationVector.y -= Math.PI / 2;
-            this.rotationVector.x -= Math.PI / 2;
-        }
-        else {
-            this.rotationVector.y = 0;
-        }
+    if (this.game_edge_return.right_z > 0) {
+        this.accelerate = false;
+        this.moveVector.x = 0;
+        this.moveVector.y = 0;
+        this.moveVector.z = 0;
+        this.game_edge_return.right_z -= Math.PI / 2;
+        this.rotationVector.z -= Math.PI / 2;
+        this.rotationVector.y -= Math.PI / 2;
+    } else {
+        this.rotationVector.z = 0;
+    }
 
-        if (this.game_edge_return.right_z > 0) {
-            this.accelerate = false;
-            this.moveVector.x = 0;
-            this.moveVector.y = 0;
-            this.moveVector.z = 0;
-            this.game_edge_return.right_z -= Math.PI / 2;
-            this.rotationVector.z -= Math.PI / 2;
-            this.rotationVector.y -= Math.PI / 2;
+    if (this.game_edge_return.left_x > 0) {
+        this.accelerate = false;
+        this.moveVector.x = 0;
+        this.moveVector.y = 0;
+        this.moveVector.z = 0;
+        this.game_edge_return.left_x -= Math.PI / 2;
+        this.rotationVector.x -= Math.PI / 2;
+        this.rotationVector.y -= Math.PI / 2;
+    } else {
+        this.rotationVector.x = 0;
+    }
 
-        }
-        else {
-            this.rotationVector.z = 0;
+    if (this.game_edge_return.left_y > 0) {
+        this.accelerate = false;
+        this.moveVector.x = 0;
+        this.moveVector.y = 0;
+        this.moveVector.z = 0;
+        this.game_edge_return.left_y -= Math.PI / 2;
+        this.rotationVector.y -= Math.PI / 2;
+        this.rotationVector.x -= Math.PI / 2;
+    } else {
+        this.rotationVector.y = 0;
+    }
 
-        }
-
-
-        if (this.game_edge_return.left_x > 0) {
-            this.accelerate = false;
-            this.moveVector.x = 0;
-            this.moveVector.y = 0;
-            this.moveVector.z = 0;
-            this.game_edge_return.left_x -= Math.PI / 2;
-            this.rotationVector.x -= Math.PI / 2;
-            this.rotationVector.y -= Math.PI / 2;        }
-        else {
-            this.rotationVector.x = 0;
-
-        }
-
-        if (this.game_edge_return.left_y > 0) {
-            this.accelerate = false;
-            this.moveVector.x = 0;
-            this.moveVector.y = 0;
-            this.moveVector.z = 0;
-            this.game_edge_return.left_y -= Math.PI / 2;
-            this.rotationVector.y -= Math.PI / 2;
-            this.rotationVector.x -= Math.PI / 2;        }
-        else {
-            this.rotationVector.y = 0;
-        }
-
-        if (this.game_edge_return.left_z > 0) {
-            this.accelerate = false;
-            this.moveVector.x = 0;
-            this.moveVector.y = 0;
-            this.moveVector.z = 0;
-            this.game_edge_return.left_z -= Math.PI / 2;
-            this.rotationVector.z -= Math.PI / 2;
-            this.rotationVector.y -= Math.PI / 2;        }
-        else {
-            this.rotationVector.z = 0;
-        }
+    if (this.game_edge_return.left_z > 0) {
+        this.accelerate = false;
+        this.moveVector.x = 0;
+        this.moveVector.y = 0;
+        this.moveVector.z = 0;
+        this.game_edge_return.left_z -= Math.PI / 2;
+        this.rotationVector.z -= Math.PI / 2;
+        this.rotationVector.y -= Math.PI / 2;
+    } else {
+        this.rotationVector.z = 0;
+    }
 
     window.addEventListener('keydown', _keydown, false);
     window.addEventListener('keyup', _keyup, false);
