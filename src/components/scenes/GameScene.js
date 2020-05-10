@@ -17,6 +17,7 @@ import Corneria from '../audio/corneria_ultimate.mp3';
 
 const introDOM = document.getElementById('splash');
 const STARTING_SECONDS = 15;
+
 const STARTING_FUELS = 1;
 const STARTING_COLLECTED_FUELS = 0;
 
@@ -42,6 +43,7 @@ class GameScene extends Scene {
         this.numCollectedFuels = STARTING_COLLECTED_FUELS;
         this.MAX_ASTEROIDS_SPAWNS = MAX_ASTEROIDS_SPAWNS;
         this.MAX_FUEL_SPAWNS = MAX_FUEL_SPAWNS;
+        this.GAME_BOUNDS = GAME_BOUNDS;
 
 
         // Init state
@@ -148,6 +150,28 @@ class GameScene extends Scene {
         this.background = texture;
     }
 
+    disposeAsteroid(asteroidDisposal) {
+        // Quick fix: some asteroids leave the bounds
+        // before they're actually loaded.  Check for
+        // this. They'll be disposed of in a second
+        // update anyways.
+
+        if (asteroidDisposal.rockSurface !== undefined) {
+          asteroidDisposal.rockSurface.geometry.dispose();
+          asteroidDisposal.rockSurface.material.dispose();
+        }
+
+        if (asteroidDisposal.rockOutline !== undefined) {
+          asteroidDisposal.rockOutline.geometry.dispose();
+          asteroidDisposal.rockOutline.material.dispose();
+        }
+
+        if (asteroidDisposal.rockSurface !== undefined &&
+            asteroidDisposal.rockOutline !== undefined) {
+            this.remove(asteroidDisposal);
+        }
+    }
+
     handleCollectedFuel(collectedFuel) {
         this.remove(collectedFuel);
 
@@ -209,6 +233,7 @@ class GameScene extends Scene {
               false
           );
           this.add(asteroid_new);
+          this.numSpawnedAsteroids++;
         }
 
         // TODO: populate game area
@@ -223,6 +248,7 @@ class GameScene extends Scene {
           const fuel_new = new Fuel(this, colorChosen, position, this.world);
 
           this.add(fuel_new);
+          this.numSpawnedFuels++;
         }
 
         // Re-add essential objects

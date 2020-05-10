@@ -20,6 +20,9 @@ class Asteroid extends Group {
         this.name = 'asteroid';
         this.boundingSphere = new Sphere(new Vector3(), 1);
         this.gameScene = parent;
+
+        this.disposalOccured = false;
+
         loader.load(MODEL, (gltf) => {
             var obj =
                 gltf.scene.children[0].children[0].children[0].children[0];
@@ -95,9 +98,12 @@ class Asteroid extends Group {
         if ((this.position.x < this.gameScene.GAME_BOUNDS * -1 || this.position.x > this.gameScene.GAME_BOUNDS) ||
             (this.position.y < this.gameScene.GAME_BOUNDS * -1 || this.position.y > this.gameScene.GAME_BOUNDS) ||
             (this.position.z < this.gameScene.GAME_BOUNDS * -1 || this.position.z > this.gameScene.GAME_BOUNDS)) {
-
+              if (!this.disposalOccured) {
+                this.gameScene.numSpawnedAsteroids--;
+              }
+              this.gameScene.disposeAsteroid(this);
+              this.disposalOccured = true;
             }
-
     }
 }
 
