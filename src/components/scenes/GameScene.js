@@ -17,18 +17,21 @@ import Corneria from '../audio/corneria_ultimate.mp3';
 
 const introDOM = document.getElementById('splash');
 const STARTING_SECONDS = 15;
-
 const STARTING_FUELS = 1;
 const STARTING_COLLECTED_FUELS = 0;
 
 //Asteroid generation parameters:
 const STARTING_ASTEROIDS = 1;
+// invincibility starting num, could need adjustment?
+const STARTING_POWERUPS = 3
 // game is assumed to be a cube and the player is assumed to be in the center of it.
 // this represents the half side length of the cube
 const GAME_BOUNDS = 25;
 const MAX_FUEL_SECONDS = 30;
 export const MAX_ASTEROIDS_SPAWNS = 40;
 export const MAX_FUEL_SPAWNS = 10;
+export const MAX_POWERUP_SPAWNS = 10;
+
 
 class GameScene extends Scene {
     constructor(camera, world) {
@@ -39,11 +42,13 @@ class GameScene extends Scene {
         this.gameTimeRem = STARTING_SECONDS;
         this.numSpawnedFuels = STARTING_FUELS;
         this.numSpawnedAsteroids = STARTING_ASTEROIDS;
+        this.numSpawnedPowerups = STARTING_POWERUPS;
+
         this.numCollectedFuels = STARTING_COLLECTED_FUELS;
         this.MAX_ASTEROIDS_SPAWNS = MAX_ASTEROIDS_SPAWNS;
         this.MAX_FUEL_SPAWNS = MAX_FUEL_SPAWNS;
-        this.GAME_BOUNDS = GAME_BOUNDS;
         this.MAX_FUEL_SECONDS = MAX_FUEL_SECONDS;
+        this.MAX_POWERUP_SPAWNS = MAX_POWERUP_SPAWNS;
 
 
         // Init state
@@ -135,6 +140,31 @@ class GameScene extends Scene {
         this.numSpawnedAsteroids++;
     }
 
+
+    // Randomly spawn asteroids in bounded area
+    spawnPowerup() {
+        // spawn in Random position around player
+        const xRandom =
+            this.camera.position.x +
+            (Math.floor(Math.random() * 10) - 1) * randNegative();
+        const yRandom =
+            this.camera.position.y +
+            (Math.floor(Math.random() * 10) - 1) * randNegative();
+        const zRandom =
+            this.camera.position.z +
+            (Math.floor(Math.random() * 10) - 1) * randNegative();
+        const positionVec = new Vector3(xRandom, yRandom, zRandom);
+        const colorOptions = ['pink', 'orange', 'green', 'turquoise'];
+        const colorChosen = colorOptions[Math.floor(Math.random() * 4)];
+        const powerup = new Powerup(this, colorChosen, positionVec, this.world);;
+
+        this.add(powerup);
+        console.log("power up spawned");
+        this.numSpawnedPowerups++;
+    }
+
+
+
     // creates a space background scene that can be used by the renderer
     createBackground() {
         const loader = new CubeTextureLoader();
@@ -148,28 +178,6 @@ class GameScene extends Scene {
         ]);
 
         this.background = texture;
-    }
-
-    disposeAsteroid(asteroidDisposal) {
-        // Quick fix: some asteroids leave the bounds
-        // before they're actually loaded.  Check for
-        // this. They'll be disposed of in a second
-        // update anyways.
-
-        if (asteroidDisposal.rockSurface !== undefined) {
-          asteroidDisposal.rockSurface.geometry.dispose();
-          asteroidDisposal.rockSurface.material.dispose();
-        }
-
-        if (asteroidDisposal.rockOutline !== undefined) {
-          asteroidDisposal.rockOutline.geometry.dispose();
-          asteroidDisposal.rockOutline.material.dispose();
-        }
-
-        if (asteroidDisposal.rockSurface !== undefined &&
-            asteroidDisposal.rockOutline !== undefined) {
-            this.remove(asteroidDisposal);
-        }
     }
 
     handleCollectedFuel(collectedFuel) {
@@ -226,7 +234,7 @@ class GameScene extends Scene {
         this.world.bodies = [essentialBody, fuel.body, powerup.body];
 
         // TODO: populate game area
-        for (let i = 0; i < this.MAX_ASTEROIDS_SPAWNS - 15; i++) {
+        for (let i = 0; i < this.MAX_ASTEROIDS_SPAWNS - 30; i++) {
             // generate asteroids, but leave some to be spawned in game
             const position = new Vector3(
                 Math.random() * GAME_BOUNDS * 2 - GAME_BOUNDS,
