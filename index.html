@@ -3,7 +3,7 @@
                     top: 0px;
                     left: 0px;
                     width: 100%;
-                    height: 100%;"></div><audio autoplay loop id="audio"><source src="2001.mp3" type="audio/mpeg"/></audio><div id="splash"><h1 id="gameTitleOne">2020</h1><h1 id="gameTitleTwo">a Princeton Space Odyssey</h1><button type="button" id="startButton" onclick="hideSplash()">Start Game</button><h3 id="controls">Controls:</h3><h4 id="controls">Look with Mouse</h4><h4 id="controls">Spacebar: Accel</h4><h4 id="controls">Shift: Brake</h4><h4 id="controls">Q | E: Barrel Roll</h4><br><h3 id="controls">Instructions:</h3><h4 id="controls">Collect fuel charges for as long as possible while avoiding asteroids! Collect a powerup to gain temporary invincibility.</h4><h2 id="acknowledgements">Created By: Jessica Edouard, Emmanuel Teferi, Justin Tran, Henry Wang</h2></div><div id="finishGameScreen" onclick="hideFinishGame()"><h1 id="finishGameMessage">Out of fuel!</h1><h2 id="finishGameFuel"></h2><h2 id="finishGameTime"></h2><br><h2 id="restartMessage">Click to Play Again!</h2></div><script>const splash = document.getElementById('splash');
+                    height: 100%;"></div><audio autoplay loop id="audio"><source src="2001.mp3" type="audio/mpeg"/></audio><div id="splash"><img src="textures/spacelogo.png" style="width: 65%; margin-left: auto; margin-right: auto; display: block"/> <button type="button" id="startButton" onclick="hideSplash()">Start Game</button><h3 id="controls">Controls:</h3><h4 id="controls">Look with Mouse</h4><h4 id="controls">Spacebar: Accel</h4><h4 id="controls">Shift: Brake</h4><h4 id="controls">Q | E: Barrel Roll</h4><br><h3 id="controls">Instructions:</h3><h4 id="controls">Collect fuel charges for as long as possible while avoiding asteroids!<br>Collect a powerup to gain temporary invincibility.</h4><h2 id="acknowledgements">Created By: Jessica Edouard, Emmanuel Teferi, Justin Tran, Henry Wang</h2></div><div id="finishGameScreen" onclick="hideFinishGame()"><h1 id="finishGameMessage">Out of fuel!</h1><h2 id="finishGameFuel"></h2><h2 id="finishGameTime"></h2><br><h2 id="restartMessage">Click to Play Again!</h2></div><script>const splash = document.getElementById('splash');
                 var elapsedTime;
                 function hideSplash() {
                     const hud = document.getElementById('hud');
@@ -22,4 +22,4 @@
                     const finishGame = document.getElementById('finishGameScreen');
                     finishGame.style.display = 'none';
                     splash.style.display = 'block';
-                }</script></div><script src="/Graphics_Project/main.34b7a421467c7e1236e3.js"></script></body></html>
+                }</script></div><script src="/Graphics_Project/main.a308029419133916bba5.js"></script></body></html>

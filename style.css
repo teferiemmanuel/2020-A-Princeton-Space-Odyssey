@@ -24,22 +24,23 @@ h2 {
 }
 
 #controls {
-    color: #f39f49;
-    position: relative;
+    color: #00d4ac;
     text-align: center;
-    margin: 0;
-    top: 40%;
+    margin: .1%;
 }
 
 #startButton {
     background-color: transparent;
-    position: absolute;
-    top: 40%;
-    left: 45%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    margin-top: 5%;
+    font-size: 100%;
     padding: 0.5em 3em;
     border: 0.16em solid;
     font-family: starWing;
-    color: #f39f49;
+    margin-bottom: 5%;
+    color: #00d4ac;
 }
 
 #startButton:hover {
@@ -47,7 +48,8 @@ h2 {
 }
 
 #acknowledgements {
-    top: 50%;
+    margin-top: 5%;
+    color: #00d4ac;
 }
 
 #splash {
