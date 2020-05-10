@@ -77,6 +77,15 @@ var Controls = function (object, domElement) {
         rollLeft: 0,
         rollRight: 0,
     };
+    this.game_edge_return = {
+        left_x  : 0,
+        right_x : 0, 
+        left_y  : 0,
+        right_y : 0, 
+        left_z  : 0,
+        right_z : 0, 
+    };
+    
     this.moveVector = new Vector3(0, 0, 0);
     this.rotationVector = new Vector3(0, 0, 0);
 
@@ -86,6 +95,7 @@ var Controls = function (object, domElement) {
     var changeEvent = { type: 'change' };
     var lockEvent = { type: 'lock' };
     var unlockEvent = { type: 'unlock' };
+    var start_position = new Vector3(6, 3, -10);
 
     var euler = new Euler(0, 0, 0, 'YXZ');
 
@@ -166,6 +176,115 @@ var Controls = function (object, domElement) {
 
         this.object.position.addScaledVector(vec, distance);
     };
+
+    // bounds check the camera in x, y, z direction, rotate camera 180 and move position inward 12 units
+    var radius = 25;
+    this.inXBounds = function() {
+        if (this.object.position.x > start_position.x  + radius ) {
+            alert("WARNING, TURN AROUND TO AVOID DEEP SPACE");
+
+            // this.movementSpeed = 0;
+            console.log(this.object.position)
+            //this.speed_multiplier = 0.1;
+            this.moveVector.x = 0;
+            this.moveVector.y = 0;
+            this.moveVector.z = 0;
+            this.game_edge_return.right_x += 32 * Math.PI;
+            // this.game_edge_return.right_y += 12 * Math.PI;
+            // this.game_edge_return.right_z += 12 * Math.PI;           
+            this.object.position.x -= 12;
+            console.log("Crossed x upper bound");
+        }
+        else if (this.object.position.x < start_position.x - radius){
+            alert("WARNING, TURN AROUND TO AVOID DEEP SPACE");
+            // this.movementSpeed = 0;
+            console.log(this.object.position)
+            //this.speed_multiplier = 0.1;
+            this.moveVector.x = 0;
+            this.moveVector.y = 0;
+            this.moveVector.z = 0;
+
+            this.game_edge_return.left_x += 32* Math.PI;
+            // this.game_edge_return.left_x += 12 * Math.PI;
+            // this.game_edge_return.left_x  += 12 * Math.PI;
+            this.object.position.x += 12;
+
+            console.log("Crossed x lower bound");
+        }
+    }
+
+    this.inYBounds = function() {
+        if (this.object.position.y > start_position.y  + radius ) {
+            alert("WARNING, TURN AROUND TO AVOID DEEP SPACE");
+            // this.movementSpeed = 0;
+            console.log(this.object.position)
+            //this.speed_multiplier = 0.1;
+            this.moveVector.x = 0;
+            this.moveVector.y = 0;
+            this.moveVector.z = 0;
+            this.game_edge_return.right_y += 32 * Math.PI;
+            // this.game_edge_return.right_y += 12 * Math.PI;
+            // this.game_edge_return.right_z += 12 * Math.PI;           
+            this.object.position.y -= 12;
+
+            console.log("Crossed y upper bound");
+        }
+        else if (this.object.position.y < start_position.y - radius){
+            alert("WARNING, TURN AROUND TO AVOID DEEP SPACE");
+
+            // this.movementSpeed = 0;
+            console.log(this.object.position)
+            //this.speed_multiplier = 0.1;
+            this.moveVector.x = 0;
+            this.moveVector.y = 0;
+            this.moveVector.z = 0;
+
+            this.game_edge_return.left_y += 32* Math.PI;
+            // this.game_edge_return.left_x += 12 * Math.PI;
+            // this.game_edge_return.left_x  += 12 * Math.PI;
+            this.object.position.y += 12;
+
+            console.log("Crossed y lower bound");
+        }
+    }
+
+    this.inZBounds = function() {
+        if (this.object.position.z > start_position.z  + radius ) {
+            alert("WARNING, TURN AROUND TO AVOID DEEP SPACE");
+
+            // this.movementSpeed = 0;
+            console.log(this.object.position)
+            //this.speed_multiplier = 0.1;
+            this.moveVector.x = 0;
+            this.moveVector.y = 0;
+            this.moveVector.z = 0;
+            this.game_edge_return.right_z += 32 * Math.PI;
+            // this.game_edge_return.right_y += 12 * Math.PI;
+            // this.game_edge_return.right_z += 12 * Math.PI;   
+            // move position vector after turning        
+            this.object.position.z -= 12;
+
+            console.log("Crossed z upper bound");
+        }
+        else if (this.object.position.z < start_position.z - radius){
+            alert("WARNING, TURN AROUND TO AVOID DEEP SPACE");
+
+            // this.movementSpeed = 0;
+            console.log(this.object.position)
+            //this.speed_multiplier = 0.1;
+            this.moveVector.x = 0;
+            this.moveVector.y = 0;
+            this.moveVector.z = 0;
+
+            this.game_edge_return.left_z += 32* Math.PI;
+            // this.game_edge_return.left_x += 12 * Math.PI;
+            // this.game_edge_return.left_x  += 12 * Math.PI;
+            this.object.position.z += 12;
+
+            console.log("Crossed z lower bound");
+        }
+    }
+
 
     this.moveRight = function (distance) {
         vec.setFromMatrixColumn(this.object.matrix, 0);
@@ -451,6 +570,90 @@ var Controls = function (object, domElement) {
         false
     );
     */
+
+    // bound check and turn if out of bounds!
+        this.inXBounds();
+        this.inYBounds();
+        this.inZBounds();
+        if (this.game_edge_return.right_x > 0) {
+            this.accelerate = false;
+            this.moveVector.x = 0;
+            this.moveVector.y = 0;
+            this.moveVector.z = 0;
+            this.game_edge_return.right_x -= Math.PI / 2;
+            this.rotationVector.x -= Math.PI / 2;
+            this.rotationVector.y -= Math.PI / 2;
+
+        }
+        else {
+            this.rotationVector.x = 0;
+        }
+
+        if (this.game_edge_return.right_y > 0) {
+            this.accelerate = false;
+            this.moveVector.x = 0;
+            this.moveVector.y = 0;
+            this.moveVector.z = 0;
+            this.game_edge_return.right_y -= Math.PI / 2;
+            this.rotationVector.y -= Math.PI / 2;
+            this.rotationVector.x -= Math.PI / 2;
+        }
+        else {
+            this.rotationVector.y = 0;
+        }
+
+        if (this.game_edge_return.right_z > 0) {
+            this.accelerate = false;
+            this.moveVector.x = 0;
+            this.moveVector.y = 0;
+            this.moveVector.z = 0;
+            this.game_edge_return.right_z -= Math.PI / 2;
+            this.rotationVector.z -= Math.PI / 2;
+            this.rotationVector.y -= Math.PI / 2;
+
+        }
+        else {
+            this.rotationVector.z = 0;
+
+        }
+
+
+        if (this.game_edge_return.left_x > 0) {
+            this.accelerate = false;
+            this.moveVector.x = 0;
+            this.moveVector.y = 0;
+            this.moveVector.z = 0;
+            this.game_edge_return.left_x -= Math.PI / 2;
+            this.rotationVector.x -= Math.PI / 2;
+            this.rotationVector.y -= Math.PI / 2;        }
+        else {
+            this.rotationVector.x = 0;
+
+        }
+
+        if (this.game_edge_return.left_y > 0) {
+            this.accelerate = false;
+            this.moveVector.x = 0;
+            this.moveVector.y = 0;
+            this.moveVector.z = 0;
+            this.game_edge_return.left_y -= Math.PI / 2;
+            this.rotationVector.y -= Math.PI / 2;
+            this.rotationVector.x -= Math.PI / 2;        }
+        else {
+            this.rotationVector.y = 0;
+        }
+
+        if (this.game_edge_return.left_z > 0) {
+            this.accelerate = false;
+            this.moveVector.x = 0;
+            this.moveVector.y = 0;
+            this.moveVector.z = 0;
+            this.game_edge_return.left_z -= Math.PI / 2;
+            this.rotationVector.z -= Math.PI / 2;
+            this.rotationVector.y -= Math.PI / 2;        }
+        else {
+            this.rotationVector.z = 0;
+        }
 
     window.addEventListener('keydown', _keydown, false);
     window.addEventListener('keyup', _keyup, false);
