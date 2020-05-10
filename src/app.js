@@ -13,13 +13,6 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { World, NaiveBroadphase } from 'cannon';
-// If out of bounds, from the 50x50 position from the start
-// Spawn asteroids in game scene there's a variable in,  gamescene.
-// then barrel roll.
-
-// Constants
-const MAX_FUEL_SECONDS = 30;
-
 // Cannon js physics things...
 const world = new World();
 world.gravity.set(0, 0, 0);
@@ -123,7 +116,7 @@ function updateHUD() {
     document.getElementById('timeElapsedVal').innerHTML =
         gameScene.gameTimeRem + 's of fuel remaining';
     document.getElementById('timeRemainingProg').value =
-        (gameScene.gameTimeRem / MAX_FUEL_SECONDS) * 100;
+        (gameScene.gameTimeRem / gameScene.MAX_FUEL_SECONDS) * 100;
 }
 
 // Check if splash screen is up; If not, spawn fuel
@@ -131,7 +124,10 @@ function checkSplashAndSpawn() {
     // Check if splash screen is still displayed
     const splash = document.getElementById('splash');
     // Check if there are fewer than 10 fuel elements spawned
-    if (splash.style.display === 'none' && gameScene.numSpawnedFuels < gameScene.MAX_FUEL_SPAWNS) {
+    if (
+        splash.style.display === 'none' &&
+        gameScene.numSpawnedFuels < gameScene.MAX_FUEL_SPAWNS
+    ) {
         gameScene.spawnFuel();
     }
 }
@@ -141,7 +137,10 @@ function checkSplashAndSpawnAsteroid() {
     // Check if splash screen is still displayed
     const splash = document.getElementById('splash');
     // Check if there are fewer than 9 asteroid elements spawned
-    if (splash.style.display === 'none' && gameScene.numSpawnedAsteroids < gameScene.MAX_ASTEROIDS_SPAWNS) {
+    if (
+        splash.style.display === 'none' &&
+        gameScene.numSpawnedAsteroids < gameScene.MAX_ASTEROIDS_SPAWNS
+    ) {
         gameScene.spawnAsteroid();
     }
 }
