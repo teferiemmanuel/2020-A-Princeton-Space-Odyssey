@@ -199,7 +199,7 @@ window.setInterval(function () {
     checkSplashAndSpawn();
 }, 2500);
 
-// Wrapper to spawn asteroid every 2s
+// Wrapper to spawn powerup every 2s
 window.setInterval(function () {
     checkSplashAndSpawnPowerup();
 }, 2000);
