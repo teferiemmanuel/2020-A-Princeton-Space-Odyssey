@@ -183,7 +183,7 @@ window.setInterval(function () {
 // Wrapper to spawn asteroid every 1.5s
 window.setInterval(function () {
     checkSplashAndSpawnAsteroid();
-}, 1500);
+}, 1000);
 
 // Resets player position to default after starting game
 function resetPlayerPosition() {
