@@ -146,6 +146,17 @@ function checkSplashAndSpawnAsteroid() {
     }
 }
 
+
+// Check if splash screen is up; If not, spawn Asterid
+function checkSplashAndSpawnPowerup() {
+    // Check if splash screen is still displayed
+    const splash = document.getElementById('splash');
+    // Check if there are fewer than 9 asteroid elements spawned
+    if (splash.style.display === 'none' && gameScene.numSpawnedPowerups < gameScene.MAX_POWERUP_SPAWNS) {
+        gameScene.spawnPowerup();
+    }
+}
+
 // Update time remaining
 window.setInterval(function () {
     const finishGame = document.getElementById('finishGameScreen');
@@ -179,6 +190,11 @@ window.setInterval(function () {
 window.setInterval(function () {
     checkSplashAndSpawn();
 }, 2500);
+
+// Wrapper to spawn asteroid every 2s
+window.setInterval(function () {
+    checkSplashAndSpawnPowerup();
+}, 2000);
 
 // Wrapper to spawn asteroid every 1.5s
 window.setInterval(function () {
