@@ -25,6 +25,7 @@ const STARTING_ASTEROIDS = 1;
 // game is assumed to be a cube and the player is assumed to be in the center of it.
 // this represents the half side length of the cube
 const GAME_BOUNDS = 25;
+const MAX_FUEL_SECONDS = 30;
 export const MAX_ASTEROIDS_SPAWNS = 40;
 export const MAX_FUEL_SPAWNS = 10;
 
@@ -40,6 +41,7 @@ class GameScene extends Scene {
         this.numCollectedFuels = STARTING_COLLECTED_FUELS;
         this.MAX_ASTEROIDS_SPAWNS = MAX_ASTEROIDS_SPAWNS;
         this.MAX_FUEL_SPAWNS = MAX_FUEL_SPAWNS;
+        this.MAX_FUEL_SECONDS = MAX_FUEL_SECONDS;
 
         // Init state
         this.state = {
