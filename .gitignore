@@ -107,3 +107,4 @@ build/
 
 # Local history
 .history/
+src/.DS_Store
