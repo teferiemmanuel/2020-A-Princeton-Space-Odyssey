@@ -43,11 +43,20 @@
             </audio>
             <!-- Start screen splash -->
             <div id="splash">
-                <img src="textures/spacelogo.png"  style="width: 65%; margin-left: auto; margin-right: auto; display: block" />
+                <img src="textures/spacelogo.png"  style="width: 55%; margin-left: auto; margin-right: auto; display: block" />
                 <button type="button" id="startButton" onclick="hideSplash()">
-                    Start Game
+                    <span class="selector">▶</span> Start Game
                 </button>
-                <h3 id="controls">Controls: </h3>
+                <button type="button" id="instructButton">
+                    <span class="selector"></span> Instructions
+                </button>
+                <button type="button" id="optionsButton">
+                    <span class="selector"></span> Options
+                </button>
+                <button type="button" id="creditButton">
+                    <span class="selector"></span> Credit
+                </button>
+                <!-- <h3 id="controls">Controls: </h3>
                 <h4 id="controls">Look with Mouse</h4>
                 <h4 id="controls">Spacebar: Accel</h4>
                 <h4 id="controls">Shift: Brake</h4>
@@ -58,7 +67,7 @@
                 <h2 id="acknowledgements">
                     Created By: Jessica Edouard, Emmanuel Teferi, Justin Tran,
                     Henry Wang
-                </h2>
+                </h2> -->
             </div>
             <!-- Finish game screen -->
             <div id="finishGameScreen" onclick="hideFinishGame()">
@@ -98,5 +107,130 @@
                 }
             </script>
         </div>
+
+
+
+      <div id="instructionsModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span id="close-instructions" class="close">&times;</span>
+          <p>Instructions</p>
+          <p>Collect fuel charges for as long as possible while avoiding asteroids! <br> Collect a powerup to gain temporary invincibility.</p>
+
+          <h3 id="controls">Controls: </h3>
+          <h4 id="controls">Look with Mouse</h4>
+          <h4 id="controls">Spacebar: Accel</h4>
+          <h4 id="controls">Shift: Brake</h4>
+          <h4 id="controls">Q | E: Barrel Roll</h4>
+        </div>
+
+      </div>
+
+      <div id="optionsModal" class="modal">
+
+        <div class="modal-content">
+          <span id="close-options" class="close">&times;</span>
+          <p>Options</p>
+          <p>Mute Music</p>
+        </div>
+
+      </div>
+
+
+      <div id="creditModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span id="close-credit" class="close">&times;</span>
+          <p>Created By: Jessica Edouard, Emmanuel Teferi, Justin Tran,
+          Henry Wang</p>
+        </div>
+
+      </div>
+
+
+        <script>// Get the modal
+          var creditModal = document.getElementById("creditModal");
+
+          // Get the button that opens the modal
+          var creditbtn = document.getElementById("creditButton");
+
+          // Get the <span> element that closes the modal
+          var creditspan = document.getElementById("close-credit");
+
+          // When the user clicks on the button, open the modal
+          creditbtn.onclick = function() {
+            creditModal.style.display = "block";
+          }
+
+          // When the user clicks on <span> (x), close the modal
+          creditspan.onclick = function() {
+            creditModal.style.display = "none";
+          }
+
+          // When the user clicks anywhere outside of the modal, close it
+          window.onclick = function(event) {
+            if (event.target == modal) {
+              creditModal.style.display = "none";
+            }
+          }
+          </script>
+
+
+          <script>
+          var instructModal = document.getElementById("instructionsModal");
+
+          // Get the button that opens the modal
+          var instructbtn = document.getElementById("instructButton");
+
+          // Get the <span> element that closes the modal
+          var instructspan = document.getElementById("close-instructions");
+
+          // When the user clicks on the button, open the modal
+          instructbtn.onclick = function() {
+            instructModal.style.display = "block";
+          }
+
+          // When the user clicks on <span> (x), close the modal
+          instructspan.onclick = function() {
+            instructModal.style.display = "none";
+          }
+
+          // When the user clicks anywhere outside of the modal, close it
+          window.onclick = function(event) {
+            if (event.target == modal) {
+              instructModal.style.display = "none";
+            }
+          }
+        </script>
+
+        <script>
+        var optionsModal = document.getElementById("optionsModal");
+
+        // Get the button that opens the modal
+        var optionsbtn = document.getElementById("optionsButton");
+
+        // Get the <span> element that closes the modal
+        var optionsspan = document.getElementById("close-options");
+
+        // When the user clicks on the button, open the modal
+        optionsbtn.onclick = function() {
+          optionsModal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        optionsspan.onclick = function() {
+          optionsModal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            optionsModal.style.display = "none";
+          }
+        }
+      </script>
+
     </body>
 </html>
