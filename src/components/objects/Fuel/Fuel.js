@@ -14,8 +14,6 @@ class Fuel extends Group {
         // Call parent Group() constructor
         super();
 
-        // this.layers.set(1);
-
         if (color === 'red') {
             this.fuelColor = 0xff0000;
         } else if (color === 'green') {
@@ -59,7 +57,7 @@ class Fuel extends Group {
 
         const shape = new SpherePhysics(this.boundingSphere.radius);
         const body = new Body({
-          position: positionVec.clone()
+            position: positionVec.clone(),
         });
         body.addShape(shape);
         this.body = body;

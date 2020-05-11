@@ -6,7 +6,7 @@ import {
     TetrahedronBufferGeometry,
     Mesh,
 } from 'three';
-import { Vec3, Body } from 'cannon';
+import { Body } from 'cannon';
 import { Sphere as SpherePhysics } from 'cannon';
 
 class Powerup extends Group {
@@ -80,7 +80,7 @@ class Powerup extends Group {
 
         const shape = new SpherePhysics(this.boundingSphere.radius);
         const body = new Body({
-          position: pos.clone()
+            position: pos.clone(),
         });
         body.addShape(shape);
         this.body = body;

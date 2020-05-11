@@ -165,7 +165,6 @@ var Controls = function (object, domElement) {
             this.moveVector.z = 0;
             this.game_edge_return.right_x += 32 * Math.PI;
             this.object.position.x -= 12;
-            console.log('Crossed x upper bound');
         } else if (this.object.position.x < start_position.x - radius) {
             alert('WARNING, TURN AROUND TO AVOID DEEP SPACE');
             this.moveVector.x = 0;
@@ -200,31 +199,21 @@ var Controls = function (object, domElement) {
         if (this.object.position.z > start_position.z + radius) {
             alert('WARNING, TURN AROUND TO AVOID DEEP SPACE');
 
-            // this.movementSpeed = 0;
-            console.log(this.object.position);
-            //this.speed_multiplier = 0.1;
             this.moveVector.x = 0;
             this.moveVector.y = 0;
             this.moveVector.z = 0;
             this.game_edge_return.right_z += 32 * Math.PI;
             // move position vector after turning
             this.object.position.z -= 12;
-
-            console.log('Crossed z upper bound');
         } else if (this.object.position.z < start_position.z - radius) {
             alert('WARNING, TURN AROUND TO AVOID DEEP SPACE');
 
-            // this.movementSpeed = 0;
-            console.log(this.object.position);
-            //this.speed_multiplier = 0.1;
             this.moveVector.x = 0;
             this.moveVector.y = 0;
             this.moveVector.z = 0;
 
             this.game_edge_return.left_z += 32 * Math.PI;
             this.object.position.z += 12;
-
-            console.log('Crossed z lower bound');
         }
     };
 

@@ -127,15 +127,6 @@ class Player extends Group {
             }
         });
 
-        // debugging mesh just in case we need to visualize boudingSphere
-        // let energyOrbMesh = createEnergyOrbMesh();
-
-        // energyOrbMesh.position.x = positionVec.x;
-        // energyOrbMesh.position.y = positionVec.y;
-        // energyOrbMesh.position.z = positionVec.z;
-        // this.add(energyOrbMesh);
-        // this.energyOrb = energyOrbMesh
-
         // Add self to parent's update list
         parent.addToUpdateList(this);
     }
@@ -146,10 +137,6 @@ class Player extends Group {
         this.boundingSphere.center.z = this.positionVec.z;
 
         this.body.position.copy(this.positionVec.clone());
-        // debugging mesh
-        // this.energyOrb.position.x = this.positionVec.x;
-        // this.energyOrb.position.y = this.positionVec.y;
-        // this.energyOrb.position.z = this.positionVec.z;
     }
 }
 
@@ -159,22 +146,5 @@ function createBoundingSphere() {
     boundingSphere = new Sphere(new Vector3(), 0.6);
     return boundingSphere;
 }
-
-// function createEnergyOrbMesh() {
-//   let energyOrb = {}
-//
-//     energyOrb.material = new MeshBasicMaterial({
-//      color: 0xff,
-//      side: DoubleSide,
-//      wireframe: false,
-//    });
-//
-//   // use orb geometry
-//   energyOrb.geometry = new SphereBufferGeometry(.6, 10, 10);
-//
-//   // create orb mesh
-//   energyOrb.mesh = new Mesh( energyOrb.geometry,  energyOrb.material);
-//   return energyOrb.mesh;
-// }
 
 export default Player;
