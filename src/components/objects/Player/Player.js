@@ -1,4 +1,12 @@
-import { Audio, AudioLoader, Vector3, Group, Sphere, Frustum, Matrix4 } from 'three';
+import {
+    Audio,
+    AudioLoader,
+    Vector3,
+    Group,
+    Sphere,
+    Frustum,
+    Matrix4,
+} from 'three';
 import { Body } from 'cannon';
 import { Sphere as SpherePhysics } from 'cannon';
 import AsteroidCollision from '../../audio/asteroid_collision.mp3';
@@ -33,36 +41,37 @@ class Player extends Group {
         this.body = body;
         this.body.gameScene = parent;
 
-
         this.body.addEventListener('collide', function (e) {
-
             if (e.body.asteroid !== undefined && vulnToAsteroid === true) {
-
                 var frustum = new Frustum();
                 const gameScene = e.body.asteroid.gameScene;
-                frustum.setFromProjectionMatrix(new Matrix4().multiplyMatrices(gameScene.camera.projectionMatrix,
-                                                                     gameScene.camera.matrixWorldInverse));
+                frustum.setFromProjectionMatrix(
+                    new Matrix4().multiplyMatrices(
+                        gameScene.camera.projectionMatrix,
+                        gameScene.camera.matrixWorldInverse
+                    )
+                );
 
                 var pos = e.body.asteroid.position;
                 if (frustum.containsPoint(pos)) {
-                  document.getElementById('collisionMessage').innerHTML =
-                      'OOF! You lost some fuel';
+                    document.getElementById('collisionMessage').innerHTML =
+                        'OOF! You lost some fuel';
 
-                  this.gameScene.gameTimeRem -= 5;
+                    this.gameScene.gameTimeRem -= 5;
 
-                  if (!muteSoundEffectsButton.checked) {
-                    // create an audio source
-                    const soundEffect = new Audio(this.gameScene.listener);
-                    // load a sound and set it as the Audio object's buffer
-                    const audioLoader = new AudioLoader();
-                    audioLoader.load(AsteroidCollision, function (buffer) {
-                        soundEffect.setBuffer(buffer);
-                        soundEffect.setLoop(false);
-                        soundEffect.setVolume(0.15);
-                        soundEffect.play();
-                    });
+                    if (!muteSoundEffectsButton.checked) {
+                        // create an audio source
+                        const soundEffect = new Audio(this.gameScene.listener);
+                        // load a sound and set it as the Audio object's buffer
+                        const audioLoader = new AudioLoader();
+                        audioLoader.load(AsteroidCollision, function (buffer) {
+                            soundEffect.setBuffer(buffer);
+                            soundEffect.setLoop(false);
+                            soundEffect.setVolume(0.15);
+                            soundEffect.play();
+                        });
+                    }
                 }
-              }
             } else if (e.body.fuel !== undefined) {
                 document.getElementById('collisionMessage').innerHTML =
                     'Fuel recharged!';
@@ -70,16 +79,16 @@ class Player extends Group {
                 this.gameScene.numSpawnedFuels--;
 
                 if (!muteSoundEffectsButton.checked) {
-                  // create an audio source
-                  const soundEffect = new Audio(this.gameScene.listener);
-                  // load a sound and set it as the Audio object's buffer
-                  const audioLoader = new AudioLoader();
-                  audioLoader.load(FuelPickup, function (buffer) {
-                      soundEffect.setBuffer(buffer);
-                      soundEffect.setLoop(false);
-                      soundEffect.setVolume(0.15);
-                      soundEffect.play();
-                  });
+                    // create an audio source
+                    const soundEffect = new Audio(this.gameScene.listener);
+                    // load a sound and set it as the Audio object's buffer
+                    const audioLoader = new AudioLoader();
+                    audioLoader.load(FuelPickup, function (buffer) {
+                        soundEffect.setBuffer(buffer);
+                        soundEffect.setLoop(false);
+                        soundEffect.setVolume(0.15);
+                        soundEffect.play();
+                    });
                 }
 
                 // Handle time elapsed
@@ -102,16 +111,16 @@ class Player extends Group {
                 }, 5000);
 
                 if (!muteSoundEffectsButton.checked) {
-                  // create an audio source
-                  const soundEffect = new Audio(this.gameScene.listener);
-                  // load a sound and set it as the Audio object's buffer
-                  const audioLoader = new AudioLoader();
-                  audioLoader.load(PowerupPickup, function (buffer) {
-                      soundEffect.setBuffer(buffer);
-                      soundEffect.setLoop(false);
-                      soundEffect.setVolume(0.15);
-                      soundEffect.play();
-                  });
+                    // create an audio source
+                    const soundEffect = new Audio(this.gameScene.listener);
+                    // load a sound and set it as the Audio object's buffer
+                    const audioLoader = new AudioLoader();
+                    audioLoader.load(PowerupPickup, function (buffer) {
+                        soundEffect.setBuffer(buffer);
+                        soundEffect.setLoop(false);
+                        soundEffect.setVolume(0.15);
+                        soundEffect.play();
+                    });
                 }
 
                 this.gameScene.handlePowerupCollision(e.body.powerup);
@@ -137,9 +146,6 @@ class Player extends Group {
         this.boundingSphere.center.z = this.positionVec.z;
 
         this.body.position.copy(this.positionVec.clone());
-
-        console.log(this.positionVec);
-
         // debugging mesh
         // this.energyOrb.position.x = this.positionVec.x;
         // this.energyOrb.position.y = this.positionVec.y;

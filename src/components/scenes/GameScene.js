@@ -16,19 +16,15 @@ import { BasicLights } from 'lights';
 import Corneria from '../audio/corneria_ultimate.mp3';
 
 const introDOM = document.getElementById('splash');
-
 const muteMusicButton = document.getElementById('muteMusic');
 
 const STARTING_SECONDS = 25;
-
 const STARTING_FUELS = 3;
-
 const STARTING_COLLECTED_FUELS = 0;
-
 //Asteroid generation parameters:
 const STARTING_ASTEROIDS = 1;
 // invincibility starting num, could need adjustment?
-const STARTING_POWERUPS = 2;
+const STARTING_POWERUPS = 1;
 // game is assumed to be a cube and the player is assumed to be in the center of it.
 // this represents the half side length of the cube
 const GAME_BOUNDS = 25;
@@ -96,7 +92,11 @@ class GameScene extends Scene {
         }
 
         // deals with music playing (don't want to clash with opening music)
-        if (!muteMusicButton.checked && !this.music.isPlaying && introDOM.style.display == 'none') {
+        if (
+            !muteMusicButton.checked &&
+            !this.music.isPlaying &&
+            introDOM.style.display == 'none'
+        ) {
             this.music.play();
         }
     }
