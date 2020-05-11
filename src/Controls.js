@@ -89,7 +89,7 @@ var Controls = function (object, domElement) {
 
     var scope = this;
     var changeEvent = { type: 'change' };
-    var start_position = new Vector3(6, 3, -10);
+    var start_position = object.position.clone();
 
     var euler = new Euler(0, 0, 0, 'YXZ');
 
