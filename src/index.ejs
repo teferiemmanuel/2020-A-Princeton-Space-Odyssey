@@ -132,7 +132,8 @@
         <div class="modal-content">
           <span id="close-options" class="close">&times;</span>
           <p>Options</p>
-          <p>Mute Music</p>
+          <input type="checkbox" id="muteMusic" name="mute" onclick="changeMusicStatus()">
+         <label for="scales">Mute Music</label>
         </div>
 
       </div>
@@ -148,6 +149,21 @@
         </div>
 
       </div>
+
+      <script>
+      function changeMusicStatus() {
+        var muteMusicButton = document.getElementById("muteMusic");
+        var audio = document.getElementById("audio");
+        console.log(muteMusicButton.checked);
+        if (!muteMusicButton.checked) {
+          audio.play();
+        }
+        else {
+          audio.pause();
+        }
+      }
+
+      </script>
 
 
         <script>// Get the modal
@@ -171,7 +187,7 @@
 
           // When the user clicks anywhere outside of the modal, close it
           window.onclick = function(event) {
-            if (event.target == modal) {
+            if (event.target == creditModal) {
               creditModal.style.display = "none";
             }
           }
@@ -199,7 +215,7 @@
 
           // When the user clicks anywhere outside of the modal, close it
           window.onclick = function(event) {
-            if (event.target == modal) {
+            if (event.target == instructModal) {
               instructModal.style.display = "none";
             }
           }
@@ -226,7 +242,7 @@
 
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function(event) {
-          if (event.target == modal) {
+          if (event.target == optionsModal) {
             optionsModal.style.display = "none";
           }
         }

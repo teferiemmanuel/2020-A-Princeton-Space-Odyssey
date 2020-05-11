@@ -16,7 +16,11 @@ import { BasicLights } from 'lights';
 import Corneria from '../audio/corneria_ultimate.mp3';
 
 const introDOM = document.getElementById('splash');
-const STARTING_SECONDS = 15;
+const muteMusicButton = document.getElementById('muteMusic');
+
+// const STARTING_SECONDS = 15;
+const STARTING_SECONDS = 10005;
+
 const STARTING_FUELS = 1;
 const STARTING_COLLECTED_FUELS = 0;
 
@@ -89,8 +93,9 @@ class GameScene extends Scene {
         for (const obj of updateList) {
             obj.update(timeStamp);
         }
+
         // deals with music playing (don't want to clash with opening music)
-        if (!this.music.isPlaying && introDOM.style.display == 'none') {
+        if (!muteMusicButton.checked && !this.music.isPlaying && introDOM.style.display == 'none &&') {
             this.music.play();
         }
     }
