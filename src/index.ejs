@@ -133,6 +133,7 @@
         <!-- Modal content -->
         <div class="modal-content">
           <span id="close-credit" class="close">&times;</span>
+          <p>acknowledgements</p>
           <p>Created By: Jessica Edouard, Emmanuel Teferi, Justin Tran,
           Henry Wang</p>
         </div>
@@ -143,7 +144,6 @@
       function changeMusicStatus() {
         var muteMusicButton = document.getElementById("muteMusic");
         var audio = document.getElementById("audio");
-        console.log(muteMusicButton.checked);
         if (!muteMusicButton.checked) {
           audio.play();
         }
