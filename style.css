@@ -13,7 +13,7 @@ body {
 h1,
 h2 {
     position: relative;
-    color: #f39f49;
+    color: #00d4ac;
     text-align: center;
     margin: 0;
 }
@@ -26,7 +26,7 @@ h2 {
 #controls {
     color: #00d4ac;
     text-align: center;
-    margin: .1%;
+    margin: 0.1%;
 }
 
 #startButton {
