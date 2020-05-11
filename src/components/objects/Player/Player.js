@@ -138,8 +138,6 @@ class Player extends Group {
 
         this.body.position.copy(this.positionVec.clone());
 
-        console.log(this.positionVec);
-
         // debugging mesh
         // this.energyOrb.position.x = this.positionVec.x;
         // this.energyOrb.position.y = this.positionVec.y;
