@@ -156,7 +156,7 @@ var Controls = function (object, domElement) {
     };
 
     // bounds check the camera in x, y, z direction, rotate camera 180 and move position inward 12 units
-    var radius = 25;
+    var radius = 20;
     this.inXBounds = function () {
         if (this.object.position.x > start_position.x + radius) {
             alert('WARNING, TURN AROUND TO AVOID DEEP SPACE');

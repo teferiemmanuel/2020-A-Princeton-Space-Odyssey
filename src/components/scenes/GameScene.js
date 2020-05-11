@@ -16,14 +16,14 @@ import { BasicLights } from 'lights';
 import Corneria from '../audio/corneria_ultimate.mp3';
 
 const introDOM = document.getElementById('splash');
-const STARTING_SECONDS = 15;
-const STARTING_FUELS = 1;
+const STARTING_SECONDS = 25;
+const STARTING_FUELS = 3;
 const STARTING_COLLECTED_FUELS = 0;
 
 //Asteroid generation parameters:
 const STARTING_ASTEROIDS = 1;
 // invincibility starting num, could need adjustment?
-const STARTING_POWERUPS = 1;
+const STARTING_POWERUPS = 2;
 // game is assumed to be a cube and the player is assumed to be in the center of it.
 // this represents the half side length of the cube
 const GAME_BOUNDS = 25;
@@ -215,6 +215,10 @@ class GameScene extends Scene {
             new Vector3(0, 0, -5),
             this.world
         );
+        const fuel2 = new Fuel(this, 'green', new Vector3(0, 2, -8), this.world);
+
+        const fuel3 = new Fuel(this, 'red', new Vector3(0,  1, -4), this.world);
+
         const asteroid = new Asteroid(
             this,
             new Vector3(0, 0, 15),
@@ -223,7 +227,7 @@ class GameScene extends Scene {
         );
 
         // Re-add essential objects
-        this.add(lights, fuel, powerup, asteroid);
+        this.add(lights, fuel, fuel2, fuel3, powerup, asteroid);
         // Super hacky because disposing bodies in Cannon.js sucks. So we reset manually
         this.world.bodies = [essentialBody, fuel.body, powerup.body];
 
