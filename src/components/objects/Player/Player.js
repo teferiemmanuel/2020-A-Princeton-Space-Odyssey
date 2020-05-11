@@ -5,6 +5,8 @@ import AsteroidCollision from '../../audio/asteroid_collision.mp3';
 import FuelPickup from '../../audio/fuel_pickup.mp3';
 import PowerupPickup from '../../audio/powerup_pickup.mp3';
 
+const muteSoundEffectsButton = document.getElementById('muteSound');
+
 class Player extends Group {
     constructor(parent, positionVec, world) {
         // Call parent Group() constructor
@@ -38,32 +40,36 @@ class Player extends Group {
 
                 this.gameScene.gameTimeRem -= 5;
 
-                // create an audio source
-                const soundEffect = new Audio(this.gameScene.listener);
-                // load a sound and set it as the Audio object's buffer
-                const audioLoader = new AudioLoader();
-                audioLoader.load(AsteroidCollision, function (buffer) {
-                    soundEffect.setBuffer(buffer);
-                    soundEffect.setLoop(false);
-                    soundEffect.setVolume(0.15);
-                    soundEffect.play();
-                });
+                if (!muteSoundEffectsButton.checked) {
+                  // create an audio source
+                  const soundEffect = new Audio(this.gameScene.listener);
+                  // load a sound and set it as the Audio object's buffer
+                  const audioLoader = new AudioLoader();
+                  audioLoader.load(AsteroidCollision, function (buffer) {
+                      soundEffect.setBuffer(buffer);
+                      soundEffect.setLoop(false);
+                      soundEffect.setVolume(0.15);
+                      soundEffect.play();
+                  });
+              }
             } else if (e.body.fuel !== undefined) {
                 document.getElementById('collisionMessage').innerHTML =
                     'Fuel recharged!';
                 this.gameScene.numCollectedFuels++;
                 this.gameScene.numSpawnedFuels--;
 
-                // create an audio source
-                const soundEffect = new Audio(this.gameScene.listener);
-                // load a sound and set it as the Audio object's buffer
-                const audioLoader = new AudioLoader();
-                audioLoader.load(FuelPickup, function (buffer) {
-                    soundEffect.setBuffer(buffer);
-                    soundEffect.setLoop(false);
-                    soundEffect.setVolume(0.15);
-                    soundEffect.play();
-                });
+                if (!muteSoundEffectsButton.checked) {
+                  // create an audio source
+                  const soundEffect = new Audio(this.gameScene.listener);
+                  // load a sound and set it as the Audio object's buffer
+                  const audioLoader = new AudioLoader();
+                  audioLoader.load(FuelPickup, function (buffer) {
+                      soundEffect.setBuffer(buffer);
+                      soundEffect.setLoop(false);
+                      soundEffect.setVolume(0.15);
+                      soundEffect.play();
+                  });
+                }
 
                 // Handle time elapsed
                 if (
@@ -84,16 +90,18 @@ class Player extends Group {
                     vulnToAsteroid = true;
                 }, 5000);
 
-                // create an audio source
-                const soundEffect = new Audio(this.gameScene.listener);
-                // load a sound and set it as the Audio object's buffer
-                const audioLoader = new AudioLoader();
-                audioLoader.load(PowerupPickup, function (buffer) {
-                    soundEffect.setBuffer(buffer);
-                    soundEffect.setLoop(false);
-                    soundEffect.setVolume(0.15);
-                    soundEffect.play();
-                });
+                if (!muteSoundEffectsButton.checked) {
+                  // create an audio source
+                  const soundEffect = new Audio(this.gameScene.listener);
+                  // load a sound and set it as the Audio object's buffer
+                  const audioLoader = new AudioLoader();
+                  audioLoader.load(PowerupPickup, function (buffer) {
+                      soundEffect.setBuffer(buffer);
+                      soundEffect.setLoop(false);
+                      soundEffect.setVolume(0.15);
+                      soundEffect.play();
+                  });
+                }
 
                 this.gameScene.handlePowerupCollision(e.body.powerup);
             }

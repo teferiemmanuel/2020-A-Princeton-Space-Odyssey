@@ -18,8 +18,7 @@ import Corneria from '../audio/corneria_ultimate.mp3';
 const introDOM = document.getElementById('splash');
 const muteMusicButton = document.getElementById('muteMusic');
 
-// const STARTING_SECONDS = 15;
-const STARTING_SECONDS = 10005;
+const STARTING_SECONDS = 15;
 
 const STARTING_FUELS = 1;
 const STARTING_COLLECTED_FUELS = 0;

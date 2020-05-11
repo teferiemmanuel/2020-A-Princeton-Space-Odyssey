@@ -56,18 +56,6 @@
                 <button type="button" id="creditButton">
                     <span class="selector"></span> Credit
                 </button>
-                <!-- <h3 id="controls">Controls: </h3>
-                <h4 id="controls">Look with Mouse</h4>
-                <h4 id="controls">Spacebar: Accel</h4>
-                <h4 id="controls">Shift: Brake</h4>
-                <h4 id="controls">Q | E: Barrel Roll</h4>
-                <br>
-                <h3 id="controls">Instructions: </h3>
-                <h4 id="controls">Collect fuel charges for as long as possible while avoiding asteroids! <br> Collect a powerup to gain temporary invincibility.</h4>
-                <h2 id="acknowledgements">
-                    Created By: Jessica Edouard, Emmanuel Teferi, Justin Tran,
-                    Henry Wang
-                </h2> -->
             </div>
             <!-- Finish game screen -->
             <div id="finishGameScreen" onclick="hideFinishGame()">
@@ -127,15 +115,16 @@
 
       </div>
 
-      <div id="optionsModal" class="modal">
+      <div id="optionsModal" class="modal" style="text-align: center">
 
         <div class="modal-content">
           <span id="close-options" class="close">&times;</span>
           <p>Options</p>
           <input type="checkbox" id="muteMusic" name="mute" onclick="changeMusicStatus()">
-         <label for="scales">Mute Music</label>
+          <label for="scales">Mute Music</label>
+          <input type="checkbox" id="muteSound" name="mute">
+          <label for="scales">Mute Sound Effects</label>
         </div>
-
       </div>
 
 
@@ -162,7 +151,6 @@
           audio.pause();
         }
       }
-
       </script>
 
 
