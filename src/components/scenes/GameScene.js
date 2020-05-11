@@ -23,7 +23,7 @@ const STARTING_COLLECTED_FUELS = 0;
 //Asteroid generation parameters:
 const STARTING_ASTEROIDS = 1;
 // invincibility starting num, could need adjustment?
-const STARTING_POWERUPS = 2;
+const STARTING_POWERUPS = 1;
 // game is assumed to be a cube and the player is assumed to be in the center of it.
 // this represents the half side length of the cube
 const GAME_BOUNDS = 25;
@@ -207,17 +207,22 @@ class GameScene extends Scene {
         this.children = [];
         const essentialBody = this.world.bodies[0];
 
+        // Starting objects
         const lights = new BasicLights();
         const fuel = new Fuel(this, 'yellow', new Vector3(0, 0, 5), this.world);
+        const fuel2 = new Fuel(
+            this,
+            'green',
+            new Vector3(0, 2, -8),
+            this.world
+        );
+        const fuel3 = new Fuel(this, 'red', new Vector3(0, 2, -8), this.world);
         const powerup = new Powerup(
             this,
             'orange',
             new Vector3(0, 0, -5),
             this.world
         );
-        const fuel2 = new Fuel(this, 'green', new Vector3(0, 2, -8), this.world);
-
-        const fuel3 = new Fuel(this, 'red', new Vector3(0,  1, -4), this.world);
 
         const asteroid = new Asteroid(
             this,
@@ -229,7 +234,13 @@ class GameScene extends Scene {
         // Re-add essential objects
         this.add(lights, fuel, fuel2, fuel3, powerup, asteroid);
         // Super hacky because disposing bodies in Cannon.js sucks. So we reset manually
-        this.world.bodies = [essentialBody, fuel.body, powerup.body];
+        this.world.bodies = [
+            essentialBody,
+            fuel.body,
+            fuel2.body,
+            fuel3.body,
+            powerup.body,
+        ];
 
         // TODO: populate game area
         for (let i = 0; i < this.MAX_ASTEROIDS_SPAWNS - 30; i++) {
