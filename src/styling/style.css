@@ -18,11 +18,6 @@ h2 {
     margin: 0;
 }
 
-#gameTitleOne,
-#gameTitleTwo {
-    top: 10%;
-}
-
 #controls {
     color: #00d4ac;
     text-align: center;
