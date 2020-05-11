@@ -140,40 +140,33 @@
 
       </div>
 
-      <script>
-      function changeMusicStatus() {
-        var muteMusicButton = document.getElementById("muteMusic");
-        var audio = document.getElementById("audio");
-        if (!muteMusicButton.checked) {
-          audio.play();
+        <script>
+        function changeMusicStatus() {
+          var muteMusicButton = document.getElementById("muteMusic");
+          var audio = document.getElementById("audio");
+          if (!muteMusicButton.checked) {
+            audio.play();
+          }
+          else {
+            audio.pause();
+          }
         }
-        else {
-          audio.pause();
-        }
-      }
-      </script>
+        </script>
 
 
         <script>// Get the modal
           var creditModal = document.getElementById("creditModal");
-
-          // Get the button that opens the modal
           var creditbtn = document.getElementById("creditButton");
-
-          // Get the <span> element that closes the modal
           var creditspan = document.getElementById("close-credit");
 
-          // When the user clicks on the button, open the modal
           creditbtn.onclick = function() {
             creditModal.style.display = "block";
           }
 
-          // When the user clicks on <span> (x), close the modal
           creditspan.onclick = function() {
             creditModal.style.display = "none";
           }
 
-          // When the user clicks anywhere outside of the modal, close it
           window.onclick = function(event) {
             if (event.target == creditModal) {
               creditModal.style.display = "none";
@@ -184,24 +177,17 @@
 
           <script>
           var instructModal = document.getElementById("instructionsModal");
-
-          // Get the button that opens the modal
           var instructbtn = document.getElementById("instructButton");
-
-          // Get the <span> element that closes the modal
           var instructspan = document.getElementById("close-instructions");
 
-          // When the user clicks on the button, open the modal
           instructbtn.onclick = function() {
             instructModal.style.display = "block";
           }
 
-          // When the user clicks on <span> (x), close the modal
           instructspan.onclick = function() {
             instructModal.style.display = "none";
           }
 
-          // When the user clicks anywhere outside of the modal, close it
           window.onclick = function(event) {
             if (event.target == instructModal) {
               instructModal.style.display = "none";
@@ -211,24 +197,17 @@
 
         <script>
         var optionsModal = document.getElementById("optionsModal");
-
-        // Get the button that opens the modal
         var optionsbtn = document.getElementById("optionsButton");
-
-        // Get the <span> element that closes the modal
         var optionsspan = document.getElementById("close-options");
 
-        // When the user clicks on the button, open the modal
         optionsbtn.onclick = function() {
           optionsModal.style.display = "block";
         }
 
-        // When the user clicks on <span> (x), close the modal
         optionsspan.onclick = function() {
           optionsModal.style.display = "none";
         }
 
-        // When the user clicks anywhere outside of the modal, close it
         window.onclick = function(event) {
           if (event.target == optionsModal) {
             optionsModal.style.display = "none";
