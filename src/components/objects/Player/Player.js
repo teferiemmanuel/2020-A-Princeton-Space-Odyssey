@@ -1,4 +1,4 @@
-import { Audio, AudioLoader, Vector3, Group, Sphere } from 'three';
+import { Audio, AudioLoader, Vector3, Group, Sphere, Frustum, Matrix4 } from 'three';
 import { Body } from 'cannon';
 import { Sphere as SpherePhysics } from 'cannon';
 import AsteroidCollision from '../../audio/asteroid_collision.mp3';
@@ -33,24 +33,35 @@ class Player extends Group {
         this.body = body;
         this.body.gameScene = parent;
 
+
         this.body.addEventListener('collide', function (e) {
+
             if (e.body.asteroid !== undefined && vulnToAsteroid === true) {
-                document.getElementById('collisionMessage').innerHTML =
-                    'OOF! You lost some fuel';
 
-                this.gameScene.gameTimeRem -= 5;
+                var frustum = new Frustum();
+                const gameScene = e.body.asteroid.gameScene;
+                frustum.setFromProjectionMatrix(new Matrix4().multiplyMatrices(gameScene.camera.projectionMatrix,
+                                                                     gameScene.camera.matrixWorldInverse));
 
-                if (!muteSoundEffectsButton.checked) {
-                  // create an audio source
-                  const soundEffect = new Audio(this.gameScene.listener);
-                  // load a sound and set it as the Audio object's buffer
-                  const audioLoader = new AudioLoader();
-                  audioLoader.load(AsteroidCollision, function (buffer) {
-                      soundEffect.setBuffer(buffer);
-                      soundEffect.setLoop(false);
-                      soundEffect.setVolume(0.15);
-                      soundEffect.play();
-                  });
+                var pos = e.body.asteroid.position;
+                if (frustum.containsPoint(pos)) {
+                  document.getElementById('collisionMessage').innerHTML =
+                      'OOF! You lost some fuel';
+
+                  this.gameScene.gameTimeRem -= 5;
+
+                  if (!muteSoundEffectsButton.checked) {
+                    // create an audio source
+                    const soundEffect = new Audio(this.gameScene.listener);
+                    // load a sound and set it as the Audio object's buffer
+                    const audioLoader = new AudioLoader();
+                    audioLoader.load(AsteroidCollision, function (buffer) {
+                        soundEffect.setBuffer(buffer);
+                        soundEffect.setLoop(false);
+                        soundEffect.setVolume(0.15);
+                        soundEffect.play();
+                    });
+                }
               }
             } else if (e.body.fuel !== undefined) {
                 document.getElementById('collisionMessage').innerHTML =
@@ -126,6 +137,8 @@ class Player extends Group {
         this.boundingSphere.center.z = this.positionVec.z;
 
         this.body.position.copy(this.positionVec.clone());
+
+        console.log(this.positionVec);
 
         // debugging mesh
         // this.energyOrb.position.x = this.positionVec.x;
