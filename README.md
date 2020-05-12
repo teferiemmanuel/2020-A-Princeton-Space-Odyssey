@@ -2,7 +2,7 @@
 
 The year is 2020, and you are stranded in outer space, far far away from home. To get home you must travel through a series of wormholes. But here’s the catch, you need fuel to travel through these wormholes.
 
-Pilot a spaceship flying through outer space as you attempt to warp home by collecting fuel charges. The primary objective will be achieved by the player collecting fuel charges as they spawn while avoiding flying asteroids or picking up powerups to being invulnerable to asteroid collisions.
+Pilot a spaceship flying through outer space as you attempt to warp home by collecting fuel charges. The primary objective will be achieved by the player collecting fuel charges as they spawn while avoiding flying asteroids or picking up powerups to become invulnerable to asteroid collisions.
 
 Last as long as possible out in space, pilot!
 
