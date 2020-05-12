@@ -248,29 +248,29 @@ var Controls = function (object, domElement) {
                 this.brake = true;
                 break;
 
-            case 84:
-                /*T*/ this.moveState.forward = 1;
-                break;
-            case 71:
-                /*G*/ this.moveState.back = 1;
-                break;
+            //case 84:
+            //    /*T*/ this.moveState.forward = 1;
+            //    break;
+            //case 71:
+            //    /*G*/ this.moveState.back = 1;
+            //    break;
 
-            case 38:
-                /*up*/ this.moveState.pitchUp = 1;
-                break;
-            case 40:
-                /*down*/ this.moveState.pitchDown = 1;
-                break;
+            //case 38:
+            //    /*up*/ this.moveState.pitchUp = 1;
+            //    break;
+            //case 40:
+            //    /*down*/ this.moveState.pitchDown = 1;
+            //    break;
 
-            case 37:
-                /*left*/ this.moveState.yawLeft = 1;
-                break;
-            case 39:
-                /*right*/ this.moveState.yawRight = 1;
-                break;
+            //case 37:
+            //    /*left*/ this.moveState.yawLeft = 1;
+            //    break;
+            //case 39:
+            //    /*right*/ this.moveState.yawRight = 1;
+            //    break;
 
             case 81:
-                /*Q*/ this.moveState.rollLeft = 1;
+                /*Q*/ //this.moveState.rollLeft = 1;
                 this.barrel_left = 6 * Math.PI;
 
                 if (
@@ -286,7 +286,7 @@ var Controls = function (object, domElement) {
                 }
                 break;
             case 69:
-                /*E*/ this.moveState.rollRight = 1;
+                /*E*/ //this.moveState.rollRight = 1;
                 this.barrel_right = 6 * Math.PI;
 
                 if (
@@ -318,26 +318,26 @@ var Controls = function (object, domElement) {
                 this.brake = false;
                 break;
 
-            case 84:
-                /*T*/ this.moveState.forward = 0;
-                break;
-            case 71:
-                /*G*/ this.moveState.back = 0;
-                break;
+            //case 84:
+            //    /*T*/ this.moveState.forward = 0;
+            //    break;
+            //case 71:
+            //    /*G*/ this.moveState.back = 0;
+            //    break;
 
-            case 38:
-                /*up*/ this.moveState.pitchUp = 0;
-                break;
-            case 40:
-                /*down*/ this.moveState.pitchDown = 0;
-                break;
+            //case 38:
+            //    /*up*/ this.moveState.pitchUp = 0;
+            //    break;
+            //case 40:
+            //    /*down*/ this.moveState.pitchDown = 0;
+            //    break;
 
-            case 37:
-                /*left*/ this.moveState.yawLeft = 0;
-                break;
-            case 39:
-                /*right*/ this.moveState.yawRight = 0;
-                break;
+            //case 37:
+            //    /*left*/ this.moveState.yawLeft = 0;
+            //    break;
+            //case 39:
+            //    /*right*/ this.moveState.yawRight = 0;
+            //    break;
 
             case 81:
                 /*Q*/ this.moveState.rollLeft = 0;
