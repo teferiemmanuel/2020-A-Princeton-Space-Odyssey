@@ -6,7 +6,7 @@ Pilot a spaceship flying through outer space as you attempt to warp home by coll
 
 Last as long as possible out in space, pilot!
 
-[Online Demo](https://teferiemmanuel.github.io/Graphics_Project/)
+[Online Demo](https://teferiemmanuel.github.io/2020-A-Princeton-Space-Odyssey/)
 
 ## Installation
 
