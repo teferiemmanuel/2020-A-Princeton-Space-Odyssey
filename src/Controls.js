@@ -17,6 +17,8 @@ import { Euler, EventDispatcher, Quaternion, Vector3 } from 'three';
 
 import { AudioListener, Audio, AudioLoader } from 'three';
 
+import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js';
+
 // DO A BARREL ROLL
 import Barrel_roll from './components/audio/barrel_roll.mp3';
 
@@ -271,7 +273,6 @@ var Controls = function (object, domElement) {
 
             case 81:
                 /*Q*/ //this.moveState.rollLeft = 1;
-                this.barrel_left = 6 * Math.PI;
 
                 if (
                     !this.br_audio.isPlaying &&
@@ -283,22 +284,28 @@ var Controls = function (object, domElement) {
                         br_audio.setVolume(0.3);
                         br_audio.play();
                     });
+                    const barrel_left = new TWEEN.Tween(this.object.rotation)
+                    .to({ z: this.object.rotation.z + 2 * Math.PI }, 690)
+                    .start();
                 }
                 break;
             case 69:
                 /*E*/ //this.moveState.rollRight = 1;
-                this.barrel_right = 6 * Math.PI;
 
                 if (
                     !this.br_audio.isPlaying &&
                     splash.style.display == 'none'
                 ) {
+                    this.barrel_right = 6 * Math.PI;
                     br_loader.load(Barrel_roll, function (buffer) {
                         br_audio.setBuffer(buffer);
                         br_audio.setLoop(false);
                         br_audio.setVolume(0.3);
                         br_audio.play();
                     });
+                    const barrel_right = new TWEEN.Tween(this.object.rotation)
+                    .to({ z: this.object.rotation.z - 2 * Math.PI }, 690)
+                    .start();
                 }
                 break;
         }
@@ -381,6 +388,8 @@ var Controls = function (object, domElement) {
             this.object.quaternion,
             this.object.rotation.order
         );
+        TWEEN.update();
+        /*
         if (this.barrel_right > 0) {
             // Lazy implementation of twirl
             this.barrel_right -= Math.PI / 8;
@@ -392,6 +401,7 @@ var Controls = function (object, domElement) {
         } else {
             this.rotationVector.z = 0;
         }
+        */
 
         // Mouse lock during game only
         if (hud.style.display === 'block') {
