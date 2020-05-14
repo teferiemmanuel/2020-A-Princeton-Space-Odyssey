@@ -56,8 +56,8 @@ var Controls = function (object, domElement) {
     this.brake = false;
 
     this.autoForward = false;
-    this.barrel_left = 0;
-    this.barrel_right = 0;
+    //this.barrel_left = 0;
+    //this.barrel_right = 0;
     // disable default target object behavior
 
     // internals
@@ -273,7 +273,7 @@ var Controls = function (object, domElement) {
 
             case 81:
                 /*Q*/ //this.moveState.rollLeft = 1;
-
+                scope.isLocked = false;
                 if (
                     !this.br_audio.isPlaying &&
                     splash.style.display == 'none'
@@ -291,12 +291,11 @@ var Controls = function (object, domElement) {
                 break;
             case 69:
                 /*E*/ //this.moveState.rollRight = 1;
-
+                scope.isLocked = false;
                 if (
                     !this.br_audio.isPlaying &&
                     splash.style.display == 'none'
                 ) {
-                    this.barrel_right = 6 * Math.PI;
                     br_loader.load(Barrel_roll, function (buffer) {
                         br_audio.setBuffer(buffer);
                         br_audio.setLoop(false);
@@ -347,11 +346,13 @@ var Controls = function (object, domElement) {
             //    break;
 
             case 81:
-                /*Q*/ this.moveState.rollLeft = 0;
+                /*Q*/ //this.moveState.rollLeft = 0;
+                scope.isLocked = true;
                 //map[81] = false;
                 break;
             case 69:
-                /*E*/ this.moveState.rollRight = 0;
+                /*E*/ //this.moveState.rollRight = 0;
+                scope.isLocked = true;
                 //map[69] = false;
                 break;
         }
